@@ -81,13 +81,13 @@ export default function BookDetail({ detail, playlists, headerLectures, qnaCateg
                             {(detail.downloadLink || detail.purchaseLink) && (
                               <a className="btn-r read-more" target="_blank" rel="noopener noreferrer" href={detail.downloadLink || detail.purchaseLink}>
                                 <Download />
-                                <span>Download Book</span>
+                                <span>Download</span>
                               </a>
                             )}
                             {detail.playlistLink && (
                               <a className="btn-r read-more" target="_blank" rel="noopener noreferrer" href={detail.playlistLink}>
                                 <Youtube />
-                                <span>Watch Playlist</span>
+                                <span>Watch</span>
                               </a>
                             )}
                             {detail.pdf && (
@@ -141,6 +141,7 @@ export default function BookDetail({ detail, playlists, headerLectures, qnaCateg
 
         .book-details-page .book-btn a.read-more span {
           font-size: 0.875rem;
+          font-weight: 600;
           line-height: 1.2;
           font-family: var(--app-font-secondary);
         }

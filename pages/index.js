@@ -67,7 +67,7 @@ export default function Home({
         <FeaturedBooks books={books} />
 
         {/* Recent Q&A - Light Green Background */}
-        {/* <RecentQnaEnhanced qna={qna} /> */}
+        <RecentQnaEnhanced qna={qna} />
 
         {/* Q&A and Counselling - Distinct Light Blue Background */}
         <section className="py-12 lg:py-20 bg-gradient-to-br from-[#eef2ff] via-[#f7f7fe] to-white">
@@ -108,7 +108,7 @@ export async function getStaticProps(context) {
       getHomeArticles().catch(() => []),
       getAllPlaylists2().catch(() => ({ playlists: [], playlistsTitle: {} })),
       getHomeBooks().catch(() => []),
-      getHomeQna().catch(() => []),
+      getQnaByLimit(3).catch(() => []),
       getQnaByLimit(3).catch(() => []),
       getAllQnaCategory().catch(() => []),
     ]);

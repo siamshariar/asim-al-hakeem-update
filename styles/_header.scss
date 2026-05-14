@@ -486,10 +486,11 @@ form.search input[type="text"]::-ms-input-placeholder {
 	.search-icon,
 	.menu-burger {
 		display: flex;
-		// background: var(--bg13);
-		background: none;
+		background: linear-gradient(135deg, rgba(16, 185, 129, 0.14), rgba(5, 150, 105, 0.12));
+		box-shadow: inset 0 0 0 1px rgba(16, 185, 129, 0.08);
 		width: 2.8rem;
 		height: 2.8rem;
+		margin-left: 1rem !important;
 		justify-content: center;
 		align-items: center;
 		border-radius: 50%;
@@ -503,18 +504,26 @@ form.search input[type="text"]::-ms-input-placeholder {
 		font-size: 24px;
 	}
 
+	.menu-burger svg {
+		color: #93a1b3;
+		stroke-width: 3;
+	}
+
 	.search-icon:hover {
 		background: var(--app-theme-color);
 	}
 
-	.search-icon:hover i,
-	.menu-burger:hover i {
-		color: #fff;
+	.menu-burger:focus,
+	.menu-burger:focus-visible,
+	.menu-burger:active {
+		outline: none;
+		background: linear-gradient(135deg, rgba(16, 185, 129, 0.14), rgba(5, 150, 105, 0.12));
 	}
 
-	.menu-burger:focus {
-		outline: none;
-		background-color: transparent;
+	.menu-burger:focus svg,
+	.menu-burger:focus-visible svg,
+	.menu-burger:active svg {
+		color: #93a1b3;
 	}
 
 	form.search input[type="text"] {

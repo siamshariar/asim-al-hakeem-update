@@ -255,7 +255,7 @@ export default function Header2({ playlists, lectures, qna_categories, activePla
 
               <motion.button whileTap={{ scale: 0.95 }}
                 onClick={() => setMobileMenuOpen(prev => !prev)}
-                className="menu-burger p-2 rounded-full lg:hidden transition-colors">
+                className="menu-burger p-2 rounded-full lg:hidden transition-colors text-[#1a1f2e]">
                 {mobileMenuOpen ? (
                   <X size={20} />
                 ) : (

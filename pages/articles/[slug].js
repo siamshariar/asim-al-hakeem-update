@@ -9,6 +9,70 @@ import { server } from "../../lib/config";
 import articles from '../../data/airticles-data';
 import { motion } from "framer-motion";
 
+const ARABIC_CHAR_RE = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF]/;
+const LATIN_CHAR_RE = /[A-Za-z]/;
+const BLOCK_TAGS_TO_CHECK = ["p", "li", "blockquote", "h1", "h2", "h3", "h4", "h5", "h6", "figcaption"];
+
+const stripHtmlTags = (value = "") => value.replace(/<[^>]*>/g, "");
+
+const decodeHtmlEntities = (value = "") =>
+  value
+    .replace(/&nbsp;/g, " ")
+    .replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'");
+
+const isArabicOnlyText = (value = "") => {
+  const normalized = decodeHtmlEntities(stripHtmlTags(value)).replace(/\s+/g, " ").trim();
+  if (!normalized) return false;
+
+  const withoutArabic = normalized.replace(/[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF]/g, "");
+  return !LATIN_CHAR_RE.test(withoutArabic) && !/[0-9]/.test(withoutArabic);
+};
+
+const wrapArabicRuns = (value = "") => {
+  if (!ARABIC_CHAR_RE.test(value)) return value;
+  return value.replace(
+    /([\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF][\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\u064B-\u065F\u0670\u06D6-\u06ED\s.,;:!?()'"\-–—]*)/g,
+    '<span dir="rtl" class="inline-block text-right">$1</span>'
+  );
+};
+
+const addClassName = (existingAttrs = "", className = "") => {
+  const classMatch = existingAttrs.match(/class=("[^"]*"|'[^']*')/i);
+  if (!classMatch) return `${existingAttrs} class="${className}"`;
+
+  const current = classMatch[1].slice(1, -1);
+  const merged = `${current} ${className}`.trim();
+  return existingAttrs.replace(/class=("[^"]*"|'[^']*')/i, `class="${merged}"`);
+};
+
+const ensureDirAttr = (existingAttrs = "", dir = "rtl") => {
+  if (/\bdir=/i.test(existingAttrs)) return existingAttrs;
+  return `${existingAttrs} dir="${dir}"`;
+};
+
+const enhanceArabicHtml = (html = "") => {
+  let output = html;
+
+  BLOCK_TAGS_TO_CHECK.forEach((tag) => {
+    const tagPattern = new RegExp(`<${tag}([^>]*)>([\\s\\S]*?)<\\/${tag}>`, "gi");
+
+    output = output.replace(tagPattern, (match, attrs = "", innerHtml = "") => {
+      if (isArabicOnlyText(innerHtml)) {
+        const nextAttrs = addClassName(ensureDirAttr(attrs, "rtl"), "text-right");
+        return `<${tag}${nextAttrs}>${innerHtml}</${tag}>`;
+      }
+
+      return `<${tag}${attrs}>${wrapArabicRuns(innerHtml)}</${tag}>`;
+    });
+  });
+
+  return output;
+};
+
 export default function ArticleDetail({ article, playlists, headerLectures, qnaCategories }) {
   const router = useRouter();
 
@@ -27,6 +91,7 @@ export default function ArticleDetail({ article, playlists, headerLectures, qnaC
   const { slug } = router.query;
   const shareUrl = `${server}/articles/${slug}`;
   const bodyHtml = article.contentHtml || article.content || "";
+  const localizedBodyHtml = enhanceArabicHtml(bodyHtml);
   const hasRichBody = typeof bodyHtml === "string" && /<iframe|<video|<p|<h[1-6]|<ul|<ol|<blockquote/i.test(bodyHtml);
 
   return (
@@ -77,7 +142,7 @@ export default function ArticleDetail({ article, playlists, headerLectures, qnaC
                 {hasRichBody ? (
                   <div
                     className="article-body-html text-sm sm:text-base text-gray-700 leading-relaxed [&_iframe]:w-full [&_iframe]:max-w-full [&_iframe]:aspect-video [&_iframe]:rounded-xl [&_iframe]:my-4 [&_img]:max-w-full [&_img]:h-auto [&_p]:mb-4 [&_figure]:my-4"
-                    dangerouslySetInnerHTML={{ __html: bodyHtml }}
+                    dangerouslySetInnerHTML={{ __html: localizedBodyHtml }}
                   />
                 ) : (
                   <p className="text-sm sm:text-base text-gray-700 leading-relaxed">{article.description || article.excerpt || article.postExcerpt}</p>

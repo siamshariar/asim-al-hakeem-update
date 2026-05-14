@@ -1,6 +1,6 @@
 import { useState, useEffect, useLayoutEffect, useMemo, useDeferredValue, useRef, useCallback } from "react";
 import { useRouter } from "next/router";
-import { getAllPlaylists2, getHeaderLectures, getAllQnaCategory, getAllQuestions } from "../../lib/fetch";
+import { getAllPlaylists2, getHeaderLectures, getAllQnaCategory, getAllQuestions, getQnaByLimit } from "../../lib/fetch";
 import Meta from "../../components/meta";
 import Header2 from "../../components/header1";
 import Link from "next/link";
@@ -13,7 +13,7 @@ const LAST_QNA_CATEGORY_KEY = "qna_last_category";
 const PAGE_SIZE = 10;
 const LOADING_DELAY = 1000;
 
-export default function QnaPage({ playlists, headerLectures, qnaCategories, initialQnaPage, initialCategory }) {
+export default function QnaPage({ playlists, headerLectures, qnaCategories, initialQnaPage, initialCategory, initialTopQna }) {
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState("");
   const [categorySearchTerm, setCategorySearchTerm] = useState("");
@@ -52,7 +52,19 @@ export default function QnaPage({ playlists, headerLectures, qnaCategories, init
   // Initialize data only once when component mounts with initial data
   useEffect(() => {
     if (!initialDataLoadedRef.current && initialQnaPage) {
-      if (initialQnaPage?.qaItems?.length) {
+      // If we have a special top-QnA list (first 3) for the "all" category,
+      // render them first and exclude them from the main page items to avoid duplicates.
+      if (initialTopQna && Array.isArray(initialTopQna) && initialTopQna.length > 0 && (initialCategory === 'all' || !initialCategory)) {
+        const topIds = new Set(initialTopQna.map(i => i?.id).filter(Boolean));
+        const remaining = (initialQnaPage?.qaItems || []).filter(i => !topIds.has(i?.id));
+        const pages = [];
+        pages.push(initialTopQna);
+        if (remaining.length > 0) pages.push(remaining);
+        setLoadedPages(pages);
+        pages.flat().forEach(item => { if (item?.id) loadedIdsRef.current.add(item.id); });
+        setCurrentPage(initialQnaPage?.currentPage || 1);
+        setTotalPages(initialQnaPage?.numberOfPages || 1);
+      } else if (initialQnaPage?.qaItems?.length) {
         setLoadedPages([initialQnaPage.qaItems]);
         initialQnaPage.qaItems.forEach(item => {
           if (item?.id) loadedIdsRef.current.add(item.id);
@@ -887,6 +899,11 @@ export async function getStaticProps({ params }) {
     const headerLectures = await getHeaderLectures();
     const qnaCategories = await getAllQnaCategory();
     const initialQnaPage = await getAllQuestions({ currentPage: 1, cat_slug: catSlug, pageSize: PAGE_SIZE });
+    // For the main "all" category, also fetch top 3 QnA to display prominently at the top
+    let initialTopQna = [];
+    if (catSlug === 'all') {
+      initialTopQna = await getQnaByLimit(3);
+    }
 
     return {
       props: {
@@ -894,6 +911,7 @@ export async function getStaticProps({ params }) {
         headerLectures: headerLectures || null,
         qnaCategories: qnaCategories || [],
         initialQnaPage: initialQnaPage || { qaItems: [], numberOfPages: 1, currentPage: 1 },
+        initialTopQna: initialTopQna || [],
         initialCategory: catSlug || 'all',
       },
       revalidate: 3600,
