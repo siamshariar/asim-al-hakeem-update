@@ -489,6 +489,8 @@ form.search input[type="text"]::-ms-input-placeholder {
 		background: linear-gradient(135deg, rgba(16, 185, 129, 0.14), rgba(5, 150, 105, 0.12));
 		box-shadow: inset 0 0 0 1px rgba(16, 185, 129, 0.08);
 		background: var(--bg13);
+		background: linear-gradient(135deg, rgba(16, 185, 129, 0.14), rgba(5, 150, 105, 0.12));
+		box-shadow: inset 0 0 0 1px rgba(16, 185, 129, 0.08);
 		width: 2.8rem;
 		height: 2.8rem;
 		margin-left: 1rem !important;
@@ -520,7 +522,8 @@ form.search input[type="text"]::-ms-input-placeholder {
 		outline: none;
 		background: linear-gradient(135deg, rgba(16, 185, 129, 0.14), rgba(5, 150, 105, 0.12));
 		background: var(--bg13);
-
+		background: var(--bg13);
+		background: linear-gradient(135deg, rgba(16, 185, 129, 0.14), rgba(5, 150, 105, 0.12));
 	}
 
 	.menu-burger:focus svg,
