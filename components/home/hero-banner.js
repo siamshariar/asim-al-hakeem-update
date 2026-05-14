@@ -51,7 +51,7 @@ export default function HeroBanner() {
                             initial={{ opacity: 0, scale: 0.9 }}
                             animate={{ opacity: 1, scale: 1 }}
                             transition={{ delay: 0.2 }}
-                            className="inline-block px-4 py-2 bg-white/35 rounded-full text-slate-700 text-sm font-medium mb-6 border border-white/40 drop-shadow-md"
+                            className="inline-block px-4 py-2 bg-white/45 rounded-full text-[#047857] text-sm font-semibold mb-6 border border-white/60 drop-shadow-md"
                         >
                             Official Website
                         </motion.div>
@@ -124,7 +124,7 @@ export default function HeroBanner() {
                         transition={{ duration: 0.8, delay: 0.2 }}
                         className="relative hidden lg:block"
                     >
-                        <div className="relative mx-auto max-w-[560px]">
+                        <div className="relative mx-auto max-w-[580px]">
                             <div className="absolute inset-x-14 top-16 h-40 rounded-full bg-sky-300/8 blur-3xl" />
                             <div className="relative overflow-hidden rounded-[2.5rem] border border-white/15 bg-white/10 p-4 shadow-[0_22px_60px_rgba(0,0,0,0.2)] backdrop-blur-md">
                                 <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/6 via-transparent to-black/8" />

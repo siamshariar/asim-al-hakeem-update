@@ -3,12 +3,20 @@ import { getAllPlaylists2, getHeaderLectures, getAllQnaCategory } from "../lib/f
 import Meta from "../components/meta";
 import Header2 from "../components/header1";
 import { motion } from "framer-motion";
-import { Mail, DollarSign, AlertCircle, Share2, Send, User, HelpCircle } from 'lucide-react';
-import { useState } from 'react';
+import { Mail, DollarSign, AlertCircle, Copy, CheckCircle, Send, User, HelpCircle } from 'lucide-react';
+import { useState, useRef, useEffect } from 'react';
 
 export default function AskAQuestion({ playlists, headerLectures, qna_categories }) {
   const [formValues, setFormValues] = useState({ name: '', email: '', question: '' });
   const [submitted, setSubmitted] = useState(false);
+  const [copiedShare, setCopiedShare] = useState(false);
+  const shareTimeoutRef = useRef(null);
+
+  useEffect(() => {
+    return () => {
+      if (shareTimeoutRef.current) clearTimeout(shareTimeoutRef.current);
+    };
+  }, []);
 
   const handleChange = (e) => setFormValues({ ...formValues, [e.target.name]: e.target.value });
 
@@ -20,7 +28,19 @@ export default function AskAQuestion({ playlists, headerLectures, qna_categories
     setFormValues({ name: '', email: '', question: '' });
   };
 
-  const shareUrl = `${server}/ask-question`;
+  const handleCopyLink = () => {
+    const currentUrl = typeof window !== "undefined"
+      ? window.location.href
+      : `${server}/ask-question`;
+
+    navigator.clipboard.writeText(currentUrl).then(() => {
+      setCopiedShare(true);
+      if (shareTimeoutRef.current) clearTimeout(shareTimeoutRef.current);
+      shareTimeoutRef.current = setTimeout(() => setCopiedShare(false), 2000);
+    }).catch(() => {
+      // Keep silent to avoid alert popups; UX stays non-blocking.
+    });
+  };
 
   return (
     <>
@@ -128,10 +148,22 @@ export default function AskAQuestion({ playlists, headerLectures, qna_categories
 
                 <div className="mt-5 sm:mt-6 pt-4 sm:pt-5 border-t border-gray-100">
                   <p className="text-xs sm:text-sm text-gray-500 mb-2 sm:mb-3">Share this page</p>
-                  <button onClick={() => navigator.clipboard.writeText(shareUrl)}
-                    className="inline-flex items-center gap-1.5 sm:gap-2 text-[#10b981] hover:text-[#059669] transition-colors text-xs sm:text-sm">
-                    <Share2 size={16} className="sm:w-[18px] sm:h-[18px]" />
-                    <span>Copy Link</span>
+                  <button onClick={handleCopyLink}
+                    className={`inline-flex items-center gap-1.5 sm:gap-2 transition-colors text-xs sm:text-sm font-medium py-2 px-3 rounded-lg ${copiedShare ? 'bg-[#10b981] text-white' : 'text-[#10b981] hover:bg-[#10b981]/5'}`}
+                    title={copiedShare ? 'Copied to clipboard!' : 'Copy link to clipboard'}
+                    aria-label={copiedShare ? 'Copied to clipboard!' : 'Copy link to clipboard'}
+                  >
+                    {copiedShare ? (
+                      <>
+                        <CheckCircle size={16} className="sm:w-[18px] sm:h-[18px]" />
+                        <span>Copied!</span>
+                      </>
+                    ) : (
+                      <>
+                        <Copy size={16} className="sm:w-[18px] sm:h-[18px]" />
+                        <span>Copy Link</span>
+                      </>
+                    )}
                   </button>
                 </div>
               </motion.div>

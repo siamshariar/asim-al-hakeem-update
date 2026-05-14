@@ -155,7 +155,7 @@ export default function BookDetail({ detail, playlists, headerLectures, qnaCateg
             display: flex;
             flex-direction: column;
             width: 100%;
-            gap: 0.75rem;
+            gap: 0.5rem;
           }
 
           .book-details-page .book-btn a.read-more {
@@ -165,11 +165,12 @@ export default function BookDetail({ detail, playlists, headerLectures, qnaCateg
             max-width: 100%;
             padding: 0.675rem 1rem !important;
             justify-content: center;
+            gap: 0.25rem;
           }
 
           .book-details-page .book-btn a.read-more svg {
-            width: 0.95rem;
-            height: 0.95rem;
+            width: 1.2rem;
+            height: 1.2rem;
           }
 
           .book-details-page .book-btn a.read-more span {
@@ -181,7 +182,7 @@ export default function BookDetail({ detail, playlists, headerLectures, qnaCateg
           .book-details-page .book-btn {
             display: flex;
             flex-wrap: wrap;
-            gap: 0.75rem;
+            gap: 0.35rem;
           }
 
           .book-details-page .book-btn a.read-more {
@@ -191,8 +192,8 @@ export default function BookDetail({ detail, playlists, headerLectures, qnaCateg
           }
 
           .book-details-page .book-btn a.read-more svg {
-            width: 1.1rem;
-            height: 1.1rem;
+            width: 1.25rem;
+            height: 1.25rem;
           }
 
           .book-details-page .book-btn a.read-more span {

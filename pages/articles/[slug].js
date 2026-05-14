@@ -1,5 +1,6 @@
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from 'next/router';
-import { Facebook, Twitter, Mail, Share2, ArrowLeft, Calendar, User, Clock } from "lucide-react";
+import { Facebook, Twitter, Mail, Copy, CheckCircle, ArrowLeft, Calendar, User, Clock } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { getAllPlaylists2, getHeaderLectures, getAllQnaCategory } from "../../lib/fetch";
@@ -75,6 +76,14 @@ const enhanceArabicHtml = (html = "") => {
 
 export default function ArticleDetail({ article, playlists, headerLectures, qnaCategories }) {
   const router = useRouter();
+  const [copiedShare, setCopiedShare] = useState(false);
+  const shareTimeoutRef = useRef(null);
+
+  useEffect(() => {
+    return () => {
+      if (shareTimeoutRef.current) clearTimeout(shareTimeoutRef.current);
+    };
+  }, []);
 
   if (!article) {
     return (
@@ -94,9 +103,29 @@ export default function ArticleDetail({ article, playlists, headerLectures, qnaC
   const localizedBodyHtml = enhanceArabicHtml(bodyHtml);
   const hasRichBody = typeof bodyHtml === "string" && /<iframe|<video|<p|<h[1-6]|<ul|<ol|<blockquote/i.test(bodyHtml);
 
+  const handleCopyLink = () => {
+    const currentUrl = typeof window !== "undefined"
+      ? window.location.href
+      : shareUrl;
+
+    navigator.clipboard.writeText(currentUrl).then(() => {
+      setCopiedShare(true);
+      if (shareTimeoutRef.current) clearTimeout(shareTimeoutRef.current);
+      shareTimeoutRef.current = setTimeout(() => setCopiedShare(false), 2000);
+    }).catch(() => {
+      // Keep silent to avoid alert popups; UX stays non-blocking.
+    });
+  };
+
   return (
     <>
       <Meta title={article.title || article.postTitle} description={article.description || article.postExcerpt} url={shareUrl} image={article.image || article.imageSrc} type="article" />
+
+      <style jsx global>{`
+        .article-body-html figure {
+          margin: 1rem 0 !important;
+        }
+      `}</style>
 
       <Header2 playlists={playlists} lectures={headerLectures} qna_categories={qnaCategories} />
 
@@ -141,7 +170,7 @@ export default function ArticleDetail({ article, playlists, headerLectures, qnaC
               <div className="prose prose-sm sm:prose-base lg:prose-lg max-w-none mb-6 sm:mb-8 article-body">
                 {hasRichBody ? (
                   <div
-                    className="article-body-html text-sm sm:text-base text-gray-700 leading-relaxed [&_iframe]:w-full [&_iframe]:max-w-full [&_iframe]:aspect-video [&_iframe]:rounded-xl [&_iframe]:my-4 [&_img]:max-w-full [&_img]:h-auto [&_p]:mb-4 [&_figure]:my-4"
+                    className="article-body-html text-sm sm:text-base text-gray-700 leading-relaxed [&_iframe]:w-full [&_iframe]:max-w-full [&_iframe]:aspect-video [&_iframe]:rounded-xl [&_iframe]:my-4 [&_img]:max-w-full [&_img]:h-auto [&_p]:mb-4 [&_figure]:my-4 [&_figure]:mx-0"
                     dangerouslySetInnerHTML={{ __html: localizedBodyHtml }}
                   />
                 ) : (
@@ -165,9 +194,17 @@ export default function ArticleDetail({ article, playlists, headerLectures, qnaC
                     className="p-2 sm:p-2.5 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors">
                     <Mail size={16} className="sm:w-[18px] sm:h-[18px]" />
                   </a>
-                  <button onClick={() => { navigator.clipboard.writeText(shareUrl); alert('Link copied!'); }}
-                    className="p-2 sm:p-2.5 bg-[#10b981] text-white rounded-lg hover:bg-[#059669] transition-colors">
-                    <Share2 size={16} className="sm:w-[18px] sm:h-[18px]" />
+                  <button
+                    onClick={handleCopyLink}
+                    className={`p-2 sm:p-2.5 text-white rounded-lg transition-colors ${copiedShare ? 'bg-green-500' : 'bg-[#10b981] hover:bg-[#059669]'}`}
+                    title={copiedShare ? 'Copied to clipboard!' : 'Copy link to clipboard'}
+                    aria-label={copiedShare ? 'Copied to clipboard!' : 'Copy link to clipboard'}
+                  >
+                    {copiedShare ? (
+                      <CheckCircle size={16} className="sm:w-[18px] sm:h-[18px] !text-white" />
+                    ) : (
+                      <Copy size={16} className="sm:w-[18px] sm:h-[18px] !text-white" />
+                    )}
                   </button>
                 </div>
               </div>

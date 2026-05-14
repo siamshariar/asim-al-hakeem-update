@@ -393,7 +393,7 @@ form.search input[type="text"]::-ms-input-placeholder {
 }
 
 // responsive
-@media only screen and (max-width: 1200px) {
+@media only screen and (max-width: 1024px) {
 	.header.modal-active {
 		padding-right: 0;
 	}

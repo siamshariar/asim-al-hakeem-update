@@ -813,7 +813,7 @@ export default function QnaPage({ playlists, headerLectures, qnaCategories, init
                       </>
                     )}
                   </motion.div>
-                  
+{/*                   
                   {isTransitioningCategory && (
                     <motion.div 
                       initial={{ opacity: 0 }}
@@ -830,7 +830,7 @@ export default function QnaPage({ playlists, headerLectures, qnaCategories, init
                         <span className="text-sm text-gray-700 font-medium">Switching category...</span>
                       </div>
                     </motion.div>
-                  )}
+                  )} */}
                 </>
               ) : (
                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }} className="text-center py-10 xs:py-12 sm:py-16 bg-white rounded-xl shadow-sm">

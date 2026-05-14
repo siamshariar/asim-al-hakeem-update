@@ -71,7 +71,7 @@ export default function TestimonialsSection() {
 
         <div className="relative max-w-4xl mx-auto px-2 sm:px-4">
           <div className="overflow-hidden rounded-2xl sm:rounded-3xl bg-white shadow-lg sm:shadow-xl">
-            <div className="relative min-h-[350px] xs:min-h-[320px] sm:min-h-[300px] lg:min-h-[280px]">
+            <div className="relative min-h-[350px] xs:min-h-[300px] sm:min-h-[300px] lg:min-h-[280px]">
               <AnimatePresence mode="sync" custom={direction}>
                 <motion.div
                   key={currentIndex}
@@ -81,7 +81,7 @@ export default function TestimonialsSection() {
                   animate="center"
                   exit="exit"
                   transition={{ type: "spring", stiffness: 300, damping: 30, duration: 0.3 }}
-                  className="absolute inset-0 p-10 md:p-12 lg:p-6 flex flex-col justify-center"
+                  className="absolute inset-0 p-9  md:p-12 lg:p-6 flex flex-col justify-center"
                 >
                   <Quote size={32} className="sm:w-10 sm:h-10 lg:w-12 lg:h-12 text-[#10b981]/20 mb-3 sm:mb-4" />
                   <p className="text-sm xs:text-base sm:text-lg lg:text-xl text-gray-700 mb-4 sm:mb-6 leading-relaxed italic">
@@ -108,14 +108,14 @@ export default function TestimonialsSection() {
           {/* Navigation Buttons */}
           <button
             onClick={prevSlide}
-            className="absolute left-0 xs:left-1 sm:left-2 lg:-left-12 xl:-left-16 top-1/2 -translate-y-1/2 w-8 h-8 xs:w-9 xs:h-9 sm:w-10 sm:h-10 lg:w-12 lg:h-12 bg-white rounded-full shadow-md sm:shadow-lg flex items-center justify-center hover:bg-[#10b981] hover:text-white focus:outline-none focus:!bg-white focus:text-[#1a1f2e] transition-all duration-300 border border-gray-100"
+            className="absolute left-0 lg:-left-4 xl:-left-4 top-1/2 -translate-y-1/2 w-8 h-8 xs:w-9 xs:h-9 sm:w-10 sm:h-10 lg:w-12 lg:h-12 bg-white rounded-full shadow-md sm:shadow-lg flex items-center justify-center hover:bg-[#10b981] hover:text-white focus:outline-none focus:!bg-white focus:text-[#1a1f2e] transition-all duration-300 border border-gray-100"
             aria-label="Previous testimonial"
           >
             <ChevronLeft size={18} className="xs:w-5 xs:h-5 sm:w-6 sm:h-6" />
           </button>
           <button
             onClick={nextSlide}
-            className="absolute right-0 xs:right-1 sm:right-2 lg:-right-12 xl:-right-16 top-1/2 -translate-y-1/2 w-8 h-8 xs:w-9 xs:h-9 sm:w-10 sm:h-10 lg:w-12 lg:h-12 bg-white rounded-full shadow-md sm:shadow-lg flex items-center justify-center hover:bg-[#10b981] hover:text-white focus:outline-none focus:!bg-white focus:text-[#1a1f2e] transition-all duration-300 border border-gray-100"
+            className="absolute right-0 lg:-right-4 xl:-right-4 top-1/2 -translate-y-1/2 w-8 h-8 xs:w-9 xs:h-9 sm:w-10 sm:h-10 lg:w-12 lg:h-12 bg-white rounded-full shadow-md sm:shadow-lg flex items-center justify-center hover:bg-[#10b981] hover:text-white focus:outline-none focus:!bg-white focus:text-[#1a1f2e] transition-all duration-300 border border-gray-100"
             aria-label="Next testimonial"
           >
             <ChevronRight size={18} className="xs:w-5 xs:h-5 sm:w-6 sm:h-6" />
