@@ -255,6 +255,17 @@ export default function QnaAnswerDetail({ answer, playlists, headerLectures, qna
     });
   };
 
+  // Handle back navigation with router
+  const handleBackNavigation = (e, url) => {
+    e.preventDefault();
+    // Store that we want to restore scroll position
+    if (typeof window !== "undefined") {
+      sessionStorage.setItem("qna_scroll_restore", "true");
+    }
+    // Use router.push for client-side navigation
+    router.push(url);
+  };
+
   // Filter categories for display
   const EXCLUDE_SLUGS = ["books", "videos", "articles", "audios"];
   const visibleCategories = qnaCategories?.filter(c => c.slug !== 'all' && !EXCLUDE_SLUGS.includes(c.slug)) || [];
@@ -294,28 +305,40 @@ export default function QnaAnswerDetail({ answer, playlists, headerLectures, qna
       <Header2 playlists={playlists} lectures={headerLectures} qna_categories={qnaCategories} />
 
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-[#1a1f2e] to-[#2a3142] py-8 sm:py-10 lg:py-12">
+      <section className="bg-gradient-to-br from-[#24334d] via-[#2b3f5e] to-[#334a6b] py-8 sm:py-10 lg:py-12">
         <div className="container max-w-[1000px] mx-auto px-4">
-          <Link 
-            href={backUrl} 
-            className="inline-flex items-center gap-1.5 sm:gap-2 text-gray-300 hover:text-white mb-3 sm:mb-4 transition-colors text-sm sm:text-base"
+          <a 
+            href={backUrl}
+            onClick={(e) => handleBackNavigation(e, backUrl)}
+            className="inline-flex items-center gap-1.5 sm:gap-2 text-gray-300 hover:text-white mb-3 sm:mb-4 transition-colors text-sm sm:text-base cursor-pointer"
           >
             <ArrowLeft size={16} className="sm:w-[18px] sm:h-[18px]" /> Back to Q&A
-          </Link>
+          </a>
           {category && (
             <div className="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm mb-3 sm:mb-4 flex-wrap">
-              <Link href={`/qna`} className="text-gray-400 hover:text-white focus:outline-none focus:ring-0 focus:border-transparent">Q&A</Link>
+              <a 
+                href={`/qna`}
+                onClick={(e) => handleBackNavigation(e, `/qna`)}
+                className="text-gray-400 hover:text-white focus:outline-none focus:ring-0 focus:border-transparent cursor-pointer"
+              >
+                Q&A
+              </a>
               <ChevronRight size={12} className="sm:w-3.5 sm:h-3.5 text-gray-500" />
-              <Link href={`/qna/${category.slug}`} className="text-[#10b981] hover:text-[#34d399] focus:outline-none focus:ring-0 focus:border-transparent">{category.title}</Link>
+              <a 
+                href={`/qna/${category.slug}`}
+                onClick={(e) => handleBackNavigation(e, `/qna/${category.slug}`)}
+                className="text-[#10b981] hover:text-[#34d399] focus:outline-none focus:ring-0 focus:border-transparent cursor-pointer"
+              >
+                {category.title}
+              </a>
             </div>
           )}
-          <motion.h1 
-            initial={{ opacity: 0, y: -10 }} 
-            animate={{ opacity: 1, y: 0 }}
-            className="text-xl sm:text-2xl lg:text-3xl font-bold text-white leading-tight"
-          >
-            {answer.question}
-          </motion.h1>
+          <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
+            <MessageCircle size={32} className="sm:w-9 sm:h-9 text-[#34d399] mb-3" />
+            <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-white leading-tight">
+              {answer.question}
+            </h1>
+          </motion.div>
         </div>
       </section>
 

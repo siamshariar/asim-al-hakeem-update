@@ -4,6 +4,7 @@ import { Facebook, Youtube, Mail, Award, BookOpen, Users, Globe, Calendar, MapPi
 import { getAllPlaylists2, getAllQnaCategory, getHeaderLectures } from "../lib/fetch";
 import Meta from "../components/meta";
 import Header2 from "../components/header1";
+import PageHero from "../components/page-hero";
 import { motion } from "framer-motion";
 
 const biographySections = [
@@ -47,13 +48,11 @@ export default function About({ playlists, headerLectures, qna_categories }) {
       <Meta title="About Sheikh Assim Al Hakeem" description="Learn about Sheikh Assim bin Luqman al-Hakeem's life and contributions" url={`${server}/about`} />
       <Header2 playlists={playlists} lectures={headerLectures} qna_categories={qna_categories} />
 
-      {/* Hero Section */}
-      <section className="bg-gradient-to-br from-[#1a1f2e] to-[#2a3142] py-8 sm:py-12 lg:py-16">
-        <div className="container max-w-[1260px] mx-auto px-4 text-center">
-          <motion.h1 initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="page-title text-white mb-2 sm:mb-4">About Sheikh Assim Al Hakeem</motion.h1>
-          <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="text-sm sm:text-base lg:text-lg text-gray-300 max-w-3xl mx-auto">A lifetime dedicated to spreading authentic Islamic knowledge</motion.p>
-        </div>
-      </section>
+      <PageHero
+        title="About Sheikh Assim Al Hakeem"
+        subtitle="A lifetime dedicated to spreading authentic Islamic knowledge"
+        Icon={Users}
+      />
 
       {/* Profile Section */}
       <section className="py-8 sm:py-12 lg:py-16 bg-gray-50">

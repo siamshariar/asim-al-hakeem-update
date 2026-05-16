@@ -3,6 +3,7 @@ import { getBooks, getBookDetails, getAllPlaylists2, getHeaderLectures, getAllQn
 import Image from "next/image";
 import Meta from "../../components/meta";
 import Header2 from "../../components/header1";
+import PageHero from "../../components/page-hero";
 import Share from "../../components/share";
 import { motion } from "framer-motion";
 import { BookOpen, Download, Youtube, ExternalLink, User, ArrowLeft } from "lucide-react";
@@ -29,15 +30,21 @@ export default function BookDetail({ detail, playlists, headerLectures, qnaCateg
 
       <Header2 playlists={playlists} lectures={headerLectures} qna_categories={qnaCategories} />
 
+      <PageHero
+        title={detail.title || detail.bookName}
+        subtitle={detail.writer ? `Author: ${detail.writer}` : "Islamic book by Sheikh Assim Al Hakeem"}
+        Icon={BookOpen}
+        align="left"
+      >
+        <Link href="/books" className="inline-flex items-center gap-1.5 sm:gap-2 text-slate-200 hover:text-white mb-3 sm:mb-4 transition-colors text-sm sm:text-base">
+          <ArrowLeft size={16} className="sm:w-[18px] sm:h-[18px]" /> Back to Books
+        </Link>
+      </PageHero>
+
       <section className="blog-detail-ctn mt-0 book-details-page">
-        <div className="py-6 lg:py-12">
+        <div className="py-6 lg:py-10">
           
           <div className="container max-w-[1260px] mx-auto">
-                            <div className="col s12 l12 mb-4">
-                  <Link href="/books" className="inline-flex items-center gap-1.5 sm:gap-2 text-gray-600 hover:text-[#10b981] transition-colors text-sm sm:text-base">
-                    <ArrowLeft size={16} className="sm:w-[18px] sm:h-[18px]" /> Back to Books
-                  </Link>
-                </div>
             <div className="blog-area lg:mx-0">
               <div className="row margin-bottom-0">
 

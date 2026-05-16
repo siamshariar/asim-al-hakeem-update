@@ -4,8 +4,9 @@ import { server } from "../../lib/config";
 import { getAllPlaylists2, getHeaderLectures, getAllQnaCategory, getAllArticles } from "../../lib/fetch";
 import Meta from "../../components/meta";
 import Header2 from "../../components/header1";
+import PageHero from "../../components/page-hero";
 import { motion } from "framer-motion";
-import { Calendar, User, ArrowRight, Search, X } from 'lucide-react';
+import { Calendar, User, ArrowRight, Search, X, FileText } from 'lucide-react';
 import useOnScreen from "../../hooks/useOnScreen";
 
 const ARTICLES_PER_PAGE = 9;
@@ -197,17 +198,13 @@ export default function Articles({ playlists, headerLectures, qnaCategories, ini
         <Header2 playlists={playlists} lectures={headerLectures} qna_categories={qnaCategories} />
       )}
 
-      {/* Hero Section */}
-      <section className="bg-gradient-to-br from-[#1a1f2e] to-[#2a3142] py-12 lg:py-16">
-        <div className="container max-w-[1260px] mx-auto px-4 text-center">
-          <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-            <h1 className="page-title text-white mb-3">Islamic Articles</h1>
-            <p className="text-gray-300 max-w-2xl mx-auto">
-              Authentic Islamic knowledge and guidance through well-researched articles
-            </p>
-          </motion.div>
-        </div>
-      </section>
+      <PageHero
+        title="Islamic Articles"
+        subtitle="Authentic Islamic knowledge and guidance through well-researched articles"
+        Icon={FileText}
+        imageSrc="/img/articles/default.jpg"
+        imageAlt="Islamic Articles"
+      />
 
       {/* Search Bar */}
       <section className="py-6 bg-white border-b border-gray-100 sticky top-0 z-30">

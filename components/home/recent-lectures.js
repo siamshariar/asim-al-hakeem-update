@@ -145,12 +145,12 @@ export default function RecentLecture() {
     <section className="services">
       <div className="bg-services bg-cover bg-no-repeat max-w-[1466px] mx-4 xl:mx-auto rounded-[20px] xl:pt-[70px] px-6 xl:px-0 relative h-[368px] flex items-center xl:items-start z-10">
         <div className="container mx-auto">
-          <div className="services__top flex items-center flex-row justify-between xl:flex-row xl:mb-[60px]">
+          <div className="services__top flex items-start justify-between xl:flex-row xl:mb-[60px] gap-3">
             <h2 className="h2 flex-1 xl:mb-0 xl:text-left">
               Recent Lectures
             </h2>
-            <Link href="/lectures/UUWsdcrre0WbCWML_PnuzoAg">
-              <button  className="text-white xl:text-right underline">
+            <Link href="/lectures/UUWsdcrre0WbCWML_PnuzoAg" className="shrink-0 ml-auto">
+              <button  className="inline-flex items-center text-white xl:text-right underline">
                 View All
               </button>
            </Link>

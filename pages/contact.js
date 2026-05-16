@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { getAllPlaylists2, getAllQnaCategory, getHeaderLectures } from '../lib/fetch';
 import Meta from '../components/meta';
 import Header2 from '../components/header1';
+import PageHero from '../components/page-hero';
 import { motion } from 'framer-motion';
 import { Mail, Phone, MapPin, Clock, Send, Facebook, Youtube, Instagram, Twitter, CheckCircle } from 'lucide-react';
 
@@ -34,6 +35,23 @@ export default function Contact({ playlists, headerLectures, qna_categories }) {
         return newErrors;
     };
 
+    // whether the form is currently valid (used to show helper title)
+    const canSubmit = Object.keys(validateForm()).length === 0;
+
+    // refs to focus invalid fields
+    const firstNameRef = useRef(null);
+    const subjectRef = useRef(null);
+    const emailRef = useRef(null);
+    const messageRef = useRef(null);
+
+    const focusFirstInvalid = (errs) => {
+        if (!errs) return;
+        if (errs.firstName && firstNameRef.current) { firstNameRef.current.focus(); return; }
+        if (errs.subject && subjectRef.current) { subjectRef.current.focus(); return; }
+        if (errs.email && emailRef.current) { emailRef.current.focus(); return; }
+        if (errs.message && messageRef.current) { messageRef.current.focus(); return; }
+    };
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData(prev => ({ ...prev, [name]: value }));
@@ -43,12 +61,32 @@ export default function Contact({ playlists, headerLectures, qna_categories }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const newErrors = validateForm();
-        if (Object.keys(newErrors).length > 0) { setErrors(newErrors); return; }
+        if (Object.keys(newErrors).length > 0) { setErrors(newErrors); focusFirstInvalid(newErrors); return; }
         setFormStatus({ submitted: true, success: false, message: 'Sending...' });
-        setTimeout(() => {
-            setFormStatus({ submitted: true, success: true, message: 'Message sent successfully!' });
-            setFormData({ firstName: '', subject: '', email: '', phone: '', message: '' });
-        }, 1500);
+        try {
+            const res = await fetch('/api/sendMail', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    name: formData.firstName,
+                    subject: formData.subject,
+                    email: formData.email,
+                    phone: formData.phone,
+                    message: formData.message
+                })
+            });
+
+            if (res.ok) {
+                setFormStatus({ submitted: true, success: true, message: 'Message sent successfully!' });
+                setFormData({ firstName: '', subject: '', email: '', phone: '', message: '' });
+            } else {
+                let errText = '';
+                try { errText = await res.text(); } catch (e) { errText = res.statusText }
+                setFormStatus({ submitted: true, success: false, message: `Send failed: ${res.status} ${errText}` });
+            }
+        } catch (err) {
+            setFormStatus({ submitted: true, success: false, message: 'Network error. Please try again later.' });
+        }
     };
 
     return (
@@ -56,17 +94,11 @@ export default function Contact({ playlists, headerLectures, qna_categories }) {
             <Meta title="Contact Sheikh Assim Al Hakeem" description="Get in touch with Sheikh Assim Al Hakeem" />
             <Header2 playlists={playlists} headerLectures={headerLectures} qna_categories={qna_categories} />
             
-            {/* Hero Section */}
-            <section className="bg-gradient-to-br from-[#1a1f2e] to-[#2a3142] py-8 sm:py-10 lg:py-14">
-                <div className="container max-w-[1260px] mx-auto px-4 text-center">
-                    <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-                        <h1 className="page-title text-white mb-2 sm:mb-4">Get In Touch</h1>
-                        <p className="text-sm sm:text-base text-gray-300 max-w-2xl mx-auto">
-                            Have questions or need guidance? We're here to help. Reach out to us anytime.
-                        </p>
-                    </motion.div>
-                </div>
-            </section>
+            <PageHero
+                title="Get In Touch"
+                subtitle="Have questions or need guidance? We're here to help. Reach out to us anytime."
+                Icon={Mail}
+            />
 
             {/* Contact Info Cards */}
             {/* <section className="py-8 sm:py-12 lg:py-16">
@@ -108,14 +140,14 @@ export default function Contact({ playlists, headerLectures, qna_categories }) {
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                     <div>
                                         <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">Full Name *</label>
-                                        <input type="text" name="firstName" value={formData.firstName} onChange={handleChange}
+                                        <input ref={firstNameRef} type="text" name="firstName" value={formData.firstName} onChange={handleChange}
                                             className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 border rounded-lg sm:rounded-xl focus:outline-none focus:ring-2 transition-all text-sm ${errors.firstName ? 'border-red-300 focus:ring-red-200' : 'border-gray-200 focus:ring-[#10b981]/20 focus:border-[#10b981]'}`}
                                             placeholder="Your name" />
                                         {errors.firstName && <p className="text-red-500 text-xs mt-1">{errors.firstName}</p>}
                                     </div>
                                     <div>
                                         <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">Subject *</label>
-                                        <input type="text" name="subject" value={formData.subject} onChange={handleChange}
+                                        <input ref={subjectRef} type="text" name="subject" value={formData.subject} onChange={handleChange}
                                             className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 border rounded-lg sm:rounded-xl focus:outline-none focus:ring-2 transition-all text-sm ${errors.subject ? 'border-red-300 focus:ring-red-200' : 'border-gray-200 focus:ring-[#10b981]/20 focus:border-[#10b981]'}`}
                                             placeholder="Message subject" />
                                         {errors.subject && <p className="text-red-500 text-xs mt-1">{errors.subject}</p>}
@@ -125,7 +157,7 @@ export default function Contact({ playlists, headerLectures, qna_categories }) {
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                     <div>
                                         <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">Email *</label>
-                                        <input type="email" name="email" value={formData.email} onChange={handleChange}
+                                        <input ref={emailRef} type="email" name="email" value={formData.email} onChange={handleChange}
                                             className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 border rounded-lg sm:rounded-xl focus:outline-none focus:ring-2 transition-all text-sm ${errors.email ? 'border-red-300 focus:ring-red-200' : 'border-gray-200 focus:ring-[#10b981]/20 focus:border-[#10b981]'}`}
                                             placeholder="your@email.com" />
                                         {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
@@ -140,13 +172,15 @@ export default function Contact({ playlists, headerLectures, qna_categories }) {
 
                                 <div>
                                     <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">Message *</label>
-                                    <textarea name="message" rows="4" value={formData.message} onChange={handleChange}
+                                    <textarea ref={messageRef} name="message" rows="4" value={formData.message} onChange={handleChange}
                                         className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 border rounded-lg sm:rounded-xl focus:outline-none focus:ring-2 transition-all resize-none text-sm ${errors.message ? 'border-red-300 focus:ring-red-200' : 'border-gray-200 focus:ring-[#10b981]/20 focus:border-[#10b981]'}`}
                                         placeholder="Your message..." />
                                     {errors.message && <p className="text-red-500 text-xs mt-1">{errors.message}</p>}
                                 </div>
 
-                                <motion.button whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.99 }} type="submit" disabled={formStatus.submitted && !formStatus.success}
+                                <motion.button whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.99 }} type="submit"
+                                    disabled={(formStatus.submitted && !formStatus.success)}
+                                    title={!canSubmit ? 'Please complete all required fields correctly' : ''}
                                     className="w-full py-3 sm:py-4 bg-gradient-to-r from-[#10b981] to-[#059669] text-white rounded-lg sm:rounded-xl text-sm sm:text-base font-medium flex items-center justify-center gap-2 disabled:opacity-50">
                                     <Send size={16} className="sm:w-[18px] sm:h-[18px]" />
                                     {formStatus.submitted && !formStatus.success ? 'Sending...' : 'Send Message'}

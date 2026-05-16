@@ -1,5 +1,5 @@
 import { Calendar, Eye, Play } from 'lucide-react';
-import { date } from '../../lib/format';
+import { date, youtubeViews } from '../../lib/format';
 
 export default function VideoCardEnhanced({ video, views, onClick }) {
   const id = video?.id;
@@ -35,7 +35,7 @@ export default function VideoCardEnhanced({ video, views, onClick }) {
           </h3>
         </div>
         <div className="flex justify-between items-center text-xs sm:text-sm text-gray-500">
-          <span>{views?.toLocaleString() || 0} views</span>
+          <span>{youtubeViews(views)} views</span>
           <span>{publishedAt}</span>
         </div>
       </div>

@@ -21,13 +21,13 @@ export default function ArticlesSection({ articles }) {
       <div className="container max-w-[1260px] mx-auto px-4 sm:px-6">
         <motion.div
           {...fadeInUp}
-          className="flex flex-wrap justify-between items-center gap-4 mb-10"
+          className="flex items-start justify-between gap-4 mb-10"
         >
-          <div className="min-w-0">
+          <div className="min-w-0 flex-1">
             <span className="text-accent font-semibold uppercase tracking-wider text-sm">Insights & Knowledge</span>
             <h2 className="section-title text-primary mt-2">Latest Articles</h2>
           </div>
-          <div className="flex-shrink-0 ml-auto">
+          <div className="shrink-0 ml-auto">
             <Link href="/articles">
               <motion.button
                 whileHover={{ x: 5 }}

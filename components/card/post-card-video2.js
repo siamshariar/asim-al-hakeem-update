@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { date } from '../../lib/format';
+import { date, youtubeViews } from '../../lib/format';
 import { useState, useEffect } from "react";
 import { generateVParam } from '../../pages/lectures/[pid]';
 
@@ -9,7 +9,7 @@ export default function PostCardVideo2({ video, views, playlistId, onClick }) {
     const image = video?.image;
     const title = video?.title;
     const publishedAt = date(video?.date);
-    const viewCount = views || '';
+    const viewCount = youtubeViews(views);
     const [pathname, setPathname] = useState("");
 
     const getVideoUrl = () => pathname || '#';

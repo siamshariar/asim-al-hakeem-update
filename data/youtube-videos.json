@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-05-13T05:05:00.841Z",
+  "updatedAt": "2026-05-16T04:18:39.172Z",
   "entries": {
     "https://www.googleapis.com/youtube/v3/playlistItems?key=CACHE&part=snippet&playlistId=PL23A15B256101551B&maxResults=12": {
       "cachedAt": "2026-05-13T03:47:46.657Z",
@@ -2118,7 +2118,7 @@
       }
     },
     "https://www.googleapis.com/youtube/v3/playlists?key=CACHE&part=snippet&channelId=UCWsdcrre0WbCWML_PnuzoAg&maxResults=50": {
-      "cachedAt": "2026-05-13T05:04:58.464Z",
+      "cachedAt": "2026-05-16T04:18:37.616Z",
       "ttlMs": 86400000,
       "status": 200,
       "body": {
@@ -4059,7 +4059,7 @@
       }
     },
     "https://www.googleapis.com/youtube/v3/playlists?key=CACHE&part=snippet&channelId=UCWsdcrre0WbCWML_PnuzoAg&maxResults=50&pageToken=CDIQAA": {
-      "cachedAt": "2026-05-13T05:04:58.850Z",
+      "cachedAt": "2026-05-16T04:18:38.034Z",
       "ttlMs": 86400000,
       "status": 200,
       "body": {
@@ -4222,46 +4222,46 @@
       }
     },
     "https://www.googleapis.com/youtube/v3/playlistItems?key=CACHE&part=snippet&playlistId=UUWsdcrre0WbCWML_PnuzoAg&maxResults=12": {
-      "cachedAt": "2026-05-13T05:05:00.475Z",
+      "cachedAt": "2026-05-16T04:18:39.007Z",
       "ttlMs": 86400000,
       "status": 200,
       "body": {
         "kind": "youtube#playlistItemListResponse",
-        "etag": "9G7fL-loYtgnm2eQBeKmpO-LekU",
-        "nextPageToken": "EAAaHlBUOkNBd2lFRVUyTkRJNVFVWXhORVZDTURrNU1qaw",
+        "etag": "SZuxv10zx25uaDlaWUNF85h8NAI",
+        "nextPageToken": "EAAaHlBUOkNBd2lFRVEzUVVVeU4wRkZNRFExUVRJeU16Zw",
         "items": [
           {
             "kind": "youtube#playlistItem",
-            "etag": "ekqwboBlMF-j2KGKFZphpX-qrLY",
-            "id": "VVVXc2RjcnJlMFdiQ1dNTF9QbnV6b0FnLk82LVAtU1JuYTh3",
+            "etag": "368-9u8xgYv5s6z8LyvF51o-ZQ4",
+            "id": "VVVXc2RjcnJlMFdiQ1dNTF9QbnV6b0FnLnZkZDhJQ1JWNEVN",
             "snippet": {
-              "publishedAt": "2026-05-13T05:00:21Z",
+              "publishedAt": "2026-05-15T19:30:08Z",
               "channelId": "UCWsdcrre0WbCWML_PnuzoAg",
-              "title": "My urine incontinence stops when prayer time is about to end, do I still wait or pray while leaking?",
+              "title": "I cheated in exams, would phone my mum promised 2 buy me if I passed be halal for me assim al hakeem",
               "description": "Instagram: https://instagram.com/assimalhakeem\n\nFollow the assimalhakeem channel on WhatsApp: https://whatsapp.com/channel/0029VaD3QCpJ3jv0I9XJwf1l\n\nWebsite: http://www.assimalhakeem.net\n\nAsk a Question: https://www.assimalhakeem.net/ask-a-question/\n\nFacebook: https://www.facebook.com/SheikhAssimAlhakeemTeam\n\nTwitter: https://twitter.com/Assimalhakeem",
               "thumbnails": {
                 "default": {
-                  "url": "https://i.ytimg.com/vi/O6-P-SRna8w/default.jpg",
+                  "url": "https://i.ytimg.com/vi/vdd8ICRV4EM/default.jpg",
                   "width": 120,
                   "height": 90
                 },
                 "medium": {
-                  "url": "https://i.ytimg.com/vi/O6-P-SRna8w/mqdefault.jpg",
+                  "url": "https://i.ytimg.com/vi/vdd8ICRV4EM/mqdefault.jpg",
                   "width": 320,
                   "height": 180
                 },
                 "high": {
-                  "url": "https://i.ytimg.com/vi/O6-P-SRna8w/hqdefault.jpg",
+                  "url": "https://i.ytimg.com/vi/vdd8ICRV4EM/hqdefault.jpg",
                   "width": 480,
                   "height": 360
                 },
                 "standard": {
-                  "url": "https://i.ytimg.com/vi/O6-P-SRna8w/sddefault.jpg",
+                  "url": "https://i.ytimg.com/vi/vdd8ICRV4EM/sddefault.jpg",
                   "width": 640,
                   "height": 480
                 },
                 "maxres": {
-                  "url": "https://i.ytimg.com/vi/O6-P-SRna8w/maxresdefault.jpg",
+                  "url": "https://i.ytimg.com/vi/vdd8ICRV4EM/maxresdefault.jpg",
                   "width": 1280,
                   "height": 720
                 }
@@ -4271,7 +4271,7 @@
               "position": 0,
               "resourceId": {
                 "kind": "youtube#video",
-                "videoId": "O6-P-SRna8w"
+                "videoId": "vdd8ICRV4EM"
               },
               "videoOwnerChannelTitle": "assimalhakeem",
               "videoOwnerChannelId": "UCWsdcrre0WbCWML_PnuzoAg"
@@ -4279,36 +4279,36 @@
           },
           {
             "kind": "youtube#playlistItem",
-            "etag": "Uor1FSJ0WkTn7XKbHyjQKU3QrZY",
-            "id": "VVVXc2RjcnJlMFdiQ1dNTF9QbnV6b0FnLjR4UDQ2Rm1oQ0dj",
+            "etag": "q7QwM0I4mcpGDNLLUWjnnd4Ns2s",
+            "id": "VVVXc2RjcnJlMFdiQ1dNTF9QbnV6b0FnLkRxMEplZWo2bTI4",
             "snippet": {
-              "publishedAt": "2026-05-12T21:00:48Z",
+              "publishedAt": "2026-05-15T18:00:10Z",
               "channelId": "UCWsdcrre0WbCWML_PnuzoAg",
-              "title": "UPWORK ||  Is buying Connects (Virtual Tokens) to bid for job ads halal? assim al hakeem",
+              "title": "Friend used to pray on time & read Quran, now became lazy! Advise him gently or force him to pray?",
               "description": "Instagram: https://instagram.com/assimalhakeem\n\nFollow the assimalhakeem channel on WhatsApp: https://whatsapp.com/channel/0029VaD3QCpJ3jv0I9XJwf1l\n\nWebsite: http://www.assimalhakeem.net\n\nAsk a Question: https://www.assimalhakeem.net/ask-a-question/\n\nFacebook: https://www.facebook.com/SheikhAssimAlhakeemTeam\n\nTwitter: https://twitter.com/Assimalhakeem",
               "thumbnails": {
                 "default": {
-                  "url": "https://i.ytimg.com/vi/4xP46FmhCGc/default.jpg",
+                  "url": "https://i.ytimg.com/vi/Dq0Jeej6m28/default.jpg",
                   "width": 120,
                   "height": 90
                 },
                 "medium": {
-                  "url": "https://i.ytimg.com/vi/4xP46FmhCGc/mqdefault.jpg",
+                  "url": "https://i.ytimg.com/vi/Dq0Jeej6m28/mqdefault.jpg",
                   "width": 320,
                   "height": 180
                 },
                 "high": {
-                  "url": "https://i.ytimg.com/vi/4xP46FmhCGc/hqdefault.jpg",
+                  "url": "https://i.ytimg.com/vi/Dq0Jeej6m28/hqdefault.jpg",
                   "width": 480,
                   "height": 360
                 },
                 "standard": {
-                  "url": "https://i.ytimg.com/vi/4xP46FmhCGc/sddefault.jpg",
+                  "url": "https://i.ytimg.com/vi/Dq0Jeej6m28/sddefault.jpg",
                   "width": 640,
                   "height": 480
                 },
                 "maxres": {
-                  "url": "https://i.ytimg.com/vi/4xP46FmhCGc/maxresdefault.jpg",
+                  "url": "https://i.ytimg.com/vi/Dq0Jeej6m28/maxresdefault.jpg",
                   "width": 1280,
                   "height": 720
                 }
@@ -4318,7 +4318,7 @@
               "position": 1,
               "resourceId": {
                 "kind": "youtube#video",
-                "videoId": "4xP46FmhCGc"
+                "videoId": "Dq0Jeej6m28"
               },
               "videoOwnerChannelTitle": "assimalhakeem",
               "videoOwnerChannelId": "UCWsdcrre0WbCWML_PnuzoAg"
@@ -4326,36 +4326,36 @@
           },
           {
             "kind": "youtube#playlistItem",
-            "etag": "Qmq3J3O4-1YKOdYmTYDrpSkRX84",
-            "id": "VVVXc2RjcnJlMFdiQ1dNTF9QbnV6b0FnLlUyeTVFWWh2bVNv",
+            "etag": "mGeXCZ36Nj_lbUUwSZPnX_ANPY4",
+            "id": "VVVXc2RjcnJlMFdiQ1dNTF9QbnV6b0FnLkVxRUJleW9SZGdj",
             "snippet": {
-              "publishedAt": "2026-05-12T19:30:10Z",
+              "publishedAt": "2026-05-15T15:00:31Z",
               "channelId": "UCWsdcrre0WbCWML_PnuzoAg",
-              "title": "Can I attend Majlis if the scholar is not fully trustworthy but is not known for shirk or kufr assim",
+              "title": "I aborted pregnancy when fetus was 22 weeks (154 days) due 2 complications What 2 do assim al Hakeem",
               "description": "Instagram: https://instagram.com/assimalhakeem\n\nFollow the assimalhakeem channel on WhatsApp: https://whatsapp.com/channel/0029VaD3QCpJ3jv0I9XJwf1l\n\nWebsite: http://www.assimalhakeem.net\n\nAsk a Question: https://www.assimalhakeem.net/ask-a-question/\n\nFacebook: https://www.facebook.com/SheikhAssimAlhakeemTeam\n\nTwitter: https://twitter.com/Assimalhakeem",
               "thumbnails": {
                 "default": {
-                  "url": "https://i.ytimg.com/vi/U2y5EYhvmSo/default.jpg",
+                  "url": "https://i.ytimg.com/vi/EqEBeyoRdgc/default.jpg",
                   "width": 120,
                   "height": 90
                 },
                 "medium": {
-                  "url": "https://i.ytimg.com/vi/U2y5EYhvmSo/mqdefault.jpg",
+                  "url": "https://i.ytimg.com/vi/EqEBeyoRdgc/mqdefault.jpg",
                   "width": 320,
                   "height": 180
                 },
                 "high": {
-                  "url": "https://i.ytimg.com/vi/U2y5EYhvmSo/hqdefault.jpg",
+                  "url": "https://i.ytimg.com/vi/EqEBeyoRdgc/hqdefault.jpg",
                   "width": 480,
                   "height": 360
                 },
                 "standard": {
-                  "url": "https://i.ytimg.com/vi/U2y5EYhvmSo/sddefault.jpg",
+                  "url": "https://i.ytimg.com/vi/EqEBeyoRdgc/sddefault.jpg",
                   "width": 640,
                   "height": 480
                 },
                 "maxres": {
-                  "url": "https://i.ytimg.com/vi/U2y5EYhvmSo/maxresdefault.jpg",
+                  "url": "https://i.ytimg.com/vi/EqEBeyoRdgc/maxresdefault.jpg",
                   "width": 1280,
                   "height": 720
                 }
@@ -4365,7 +4365,7 @@
               "position": 2,
               "resourceId": {
                 "kind": "youtube#video",
-                "videoId": "U2y5EYhvmSo"
+                "videoId": "EqEBeyoRdgc"
               },
               "videoOwnerChannelTitle": "assimalhakeem",
               "videoOwnerChannelId": "UCWsdcrre0WbCWML_PnuzoAg"
@@ -4373,36 +4373,36 @@
           },
           {
             "kind": "youtube#playlistItem",
-            "etag": "iSRtegeDW2RtqLOsQG0hC3lSgQs",
-            "id": "VVVXc2RjcnJlMFdiQ1dNTF9QbnV6b0FnLmMxYUwtUFBTelNB",
+            "etag": "-De6_mWotONY8oAW-74jfhY_bAI",
+            "id": "VVVXc2RjcnJlMFdiQ1dNTF9QbnV6b0FnLjMtVjNFZS1zVkhJ",
             "snippet": {
-              "publishedAt": "2026-05-12T18:00:26Z",
+              "publishedAt": "2026-05-15T10:00:04Z",
               "channelId": "UCWsdcrre0WbCWML_PnuzoAg",
-              "title": "Is dryness after menses a sign of purity & how to determine you are pure? #islam assim al hakeem",
+              "title": "Kafir says Allah is Sadistic as He created people 2 suffer while He could've made them 2 be in bliss",
               "description": "Instagram: https://instagram.com/assimalhakeem\n\nFollow the assimalhakeem channel on WhatsApp: https://whatsapp.com/channel/0029VaD3QCpJ3jv0I9XJwf1l\n\nWebsite: http://www.assimalhakeem.net\n\nAsk a Question: https://www.assimalhakeem.net/ask-a-question/\n\nFacebook: https://www.facebook.com/SheikhAssimAlhakeemTeam\n\nTwitter: https://twitter.com/Assimalhakeem",
               "thumbnails": {
                 "default": {
-                  "url": "https://i.ytimg.com/vi/c1aL-PPSzSA/default.jpg",
+                  "url": "https://i.ytimg.com/vi/3-V3Ee-sVHI/default.jpg",
                   "width": 120,
                   "height": 90
                 },
                 "medium": {
-                  "url": "https://i.ytimg.com/vi/c1aL-PPSzSA/mqdefault.jpg",
+                  "url": "https://i.ytimg.com/vi/3-V3Ee-sVHI/mqdefault.jpg",
                   "width": 320,
                   "height": 180
                 },
                 "high": {
-                  "url": "https://i.ytimg.com/vi/c1aL-PPSzSA/hqdefault.jpg",
+                  "url": "https://i.ytimg.com/vi/3-V3Ee-sVHI/hqdefault.jpg",
                   "width": 480,
                   "height": 360
                 },
                 "standard": {
-                  "url": "https://i.ytimg.com/vi/c1aL-PPSzSA/sddefault.jpg",
+                  "url": "https://i.ytimg.com/vi/3-V3Ee-sVHI/sddefault.jpg",
                   "width": 640,
                   "height": 480
                 },
                 "maxres": {
-                  "url": "https://i.ytimg.com/vi/c1aL-PPSzSA/maxresdefault.jpg",
+                  "url": "https://i.ytimg.com/vi/3-V3Ee-sVHI/maxresdefault.jpg",
                   "width": 1280,
                   "height": 720
                 }
@@ -4412,7 +4412,7 @@
               "position": 3,
               "resourceId": {
                 "kind": "youtube#video",
-                "videoId": "c1aL-PPSzSA"
+                "videoId": "3-V3Ee-sVHI"
               },
               "videoOwnerChannelTitle": "assimalhakeem",
               "videoOwnerChannelId": "UCWsdcrre0WbCWML_PnuzoAg"
@@ -4420,36 +4420,36 @@
           },
           {
             "kind": "youtube#playlistItem",
-            "etag": "nMlrNbRR8cFwtZdT9l0bdPM5lOU",
-            "id": "VVVXc2RjcnJlMFdiQ1dNTF9QbnV6b0FnLkZXQ2V2aWZDZXFV",
+            "etag": "nsdpbGVBKi0diUZNP0PxYv9wL60",
+            "id": "VVVXc2RjcnJlMFdiQ1dNTF9QbnV6b0FnLmlmT2k3cmtiMUtZ",
             "snippet": {
-              "publishedAt": "2026-05-12T15:00:22Z",
+              "publishedAt": "2026-05-15T05:00:40Z",
               "channelId": "UCWsdcrre0WbCWML_PnuzoAg",
-              "title": "Can I listen to or read Deobandi Urdu Quran translation? #quran #innovation #islam assim al hakeem",
+              "title": "Is enjoying movies, reels, jokes (with kufr or swearing by other than Allah) shirk or kufr? assim",
               "description": "Instagram: https://instagram.com/assimalhakeem\n\nFollow the assimalhakeem channel on WhatsApp: https://whatsapp.com/channel/0029VaD3QCpJ3jv0I9XJwf1l\n\nWebsite: http://www.assimalhakeem.net\n\nAsk a Question: https://www.assimalhakeem.net/ask-a-question/\n\nFacebook: https://www.facebook.com/SheikhAssimAlhakeemTeam\n\nTwitter: https://twitter.com/Assimalhakeem",
               "thumbnails": {
                 "default": {
-                  "url": "https://i.ytimg.com/vi/FWCevifCeqU/default.jpg",
+                  "url": "https://i.ytimg.com/vi/ifOi7rkb1KY/default.jpg",
                   "width": 120,
                   "height": 90
                 },
                 "medium": {
-                  "url": "https://i.ytimg.com/vi/FWCevifCeqU/mqdefault.jpg",
+                  "url": "https://i.ytimg.com/vi/ifOi7rkb1KY/mqdefault.jpg",
                   "width": 320,
                   "height": 180
                 },
                 "high": {
-                  "url": "https://i.ytimg.com/vi/FWCevifCeqU/hqdefault.jpg",
+                  "url": "https://i.ytimg.com/vi/ifOi7rkb1KY/hqdefault.jpg",
                   "width": 480,
                   "height": 360
                 },
                 "standard": {
-                  "url": "https://i.ytimg.com/vi/FWCevifCeqU/sddefault.jpg",
+                  "url": "https://i.ytimg.com/vi/ifOi7rkb1KY/sddefault.jpg",
                   "width": 640,
                   "height": 480
                 },
                 "maxres": {
-                  "url": "https://i.ytimg.com/vi/FWCevifCeqU/maxresdefault.jpg",
+                  "url": "https://i.ytimg.com/vi/ifOi7rkb1KY/maxresdefault.jpg",
                   "width": 1280,
                   "height": 720
                 }
@@ -4459,7 +4459,7 @@
               "position": 4,
               "resourceId": {
                 "kind": "youtube#video",
-                "videoId": "FWCevifCeqU"
+                "videoId": "ifOi7rkb1KY"
               },
               "videoOwnerChannelTitle": "assimalhakeem",
               "videoOwnerChannelId": "UCWsdcrre0WbCWML_PnuzoAg"
@@ -4467,36 +4467,36 @@
           },
           {
             "kind": "youtube#playlistItem",
-            "etag": "2c2My3zKqphUFBtFl6VFAMJBTeQ",
-            "id": "VVVXc2RjcnJlMFdiQ1dNTF9QbnV6b0FnLkoyRlZnc3lLT01j",
+            "etag": "l3Aum-4YJNMEjxmCad06UIPRq_o",
+            "id": "VVVXc2RjcnJlMFdiQ1dNTF9QbnV6b0FnLk5zZU5XVHJJcFRR",
             "snippet": {
-              "publishedAt": "2026-05-12T10:00:27Z",
+              "publishedAt": "2026-05-14T19:30:07Z",
               "channelId": "UCWsdcrre0WbCWML_PnuzoAg",
-              "title": "Can we say if you score good marks I'll treat U otherwise I won't / is this gambling assim al hakeem",
+              "title": "Hadith that says Allah will appear in a different form on day of judgement, does Allah have 2 forms?",
               "description": "Instagram: https://instagram.com/assimalhakeem\n\nFollow the assimalhakeem channel on WhatsApp: https://whatsapp.com/channel/0029VaD3QCpJ3jv0I9XJwf1l\n\nWebsite: http://www.assimalhakeem.net\n\nAsk a Question: https://www.assimalhakeem.net/ask-a-question/\n\nFacebook: https://www.facebook.com/SheikhAssimAlhakeemTeam\n\nTwitter: https://twitter.com/Assimalhakeem",
               "thumbnails": {
                 "default": {
-                  "url": "https://i.ytimg.com/vi/J2FVgsyKOMc/default.jpg",
+                  "url": "https://i.ytimg.com/vi/NseNWTrIpTQ/default.jpg",
                   "width": 120,
                   "height": 90
                 },
                 "medium": {
-                  "url": "https://i.ytimg.com/vi/J2FVgsyKOMc/mqdefault.jpg",
+                  "url": "https://i.ytimg.com/vi/NseNWTrIpTQ/mqdefault.jpg",
                   "width": 320,
                   "height": 180
                 },
                 "high": {
-                  "url": "https://i.ytimg.com/vi/J2FVgsyKOMc/hqdefault.jpg",
+                  "url": "https://i.ytimg.com/vi/NseNWTrIpTQ/hqdefault.jpg",
                   "width": 480,
                   "height": 360
                 },
                 "standard": {
-                  "url": "https://i.ytimg.com/vi/J2FVgsyKOMc/sddefault.jpg",
+                  "url": "https://i.ytimg.com/vi/NseNWTrIpTQ/sddefault.jpg",
                   "width": 640,
                   "height": 480
                 },
                 "maxres": {
-                  "url": "https://i.ytimg.com/vi/J2FVgsyKOMc/maxresdefault.jpg",
+                  "url": "https://i.ytimg.com/vi/NseNWTrIpTQ/maxresdefault.jpg",
                   "width": 1280,
                   "height": 720
                 }
@@ -4506,7 +4506,7 @@
               "position": 5,
               "resourceId": {
                 "kind": "youtube#video",
-                "videoId": "J2FVgsyKOMc"
+                "videoId": "NseNWTrIpTQ"
               },
               "videoOwnerChannelTitle": "assimalhakeem",
               "videoOwnerChannelId": "UCWsdcrre0WbCWML_PnuzoAg"
@@ -4514,36 +4514,36 @@
           },
           {
             "kind": "youtube#playlistItem",
-            "etag": "GrJGK_sZU_bQ5RZebl5NkH49wsA",
-            "id": "VVVXc2RjcnJlMFdiQ1dNTF9QbnV6b0FnLjRnNGhLeWE1azI4",
+            "etag": "FygcE6AbPGUEPqadnQPU0_GARf4",
+            "id": "VVVXc2RjcnJlMFdiQ1dNTF9QbnV6b0FnLjFDMEl3UzF5N1pJ",
             "snippet": {
-              "publishedAt": "2026-05-12T05:00:03Z",
+              "publishedAt": "2026-05-14T18:00:01Z",
               "channelId": "UCWsdcrre0WbCWML_PnuzoAg",
-              "title": "Is it permissible to attend yearly gathering for making dua for deceased person (Death Anniversary)",
+              "title": "Will the kaba do tawaf around the prophet ﷺ asim al hakeem",
               "description": "Instagram: https://instagram.com/assimalhakeem\n\nFollow the assimalhakeem channel on WhatsApp: https://whatsapp.com/channel/0029VaD3QCpJ3jv0I9XJwf1l\n\nWebsite: http://www.assimalhakeem.net\n\nAsk a Question: https://www.assimalhakeem.net/ask-a-question/\n\nFacebook: https://www.facebook.com/SheikhAssimAlhakeemTeam\n\nTwitter: https://twitter.com/Assimalhakeem",
               "thumbnails": {
                 "default": {
-                  "url": "https://i.ytimg.com/vi/4g4hKya5k28/default.jpg",
+                  "url": "https://i.ytimg.com/vi/1C0IwS1y7ZI/default.jpg",
                   "width": 120,
                   "height": 90
                 },
                 "medium": {
-                  "url": "https://i.ytimg.com/vi/4g4hKya5k28/mqdefault.jpg",
+                  "url": "https://i.ytimg.com/vi/1C0IwS1y7ZI/mqdefault.jpg",
                   "width": 320,
                   "height": 180
                 },
                 "high": {
-                  "url": "https://i.ytimg.com/vi/4g4hKya5k28/hqdefault.jpg",
+                  "url": "https://i.ytimg.com/vi/1C0IwS1y7ZI/hqdefault.jpg",
                   "width": 480,
                   "height": 360
                 },
                 "standard": {
-                  "url": "https://i.ytimg.com/vi/4g4hKya5k28/sddefault.jpg",
+                  "url": "https://i.ytimg.com/vi/1C0IwS1y7ZI/sddefault.jpg",
                   "width": 640,
                   "height": 480
                 },
                 "maxres": {
-                  "url": "https://i.ytimg.com/vi/4g4hKya5k28/maxresdefault.jpg",
+                  "url": "https://i.ytimg.com/vi/1C0IwS1y7ZI/maxresdefault.jpg",
                   "width": 1280,
                   "height": 720
                 }
@@ -4553,7 +4553,7 @@
               "position": 6,
               "resourceId": {
                 "kind": "youtube#video",
-                "videoId": "4g4hKya5k28"
+                "videoId": "1C0IwS1y7ZI"
               },
               "videoOwnerChannelTitle": "assimalhakeem",
               "videoOwnerChannelId": "UCWsdcrre0WbCWML_PnuzoAg"
@@ -4561,36 +4561,36 @@
           },
           {
             "kind": "youtube#playlistItem",
-            "etag": "7QBokuzGQoOwEXgD-ntxZszq9_Q",
-            "id": "VVVXc2RjcnJlMFdiQ1dNTF9QbnV6b0FnLjB3R2RDSTdxdVpr",
+            "etag": "L6LnOk9Ih3ojvGLRWK57NrX1jL4",
+            "id": "VVVXc2RjcnJlMFdiQ1dNTF9QbnV6b0FnLldSXzRTN1hfRVpF",
             "snippet": {
-              "publishedAt": "2026-05-11T18:00:02Z",
+              "publishedAt": "2026-05-14T15:01:01Z",
               "channelId": "UCWsdcrre0WbCWML_PnuzoAg",
-              "title": "Prohibited to complete the Quran in less than 3 days? #quran #islam #islamic #allah assim al hakeem",
+              "title": "Can men wear Watches⌚️Devices that contain tiny hidden amounts of gold inside them? assim al hakeem",
               "description": "Instagram: https://instagram.com/assimalhakeem\n\nFollow the assimalhakeem channel on WhatsApp: https://whatsapp.com/channel/0029VaD3QCpJ3jv0I9XJwf1l\n\nWebsite: http://www.assimalhakeem.net\n\nAsk a Question: https://www.assimalhakeem.net/ask-a-question/\n\nFacebook: https://www.facebook.com/SheikhAssimAlhakeemTeam\n\nTwitter: https://twitter.com/Assimalhakeem",
               "thumbnails": {
                 "default": {
-                  "url": "https://i.ytimg.com/vi/0wGdCI7quZk/default.jpg",
+                  "url": "https://i.ytimg.com/vi/WR_4S7X_EZE/default.jpg",
                   "width": 120,
                   "height": 90
                 },
                 "medium": {
-                  "url": "https://i.ytimg.com/vi/0wGdCI7quZk/mqdefault.jpg",
+                  "url": "https://i.ytimg.com/vi/WR_4S7X_EZE/mqdefault.jpg",
                   "width": 320,
                   "height": 180
                 },
                 "high": {
-                  "url": "https://i.ytimg.com/vi/0wGdCI7quZk/hqdefault.jpg",
+                  "url": "https://i.ytimg.com/vi/WR_4S7X_EZE/hqdefault.jpg",
                   "width": 480,
                   "height": 360
                 },
                 "standard": {
-                  "url": "https://i.ytimg.com/vi/0wGdCI7quZk/sddefault.jpg",
+                  "url": "https://i.ytimg.com/vi/WR_4S7X_EZE/sddefault.jpg",
                   "width": 640,
                   "height": 480
                 },
                 "maxres": {
-                  "url": "https://i.ytimg.com/vi/0wGdCI7quZk/maxresdefault.jpg",
+                  "url": "https://i.ytimg.com/vi/WR_4S7X_EZE/maxresdefault.jpg",
                   "width": 1280,
                   "height": 720
                 }
@@ -4600,7 +4600,7 @@
               "position": 7,
               "resourceId": {
                 "kind": "youtube#video",
-                "videoId": "0wGdCI7quZk"
+                "videoId": "WR_4S7X_EZE"
               },
               "videoOwnerChannelTitle": "assimalhakeem",
               "videoOwnerChannelId": "UCWsdcrre0WbCWML_PnuzoAg"
@@ -4608,36 +4608,36 @@
           },
           {
             "kind": "youtube#playlistItem",
-            "etag": "nAL2ivVUYDyLy8Ro9qh3Tgg1TkI",
-            "id": "VVVXc2RjcnJlMFdiQ1dNTF9QbnV6b0FnLk9OWDJRaE9fUVA0",
+            "etag": "ApADT0a877XiCY6k2nRAJl6RSBM",
+            "id": "VVVXc2RjcnJlMFdiQ1dNTF9QbnV6b0FnLlk3V3NqSUt4bTRR",
             "snippet": {
-              "publishedAt": "2026-05-11T10:00:40Z",
+              "publishedAt": "2026-05-14T10:00:59Z",
               "channelId": "UCWsdcrre0WbCWML_PnuzoAg",
-              "title": "Must all our hand touch the ground in sujood or some of it is sufficient? #islam assim al hakeem",
+              "title": "Is it permissible to play robot fighting games🎮#islam #islamic #allah #quran #sunnah assim al hakeem",
               "description": "Instagram: https://instagram.com/assimalhakeem\n\nFollow the assimalhakeem channel on WhatsApp: https://whatsapp.com/channel/0029VaD3QCpJ3jv0I9XJwf1l\n\nWebsite: http://www.assimalhakeem.net\n\nAsk a Question: https://www.assimalhakeem.net/ask-a-question/\n\nFacebook: https://www.facebook.com/SheikhAssimAlhakeemTeam\n\nTwitter: https://twitter.com/Assimalhakeem",
               "thumbnails": {
                 "default": {
-                  "url": "https://i.ytimg.com/vi/ONX2QhO_QP4/default.jpg",
+                  "url": "https://i.ytimg.com/vi/Y7WsjIKxm4Q/default.jpg",
                   "width": 120,
                   "height": 90
                 },
                 "medium": {
-                  "url": "https://i.ytimg.com/vi/ONX2QhO_QP4/mqdefault.jpg",
+                  "url": "https://i.ytimg.com/vi/Y7WsjIKxm4Q/mqdefault.jpg",
                   "width": 320,
                   "height": 180
                 },
                 "high": {
-                  "url": "https://i.ytimg.com/vi/ONX2QhO_QP4/hqdefault.jpg",
+                  "url": "https://i.ytimg.com/vi/Y7WsjIKxm4Q/hqdefault.jpg",
                   "width": 480,
                   "height": 360
                 },
                 "standard": {
-                  "url": "https://i.ytimg.com/vi/ONX2QhO_QP4/sddefault.jpg",
+                  "url": "https://i.ytimg.com/vi/Y7WsjIKxm4Q/sddefault.jpg",
                   "width": 640,
                   "height": 480
                 },
                 "maxres": {
-                  "url": "https://i.ytimg.com/vi/ONX2QhO_QP4/maxresdefault.jpg",
+                  "url": "https://i.ytimg.com/vi/Y7WsjIKxm4Q/maxresdefault.jpg",
                   "width": 1280,
                   "height": 720
                 }
@@ -4647,7 +4647,7 @@
               "position": 8,
               "resourceId": {
                 "kind": "youtube#video",
-                "videoId": "ONX2QhO_QP4"
+                "videoId": "Y7WsjIKxm4Q"
               },
               "videoOwnerChannelTitle": "assimalhakeem",
               "videoOwnerChannelId": "UCWsdcrre0WbCWML_PnuzoAg"
@@ -4655,36 +4655,36 @@
           },
           {
             "kind": "youtube#playlistItem",
-            "etag": "o5RSaY_lEYkg7pkctff1p8pDV9Q",
-            "id": "VVVXc2RjcnJlMFdiQ1dNTF9QbnV6b0FnLk9KUlBHdV9GME5V",
+            "etag": "zF9YKlLoF_HldrbYSFhAJc7uOdg",
+            "id": "VVVXc2RjcnJlMFdiQ1dNTF9QbnV6b0FnLkJxTWNRbWZNVE4w",
             "snippet": {
-              "publishedAt": "2026-05-11T05:00:22Z",
+              "publishedAt": "2026-05-14T05:00:07Z",
               "channelId": "UCWsdcrre0WbCWML_PnuzoAg",
-              "title": "If I only read morning & evening adhkar & not dhikr after salah, is it enough for protection? assim",
+              "title": "Is it permissible to wear Kappa logo clothes knowing it originated from male & female image? assim",
               "description": "Instagram: https://instagram.com/assimalhakeem\n\nFollow the assimalhakeem channel on WhatsApp: https://whatsapp.com/channel/0029VaD3QCpJ3jv0I9XJwf1l\n\nWebsite: http://www.assimalhakeem.net\n\nAsk a Question: https://www.assimalhakeem.net/ask-a-question/\n\nFacebook: https://www.facebook.com/SheikhAssimAlhakeemTeam\n\nTwitter: https://twitter.com/Assimalhakeem",
               "thumbnails": {
                 "default": {
-                  "url": "https://i.ytimg.com/vi/OJRPGu_F0NU/default.jpg",
+                  "url": "https://i.ytimg.com/vi/BqMcQmfMTN0/default.jpg",
                   "width": 120,
                   "height": 90
                 },
                 "medium": {
-                  "url": "https://i.ytimg.com/vi/OJRPGu_F0NU/mqdefault.jpg",
+                  "url": "https://i.ytimg.com/vi/BqMcQmfMTN0/mqdefault.jpg",
                   "width": 320,
                   "height": 180
                 },
                 "high": {
-                  "url": "https://i.ytimg.com/vi/OJRPGu_F0NU/hqdefault.jpg",
+                  "url": "https://i.ytimg.com/vi/BqMcQmfMTN0/hqdefault.jpg",
                   "width": 480,
                   "height": 360
                 },
                 "standard": {
-                  "url": "https://i.ytimg.com/vi/OJRPGu_F0NU/sddefault.jpg",
+                  "url": "https://i.ytimg.com/vi/BqMcQmfMTN0/sddefault.jpg",
                   "width": 640,
                   "height": 480
                 },
                 "maxres": {
-                  "url": "https://i.ytimg.com/vi/OJRPGu_F0NU/maxresdefault.jpg",
+                  "url": "https://i.ytimg.com/vi/BqMcQmfMTN0/maxresdefault.jpg",
                   "width": 1280,
                   "height": 720
                 }
@@ -4694,7 +4694,7 @@
               "position": 9,
               "resourceId": {
                 "kind": "youtube#video",
-                "videoId": "OJRPGu_F0NU"
+                "videoId": "BqMcQmfMTN0"
               },
               "videoOwnerChannelTitle": "assimalhakeem",
               "videoOwnerChannelId": "UCWsdcrre0WbCWML_PnuzoAg"
@@ -4702,36 +4702,36 @@
           },
           {
             "kind": "youtube#playlistItem",
-            "etag": "HL01BK6Ny22KpEUYTJBgn6-8ni0",
-            "id": "VVVXc2RjcnJlMFdiQ1dNTF9QbnV6b0FnLkEyakM5NTVJWUVJ",
+            "etag": "cRyOjIGs5WTE_R8ps-vcVNRnF0A",
+            "id": "VVVXc2RjcnJlMFdiQ1dNTF9QbnV6b0FnLjhiSHhEcUh5Z24w",
             "snippet": {
-              "publishedAt": "2026-05-10T19:30:01Z",
+              "publishedAt": "2026-05-13T19:30:03Z",
               "channelId": "UCWsdcrre0WbCWML_PnuzoAg",
-              "title": "Must I let manager know I cant stack haram items (Alcohol Pork Christmas) on shelves assim al hakeem",
+              "title": "What to do when I want to know if something is haram / halal but can't wait until Ask Zad to ask you",
               "description": "Instagram: https://instagram.com/assimalhakeem\n\nFollow the assimalhakeem channel on WhatsApp: https://whatsapp.com/channel/0029VaD3QCpJ3jv0I9XJwf1l\n\nWebsite: http://www.assimalhakeem.net\n\nAsk a Question: https://www.assimalhakeem.net/ask-a-question/\n\nFacebook: https://www.facebook.com/SheikhAssimAlhakeemTeam\n\nTwitter: https://twitter.com/Assimalhakeem",
               "thumbnails": {
                 "default": {
-                  "url": "https://i.ytimg.com/vi/A2jC955IYEI/default.jpg",
+                  "url": "https://i.ytimg.com/vi/8bHxDqHygn0/default.jpg",
                   "width": 120,
                   "height": 90
                 },
                 "medium": {
-                  "url": "https://i.ytimg.com/vi/A2jC955IYEI/mqdefault.jpg",
+                  "url": "https://i.ytimg.com/vi/8bHxDqHygn0/mqdefault.jpg",
                   "width": 320,
                   "height": 180
                 },
                 "high": {
-                  "url": "https://i.ytimg.com/vi/A2jC955IYEI/hqdefault.jpg",
+                  "url": "https://i.ytimg.com/vi/8bHxDqHygn0/hqdefault.jpg",
                   "width": 480,
                   "height": 360
                 },
                 "standard": {
-                  "url": "https://i.ytimg.com/vi/A2jC955IYEI/sddefault.jpg",
+                  "url": "https://i.ytimg.com/vi/8bHxDqHygn0/sddefault.jpg",
                   "width": 640,
                   "height": 480
                 },
                 "maxres": {
-                  "url": "https://i.ytimg.com/vi/A2jC955IYEI/maxresdefault.jpg",
+                  "url": "https://i.ytimg.com/vi/8bHxDqHygn0/maxresdefault.jpg",
                   "width": 1280,
                   "height": 720
                 }
@@ -4741,7 +4741,7 @@
               "position": 10,
               "resourceId": {
                 "kind": "youtube#video",
-                "videoId": "A2jC955IYEI"
+                "videoId": "8bHxDqHygn0"
               },
               "videoOwnerChannelTitle": "assimalhakeem",
               "videoOwnerChannelId": "UCWsdcrre0WbCWML_PnuzoAg"
@@ -4749,36 +4749,36 @@
           },
           {
             "kind": "youtube#playlistItem",
-            "etag": "Xuy7ue7_bxvIR_CEEbogy6gPzbk",
-            "id": "VVVXc2RjcnJlMFdiQ1dNTF9QbnV6b0FnLmoyNUdPUm5nNFdn",
+            "etag": "MrT_kTJmvpFcQC-ABFT-Lk8NArI",
+            "id": "VVVXc2RjcnJlMFdiQ1dNTF9QbnV6b0FnLjhuQXBGaTlRY0JN",
             "snippet": {
-              "publishedAt": "2026-05-10T18:00:41Z",
+              "publishedAt": "2026-05-13T18:00:16Z",
               "channelId": "UCWsdcrre0WbCWML_PnuzoAg",
-              "title": "Goodbye Maldives 🇲🇻  ||  assim al hakeem",
+              "title": "He always feels like najasah has splashed on his clothes while walking on the road! assim al hakeem",
               "description": "Instagram: https://instagram.com/assimalhakeem\n\nFollow the assimalhakeem channel on WhatsApp: https://whatsapp.com/channel/0029VaD3QCpJ3jv0I9XJwf1l\n\nWebsite: http://www.assimalhakeem.net\n\nAsk a Question: https://www.assimalhakeem.net/ask-a-question/\n\nFacebook: https://www.facebook.com/SheikhAssimAlhakeemTeam\n\nTwitter: https://twitter.com/Assimalhakeem",
               "thumbnails": {
                 "default": {
-                  "url": "https://i.ytimg.com/vi/j25GORng4Wg/default.jpg",
+                  "url": "https://i.ytimg.com/vi/8nApFi9QcBM/default.jpg",
                   "width": 120,
                   "height": 90
                 },
                 "medium": {
-                  "url": "https://i.ytimg.com/vi/j25GORng4Wg/mqdefault.jpg",
+                  "url": "https://i.ytimg.com/vi/8nApFi9QcBM/mqdefault.jpg",
                   "width": 320,
                   "height": 180
                 },
                 "high": {
-                  "url": "https://i.ytimg.com/vi/j25GORng4Wg/hqdefault.jpg",
+                  "url": "https://i.ytimg.com/vi/8nApFi9QcBM/hqdefault.jpg",
                   "width": 480,
                   "height": 360
                 },
                 "standard": {
-                  "url": "https://i.ytimg.com/vi/j25GORng4Wg/sddefault.jpg",
+                  "url": "https://i.ytimg.com/vi/8nApFi9QcBM/sddefault.jpg",
                   "width": 640,
                   "height": 480
                 },
                 "maxres": {
-                  "url": "https://i.ytimg.com/vi/j25GORng4Wg/maxresdefault.jpg",
+                  "url": "https://i.ytimg.com/vi/8nApFi9QcBM/maxresdefault.jpg",
                   "width": 1280,
                   "height": 720
                 }
@@ -4788,7 +4788,7 @@
               "position": 11,
               "resourceId": {
                 "kind": "youtube#video",
-                "videoId": "j25GORng4Wg"
+                "videoId": "8nApFi9QcBM"
               },
               "videoOwnerChannelTitle": "assimalhakeem",
               "videoOwnerChannelId": "UCWsdcrre0WbCWML_PnuzoAg"
@@ -4796,7 +4796,7 @@
           }
         ],
         "pageInfo": {
-          "totalResults": 13535,
+          "totalResults": 13549,
           "resultsPerPage": 12
         }
       }
@@ -4939,6 +4939,153 @@
               "likeCount": "1551",
               "favoriteCount": "0",
               "commentCount": "85"
+            }
+          }
+        ],
+        "pageInfo": {
+          "totalResults": 12,
+          "resultsPerPage": 12
+        }
+      }
+    },
+    "https://www.googleapis.com/youtube/v3/videos?key=CACHE&part=statistics&id=,vdd8ICRV4EM,Dq0Jeej6m28,EqEBeyoRdgc,3-V3Ee-sVHI,ifOi7rkb1KY,NseNWTrIpTQ,1C0IwS1y7ZI,WR_4S7X_EZE,Y7WsjIKxm4Q,BqMcQmfMTN0,8bHxDqHygn0,8nApFi9QcBM&maxResults=12": {
+      "cachedAt": "2026-05-16T04:18:39.172Z",
+      "ttlMs": 86400000,
+      "status": 200,
+      "body": {
+        "kind": "youtube#videoListResponse",
+        "etag": "7LXOthXotX3hyX5rtGclwhjp5TY",
+        "items": [
+          {
+            "kind": "youtube#video",
+            "etag": "c8qEAYWrvChxFzb6o8lxYyE-J4g",
+            "id": "vdd8ICRV4EM",
+            "statistics": {
+              "viewCount": "787",
+              "likeCount": "38",
+              "favoriteCount": "0",
+              "commentCount": "3"
+            }
+          },
+          {
+            "kind": "youtube#video",
+            "etag": "8Rfi1DjMrmb-LfVXUfD58R7-2mY",
+            "id": "Dq0Jeej6m28",
+            "statistics": {
+              "viewCount": "5373",
+              "likeCount": "438",
+              "favoriteCount": "0",
+              "commentCount": "2"
+            }
+          },
+          {
+            "kind": "youtube#video",
+            "etag": "2C_98LV18LwbPdd8weQISEkW8hI",
+            "id": "EqEBeyoRdgc",
+            "statistics": {
+              "viewCount": "2847",
+              "likeCount": "131",
+              "favoriteCount": "0",
+              "commentCount": "55"
+            }
+          },
+          {
+            "kind": "youtube#video",
+            "etag": "drbfrY-4bGmetfNX98TrlwHC7ww",
+            "id": "3-V3Ee-sVHI",
+            "statistics": {
+              "viewCount": "1508",
+              "likeCount": "132",
+              "favoriteCount": "0",
+              "commentCount": "42"
+            }
+          },
+          {
+            "kind": "youtube#video",
+            "etag": "baE7M-fCp7c9T5funTqnja4dnwA",
+            "id": "ifOi7rkb1KY",
+            "statistics": {
+              "viewCount": "1671",
+              "likeCount": "91",
+              "favoriteCount": "0",
+              "commentCount": "6"
+            }
+          },
+          {
+            "kind": "youtube#video",
+            "etag": "KuamcDaOU7DIylILwrTMKaneBh8",
+            "id": "NseNWTrIpTQ",
+            "statistics": {
+              "viewCount": "2328",
+              "likeCount": "107",
+              "favoriteCount": "0",
+              "commentCount": "14"
+            }
+          },
+          {
+            "kind": "youtube#video",
+            "etag": "YEHPC_tWnfgZwu4ZCAQSyGuoHCw",
+            "id": "1C0IwS1y7ZI",
+            "statistics": {
+              "viewCount": "12401",
+              "likeCount": "660",
+              "favoriteCount": "0",
+              "commentCount": "26"
+            }
+          },
+          {
+            "kind": "youtube#video",
+            "etag": "UdMqQEsscJyBIQqKxGyfTbjS7z8",
+            "id": "WR_4S7X_EZE",
+            "statistics": {
+              "viewCount": "4020",
+              "likeCount": "172",
+              "favoriteCount": "0",
+              "commentCount": "21"
+            }
+          },
+          {
+            "kind": "youtube#video",
+            "etag": "Wf42cYKS_TXeh39obHPWWiccjZ4",
+            "id": "Y7WsjIKxm4Q",
+            "statistics": {
+              "viewCount": "1624",
+              "likeCount": "91",
+              "favoriteCount": "0",
+              "commentCount": "6"
+            }
+          },
+          {
+            "kind": "youtube#video",
+            "etag": "scmquQwCYFzAU-FUCCIkEcSFKqY",
+            "id": "BqMcQmfMTN0",
+            "statistics": {
+              "viewCount": "1593",
+              "likeCount": "97",
+              "favoriteCount": "0",
+              "commentCount": "8"
+            }
+          },
+          {
+            "kind": "youtube#video",
+            "etag": "DjHWBAphlGtQZ7XI0gvdZRItor0",
+            "id": "8bHxDqHygn0",
+            "statistics": {
+              "viewCount": "2249",
+              "likeCount": "105",
+              "favoriteCount": "0",
+              "commentCount": "3"
+            }
+          },
+          {
+            "kind": "youtube#video",
+            "etag": "UAaOI3gBVpAf2dtW7hEvzAwW1oc",
+            "id": "8nApFi9QcBM",
+            "statistics": {
+              "viewCount": "8279",
+              "likeCount": "608",
+              "favoriteCount": "0",
+              "commentCount": "11"
             }
           }
         ],

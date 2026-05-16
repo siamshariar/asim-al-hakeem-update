@@ -23,20 +23,20 @@ export default function RecentQnaEnhanced({ qna }) {
   return (
     <section className="py-12 sm:py-16 lg:py-20 bg-gradient-to-br from-[#f8fafc] via-[#f0fef9] to-[#ecfdf5] shadow-sm">
       <div className="container max-w-[1260px] mx-auto px-4 sm:px-6">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="flex flex-wrap justify-between items-center gap-3 mb-6 sm:mb-8"
-        >
-          <div className="min-w-0">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="flex items-start justify-between gap-3 mb-6 sm:mb-8"
+          >
+            <div className="min-w-0 flex-1">
             <span className="text-[#10b981] font-semibold uppercase tracking-wider text-xs sm:text-sm">Community Q&A</span>
             <h2 className="section-title text-[#1a1f2e] mt-1 sm:mt-2">Recent Questions</h2>
           </div>
-          <Link href="/qna" className="ml-auto">
+          <Link href="/qna" className="shrink-0 ml-auto">
             <motion.button
               whileHover={{ x: 5 }}
-              className="flex items-center gap-1.5 sm:gap-2 text-[#10b981] font-medium hover:text-[#059669] transition-colors text-sm"
+              className="inline-flex items-center gap-1.5 sm:gap-2 text-[#10b981] font-medium hover:text-[#059669] transition-colors text-sm"
             >
               <span>View All Q&A</span>
               <ArrowRight size={16} className="sm:w-[18px] sm:h-[18px]" />

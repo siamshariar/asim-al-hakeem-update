@@ -83,7 +83,7 @@ export default function Home({
         <TestimonialsSection />
 
         {/* Newsletter - Accent Gradient Background */}
-        <NewsletterSection />
+       
       </main>
     </>
   );

@@ -9,6 +9,7 @@ import {
 } from "../../lib/fetch";
 import Meta from "../../components/meta";
 import Header2 from "../../components/header1";
+import PageHero from "../../components/page-hero";
 import { motion } from "framer-motion";
 import { BookOpen, X, User, ArrowRight } from "lucide-react";
 import { useState, useMemo } from "react";
@@ -133,32 +134,14 @@ export default function BookList({
                 qna_categories={qnaCategories}
             />
 
-            {/* Hero Section */}
-            <section className="relative bg-gradient-to-br from-[#1a1f2e] via-[#1a1f2e] to-[#2a3142] py-16 lg:py-20 overflow-hidden">
-                <div className="absolute inset-0 opacity-10">
-                    <div className="absolute top-0 left-0 w-96 h-96 bg-[#10b981] rounded-full blur-3xl"></div>
-                    <div className="absolute bottom-0 right-0 w-96 h-96 bg-[#059669] rounded-full blur-3xl"></div>
-                </div>
-                <div className="container max-w-[1260px] mx-auto px-4 relative z-10">
-                    <motion.div 
-                        initial={{ opacity: 0, y: -20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6 }}
-                        className="text-center text-white"
-                    >
-                        <div className="flex items-center justify-center gap-3 mb-4">
-                            <BookOpen size={40} className="text-[#10b981]" />
-                        </div>
-                        <h1 className="page-title text-white mb-4">Islamic Books</h1>
-                        <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-                            Authentic Islamic literature to deepen your understanding of the Deen
-                        </p>
-                    </motion.div>
-                </div>
-            </section>
+            <PageHero
+                title="Islamic Books"
+                subtitle="Authentic Islamic literature to deepen your understanding of the Deen"
+                Icon={BookOpen}
+            />
 
             {/* Search Section */}
-            <section className="py-6 bg-white border-b border-gray-100">
+            {/* <section className="py-6 bg-white border-b border-gray-100">
                 <div className="container max-w-[1260px] mx-auto px-4">
                     <div className="flex flex-col lg:flex-row gap-4 items-center justify-between">
                         <div className="relative w-full lg:w-96">
@@ -180,7 +163,7 @@ export default function BookList({
                         </div>
                     </div>
                 </div>
-            </section>
+            </section> */}
 
             {/* Books Grid */}
             <section className="py-8 lg:py-16 bg-gray-50">

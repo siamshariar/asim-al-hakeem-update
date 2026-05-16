@@ -204,7 +204,7 @@ export default function Footer() {
                             </h3>
                             
                             {/* Newsletter Form */}
-                            <form onSubmit={handleSubscribe} className="mb-5 sm:mb-6 max-w-xs mx-auto sm:mx-0">
+                            {/* <form onSubmit={handleSubscribe} className="mb-5 sm:mb-6 max-w-xs mx-auto sm:mx-0">
                                 <div className="relative">
                                     <input
                                         type="email"
@@ -230,7 +230,7 @@ export default function Footer() {
                                         Subscribed successfully!
                                     </motion.p>
                                 )}
-                            </form>
+                            </form> */}
 
                             {/* Contact Info */}
                             <ul className="space-y-2 sm:space-y-2.5 max-w-xs mx-auto sm:mx-0">

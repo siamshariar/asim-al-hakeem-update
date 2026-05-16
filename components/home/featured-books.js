@@ -85,16 +85,16 @@ export default function FeaturedBooks({ books }) {
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    className="flex flex-wrap justify-between items-center gap-4 mb-10"
+                    className="flex items-start justify-between gap-4 mb-10"
                 >
-                    <div className="min-w-0">
+                    <div className="min-w-0 flex-1">
                         <span className="text-[#10b981] font-semibold uppercase tracking-wider text-sm">Knowledge Library</span>
                         <h2 className="section-title text-[#1a1f2e] mt-2">Featured Islamic Books</h2>
                         <p className="text-gray-600 max-w-2xl mt-3">
                             Explore authentic Islamic literature to deepen your understanding of the Deen
                         </p>
                     </div>
-                    <div className="flex-shrink-0 ml-auto">
+                    <div className="shrink-0 ml-auto">
                         <Link href="/books">
                         <motion.button
                             whileHover={{ x: 5 }}

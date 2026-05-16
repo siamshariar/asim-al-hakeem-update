@@ -6,6 +6,7 @@ import Image from "next/image";
 import { getAllPlaylists2, getHeaderLectures, getAllQnaCategory } from "../../lib/fetch";
 import Meta from "../../components/meta";
 import Header2 from "../../components/header1";
+import PageHero from "../../components/page-hero";
 import { server } from "../../lib/config";
 import articles from '../../data/airticles-data';
 import { motion } from "framer-motion";
@@ -129,12 +130,20 @@ export default function ArticleDetail({ article, playlists, headerLectures, qnaC
 
       <Header2 playlists={playlists} lectures={headerLectures} qna_categories={qnaCategories} />
 
-      <article className="py-8 sm:py-8 lg:py-10 bg-gray-50">
-        <div className="container max-w-[900px] mx-auto px-4">
-          <Link href="/articles" className="inline-flex items-center gap-1.5 sm:gap-2 text-gray-600 hover:text-[#10b981] mb-4 sm:mb-6 transition-colors text-sm sm:text-base">
-            <ArrowLeft size={16} className="sm:w-[18px] sm:h-[18px]" /> Back to Articles
-          </Link>
+      <PageHero
+        title={article.title || article.postTitle}
+        subtitle="Authentic Islamic guidance and reflections"
+        Icon={Calendar}
+        align="left"
+        maxWidth="max-w-[900px]"
+      >
+        <Link href="/articles" className="inline-flex items-center gap-1.5 sm:gap-2 text-slate-200 hover:text-white mb-3 sm:mb-4 transition-colors text-sm sm:text-base">
+          <ArrowLeft size={16} className="sm:w-[18px] sm:h-[18px]" /> Back to Articles
+        </Link>
+      </PageHero>
 
+      <article className="py-6 sm:py-8 lg:py-10 bg-gray-50">
+        <div className="container max-w-[900px] mx-auto px-4">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
             className="bg-white rounded-xl sm:rounded-2xl shadow-xl overflow-hidden">
             {/* Featured Image */}

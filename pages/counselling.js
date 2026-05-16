@@ -3,6 +3,7 @@ import { server } from "../lib/config";
 import { getAllPlaylists2, getHeaderLectures, getAllQnaCategory } from "../lib/fetch";
 import Meta from "../components/meta";
 import Header2 from "../components/header1";
+import PageHero from "../components/page-hero";
 import { motion } from "framer-motion";
 import { Mail, Send, Calendar, Clock, User, Phone, DollarSign, Heart, Share2, CheckCircle, Copy } from 'lucide-react';
 
@@ -103,18 +104,11 @@ export default function CounsellingSession({ playlists, headerLectures, qna_cate
 
       <Header2 playlists={playlists} lectures={headerLectures} qna_categories={qna_categories} />
 
-      {/* Hero Section */}
-      <section className="bg-gradient-to-br from-[#1a1f2e] to-[#2a3142] py-8 sm:py-10 lg:py-14">
-        <div className="container max-w-[1260px] mx-auto px-4 text-center">
-          <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-            <Calendar size={36} className="sm:w-10 sm:h-10 lg:w-12 lg:h-12 text-[#10b981] mx-auto mb-3 sm:mb-4" />
-            <h1 className="page-title text-white mb-2 sm:mb-3">Counselling Session</h1>
-            <p className="text-sm sm:text-base text-gray-300 max-w-2xl mx-auto px-4">
-              One-to-one Live Counseling with Sheikh Assim Al-Hakeem via Skype, FaceTime, or Phone Call
-            </p>
-          </motion.div>
-        </div>
-      </section>
+      <PageHero
+        title="Counselling Session"
+        subtitle="One-to-one Live Counseling with Sheikh Assim Al-Hakeem via Skype, FaceTime, or Phone Call"
+        Icon={Calendar}
+      />
 
       <section className="py-8 sm:py-10 lg:py-14 bg-gray-50">
         <div className="container max-w-[1260px] mx-auto px-4">

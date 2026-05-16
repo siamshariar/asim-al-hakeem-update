@@ -143,7 +143,7 @@ export default function LectureList({ initialVideos, initPlaylistId, playlists, 
       />
 
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-[#1a1f2e] to-[#2a3142] py-6 sm:py-8 lg:py-10">
+      <section className="relative overflow-hidden bg-gradient-to-br from-[#24334d] via-[#2b3f5e] to-[#334a6b] py-6 sm:py-8 lg:py-10">
         <div className="container max-w-[1260px] mx-auto px-4">
           <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
             <div className="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4">

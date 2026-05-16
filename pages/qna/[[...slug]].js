@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { getAllPlaylists2, getHeaderLectures, getAllQnaCategory, getAllQuestions, getQnaByLimit } from "../../lib/fetch";
 import Meta from "../../components/meta";
 import Header2 from "../../components/header1";
+import PageHero from "../../components/page-hero";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import useOnScreen from "../../hooks/useOnScreen";
@@ -48,10 +49,65 @@ export default function QnaPage({ playlists, headerLectures, qnaCategories, init
   const isMountedRef = useRef(true);
   const lastScrollY = useRef(0);
   const backToTopRef = useRef(null);
+  const hasRestoredScrollRef = useRef(false);
 
   // Initialize data only once when component mounts with initial data
   useEffect(() => {
     if (!initialDataLoadedRef.current && initialQnaPage) {
+      // Check if we need to restore scroll position
+      const needsRestore = sessionStorage.getItem("qna_scroll_restore") === "true";
+      
+      // Check if we have cached data in sessionStorage
+      const cachedData = sessionStorage.getItem("qna_cached_data");
+      const cachedCategory = sessionStorage.getItem("qna_cached_category");
+      
+      if (needsRestore && cachedData && cachedCategory === (initialCategory || 'all')) {
+        try {
+          const parsed = JSON.parse(cachedData);
+          setLoadedPages(parsed.pages);
+          setCurrentPage(parsed.currentPage);
+          setTotalPages(parsed.totalPages);
+          
+          // Restore loaded IDs
+          const ids = new Set();
+          parsed.pages.flat().forEach(item => {
+            if (item?.id) ids.add(item.id);
+          });
+          loadedIdsRef.current = ids;
+          
+          setSelectedCategory(initialCategory || "all");
+          previousCategoryRef.current = initialCategory || "all";
+          setIsLoadingInitial(false);
+          initialDataLoadedRef.current = true;
+          hasRestoredScrollRef.current = true;
+          
+          // Clear the restore flag
+          sessionStorage.removeItem("qna_scroll_restore");
+          
+          // Restore scroll position after a short delay to ensure DOM is ready
+          setTimeout(() => {
+            const savedPosition = sessionStorage.getItem("qna_scroll_position");
+            if (savedPosition) {
+              const scrollY = parseInt(savedPosition, 10);
+              window.scrollTo({
+                top: scrollY,
+                behavior: 'instant'
+              });
+              sessionStorage.removeItem("qna_scroll_position");
+            }
+          }, 100);
+          
+          return;
+        } catch (e) {
+          console.error("Error parsing cached data:", e);
+        }
+      }
+      
+      // Clear restore flag if it exists but we're not restoring
+      if (needsRestore) {
+        sessionStorage.removeItem("qna_scroll_restore");
+      }
+      
       // If we have a special top-QnA list (first 3) for the "all" category,
       // render them first and exclude them from the main page items to avoid duplicates.
       if (initialTopQna && Array.isArray(initialTopQna) && initialTopQna.length > 0 && (initialCategory === 'all' || !initialCategory)) {
@@ -121,6 +177,10 @@ export default function QnaPage({ playlists, headerLectures, qnaCategories, init
         if (isMountedRef.current) {
           setShowBackToTop(scrollY > 200);
         }
+        // Store scroll position for restoration
+        if (!hasRestoredScrollRef.current) {
+          sessionStorage.setItem("qna_scroll_position", scrollY.toString());
+        }
       }
     };
 
@@ -181,6 +241,29 @@ export default function QnaPage({ playlists, headerLectures, qnaCategories, init
     };
   }, [showCategoryDrawer]);
 
+  // Clean up old cache (older than 30 minutes)
+  useEffect(() => {
+    const cleanupCache = () => {
+      const cachedTimestamp = sessionStorage.getItem("qna_cache_timestamp");
+      if (cachedTimestamp) {
+        const timestamp = parseInt(cachedTimestamp, 10);
+        const thirtyMinutes = 30 * 60 * 1000;
+        if (Date.now() - timestamp > thirtyMinutes) {
+          sessionStorage.removeItem("qna_cached_data");
+          sessionStorage.removeItem("qna_cached_category");
+          sessionStorage.removeItem("qna_scroll_position");
+          sessionStorage.removeItem("qna_cache_timestamp");
+          sessionStorage.removeItem("qna_scroll_restore");
+        }
+      }
+    };
+    
+    cleanupCache();
+    
+    // Store current timestamp
+    sessionStorage.setItem("qna_cache_timestamp", Date.now().toString());
+  }, []);
+
   const scrollToTop = useCallback(() => {
     if (typeof window === "undefined") return;
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -219,7 +302,9 @@ export default function QnaPage({ playlists, headerLectures, qnaCategories, init
     }
 
     if (targetCategory !== selectedCategory || isInitialMountRef.current) {
-      scrollToTopInstantly();
+      if (!hasRestoredScrollRef.current) {
+        scrollToTopInstantly();
+      }
       
       if (targetCategory !== selectedCategory) {
         setSelectedCategory(targetCategory);
@@ -270,6 +355,7 @@ export default function QnaPage({ playlists, headerLectures, qnaCategories, init
     }
 
     scrollToTopInstantly();
+    hasRestoredScrollRef.current = false;
     
     // Update UI immediately
     currentCategoryRef.current = slug;
@@ -290,6 +376,10 @@ export default function QnaPage({ playlists, headerLectures, qnaCategories, init
 
     if (typeof window !== "undefined") {
       window.sessionStorage.setItem(LAST_QNA_CATEGORY_KEY, slug);
+      // Clear cached data when changing categories
+      sessionStorage.removeItem("qna_cached_data");
+      sessionStorage.removeItem("qna_cached_category");
+      sessionStorage.removeItem("qna_scroll_position");
     }
 
     // Update URL immediately (not after fetch completes)
@@ -487,6 +577,21 @@ export default function QnaPage({ playlists, headerLectures, qnaCategories, init
     },
   };
 
+  // Cache data when navigating to answer
+  const cacheDataBeforeNavigation = () => {
+    if (typeof window !== "undefined") {
+      const cacheData = {
+        pages: loadedPages,
+        currentPage,
+        totalPages,
+        timestamp: Date.now()
+      };
+      sessionStorage.setItem("qna_cached_data", JSON.stringify(cacheData));
+      sessionStorage.setItem("qna_cached_category", selectedCategory);
+      sessionStorage.setItem("qna_scroll_position", window.scrollY.toString());
+    }
+  };
+
   return (
     <>
       <style jsx global>{`
@@ -536,18 +641,11 @@ export default function QnaPage({ playlists, headerLectures, qnaCategories, init
       <Meta title="Q&A - Sheikh Assim Al Hakeem" description="Get answers to your Islamic questions from Sheikh Assim Al Hakeem" />
       <Header2 playlists={playlists} lectures={headerLectures} qna_categories={visibleQnaCategories} />
 
-      {/* Hero Section */}
-      <section className="bg-gradient-to-br from-[#1a1f2e] to-[#2a3142] py-6 xs:py-8 sm:py-10 lg:py-14">
-        <div className="max-w-[1260px] mx-auto px-3 xs:px-4 sm:px-5 lg:px-6 xl:px-8 text-center">
-          <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}>
-            <HelpCircle size={28} className="xs:w-8 xs:h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 text-[#10b981] mx-auto mb-2 xs:mb-3 sm:mb-4" />
-            <h1 className="page-title text-white mb-1 xs:mb-2 sm:mb-3">Questions & Answers</h1>
-            <p className="text-xs xs:text-sm sm:text-base text-gray-300 max-w-2xl mx-auto px-2 xs:px-4">
-              Find authentic Islamic answers from Sheikh Assim Al Hakeem
-            </p>
-          </motion.div>
-        </div>
-      </section>
+      <PageHero
+        title="Questions & Answers"
+        subtitle="Find authentic Islamic answers from Sheikh Assim Al Hakeem"
+        Icon={HelpCircle}
+      />
 
       {/* Search and Filter Section */}
       <section className="py-2.5 xs:py-3 sm:py-4 lg:py-6 bg-white border-b border-gray-100 sticky top-0 z-30">
@@ -792,7 +890,11 @@ export default function QnaPage({ playlists, headerLectures, qnaCategories, init
                               <div className="flex-1 min-w-0">
                                 <h3 className="text-sm xs:text-base sm:text-lg font-semibold text-[#1a1f2e] mb-1 sm:mb-2 line-clamp-2">{item.question}</h3>
                                 <p className="text-xs sm:text-sm text-gray-600 line-clamp-2 sm:line-clamp-3 mb-1.5 sm:mb-3">{item.content || item.answer}</p>
-                                <Link href={`/qna/answer/${item.id}`} className="inline-flex items-center gap-1 text-[#10b981] text-xs sm:text-sm font-medium hover:gap-2 transition-all">
+                                <Link 
+                                  href={`/qna/answer/${item.id}`} 
+                                  className="inline-flex items-center gap-1 text-[#10b981] text-xs sm:text-sm font-medium hover:gap-2 transition-all"
+                                  onClick={cacheDataBeforeNavigation}
+                                >
                                   Read Full Answer <ChevronRight size={10} className="xs:w-3 xs:h-3 sm:w-3.5 sm:h-3.5" />
                                 </Link>
                               </div>
@@ -813,24 +915,6 @@ export default function QnaPage({ playlists, headerLectures, qnaCategories, init
                       </>
                     )}
                   </motion.div>
-{/*                   
-                  {isTransitioningCategory && (
-                    <motion.div 
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ delay: 0.1 }}
-                      className="fixed inset-0 flex items-center justify-center bg-black/5 backdrop-blur-sm rounded-lg pointer-events-none"
-                      style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}
-                    >
-                      <div className="flex flex-col items-center gap-3 bg-white rounded-xl p-6 shadow-lg">
-                        <svg className="animate-spin h-8 w-8 text-[#10b981]" viewBox="0 0 24 24">
-                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
-                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" />
-                        </svg>
-                        <span className="text-sm text-gray-700 font-medium">Switching category...</span>
-                      </div>
-                    </motion.div>
-                  )} */}
                 </>
               ) : (
                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }} className="text-center py-10 xs:py-12 sm:py-16 bg-white rounded-xl shadow-sm">

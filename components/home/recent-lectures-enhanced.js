@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { Play, Eye, Calendar, ArrowRight } from 'lucide-react';
 import VideoModal from '../modal/VideoModalRecent';
-import { date as formatDate } from '../../lib/format';
+import { date as formatDate, youtubeViews } from '../../lib/format';
 
 export const generateVParam = (videoID, title) => {
   const formattedTitle = encodeURIComponent((title || "").split(" ").join("=$"));
@@ -139,16 +139,16 @@ export default function RecentLecturesEnhanced({ lectures }) {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="flex flex-wrap justify-between items-center gap-3 mb-6 sm:mb-8"
+            className="flex items-start justify-between gap-3 mb-6 sm:mb-8"
           >
-            <div className="min-w-0">
+            <div className="min-w-0 flex-1">
               <span className="text-[#10b981] font-semibold uppercase tracking-wider text-xs sm:text-sm">Latest Content</span>
               <h2 className="section-title text-[#1a1f2e] mt-1 sm:mt-2">Recent Lectures</h2>
             </div>
-            <Link href="/lectures/UUWsdcrre0WbCWML_PnuzoAg" className="ml-auto">
+            <Link href="/lectures/UUWsdcrre0WbCWML_PnuzoAg" className="shrink-0 ml-auto">
               <motion.button
                 whileHover={{ x: 5 }}
-                className="flex items-center gap-1.5 sm:gap-2 text-[#10b981] font-medium hover:text-[#059669] transition-colors text-sm"
+                className="inline-flex items-center gap-1.5 sm:gap-2 text-[#10b981] font-medium hover:text-[#059669] transition-colors text-sm"
               >
                 <span>View All Lectures</span>
                 <ArrowRight size={16} className="sm:w-[18px] sm:h-[18px]" />
@@ -186,7 +186,7 @@ export default function RecentLecturesEnhanced({ lectures }) {
                     {video.title}
                   </a>
                   <div className="data-line">
-                    <span>{video.views?.toLocaleString() || 0} views</span>
+                    <span>{youtubeViews(video.views)} views</span>
                     <span>{video.date}</span>
                   </div>
                 </div>
