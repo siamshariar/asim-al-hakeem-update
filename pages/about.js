@@ -72,9 +72,9 @@ export default function About({ playlists, headerLectures, qna_categories }) {
                 <p className="text-base sm:text-lg text-gray-600 mb-1 sm:mb-2">{profile.title}</p>
                 <p className="flex items-center gap-1 sm:gap-2 text-gray-500 text-xs sm:text-sm mb-4 sm:mb-6"><MapPin size={14} className="sm:w-4 sm:h-4" />{profile.location}</p>
                 <div className="flex space-x-2 sm:space-x-3">
-                  <a href={profile.socials.facebook} target="_blank" className="p-2.5 sm:p-3 bg-[#1877F2] text-white rounded-lg hover:bg-[#1877F2]/90"><Facebook size={16} className="sm:w-[18px] sm:h-[18px]" /></a>
-                  <a href={profile.socials.youtube} target="_blank" className="p-2.5 sm:p-3 bg-[#FF0000] text-white rounded-lg hover:bg-[#FF0000]/90"><Youtube size={16} className="sm:w-[18px] sm:h-[18px]" /></a>
-                  <a href={`mailto:${profile.socials.email}`} className="p-2.5 sm:p-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700"><Mail size={16} className="sm:w-[18px] sm:h-[18px]" /></a>
+                  <a href={profile.socials.facebook} target="_blank" className="group p-2.5 sm:p-3 bg-[#1877F2] text-white/80 rounded-lg transition-colors hover:bg-[#1877F2]/90 hover:text-white"><Facebook size={16} className="sm:w-[18px] sm:h-[18px] transition-colors text-white/80 group-hover:text-white" /></a>
+                  <a href={profile.socials.youtube} target="_blank" className="group p-2.5 sm:p-3 bg-[#FF0000] text-white/80 rounded-lg transition-colors hover:bg-[#FF0000]/90 hover:text-white"><Youtube size={16} className="sm:w-[18px] sm:h-[18px] transition-colors text-white/80 group-hover:text-white" /></a>
+                  <a href={`mailto:${profile.socials.email}`} className="group p-2.5 sm:p-3 bg-gray-600 text-white/80 rounded-lg transition-colors hover:bg-gray-700 hover:text-white"><Mail size={16} className="sm:w-[18px] sm:h-[18px] transition-colors text-white/80 group-hover:text-white" /></a>
                 </div>
               </div>
             </div>

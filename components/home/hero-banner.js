@@ -51,7 +51,7 @@ export default function HeroBanner() {
                 />
             </div>
 
-            <div className="container mx-auto px-4 sm:px-6 max-w-[1260px] relative z-10 min-h-[85vh] md:min-h-screen flex flex-col justify-center pt-6 sm:pt-8 md:pt-12 lg:pt-20 pb-12 sm:pb-14 md:pb-20 lg:pb-24">
+            <div className="container mx-auto px-4 sm:px-6 max-w-[1260px] relative z-10 min-h-[85vh] md:min-h-screen flex flex-col justify-center pt-6 sm:pt-12 md:pt-10 lg:pt-10 pb-12 sm:pb-16 md:pb-10 lg:pb-10">
                 <div className="grid lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-16 items-center">
                     {/* Left Content */}
                     <motion.div 

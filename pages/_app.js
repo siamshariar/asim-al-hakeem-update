@@ -10,9 +10,11 @@ import '../styles/500.scss';
 import "../styles/QuranSlider.scss";
 import '../styles/globals.css';
 import Layout from "../components/layout";
+import useScrollRestoration from '../hooks/use-scroll-restoration';
 
 const App = ({ Component, pageProps }) => {
   const router = useRouter();
+  useScrollRestoration();
   
   useEffect(() => {
     const handleRouteChange = (url) => {

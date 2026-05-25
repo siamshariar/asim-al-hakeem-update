@@ -199,8 +199,8 @@ export default function Contact({ playlists, headerLectures, qna_categories }) {
                                     {socialLinks.map((social, idx) => (
                                         <motion.a key={idx} href={social.href} target="_blank" rel="noopener noreferrer"
                                             whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}
-                                            className={`p-3 sm:p-3.5 bg-gray-100 rounded-lg sm:rounded-xl text-gray-600 transition-all ${social.color} hover:text-white`}>
-                                            <social.icon size={18} className="sm:w-5 sm:h-5" />
+                                            className={`group p-3 sm:p-3.5 bg-gray-100 rounded-lg sm:rounded-xl text-gray-600 transition-all ${social.color} hover:text-white`}>
+                                            <social.icon size={18} className="sm:w-5 sm:h-5 transition-colors group-hover:text-white" />
                                         </motion.a>
                                     ))}
                                 </div>
@@ -212,9 +212,9 @@ export default function Contact({ playlists, headerLectures, qna_categories }) {
                                     For counseling sessions or urgent inquiries, you can reach out directly:
                                 </p>
                                 <div className="space-y-2 sm:space-y-3">
-                                    <a href="mailto:sheikhassim.bookings@gmail.com" className="flex items-center gap-2 sm:gap-3 text-white/90 hover:text-white transition-colors text-xs sm:text-sm">
-                                        <Mail size={16} className="sm:w-[18px] sm:h-[18px] flex-shrink-0" />
-                                        <span className="break-all">sheikhassim.bookings@gmail.com</span>
+                                    <a href="mailto:sheikhassim.bookings@gmail.com" className="flex items-center gap-2 sm:gap-3 text-white text-xs sm:text-sm hover:text-white hover:underline hover:decoration-white hover:underline-offset-4">
+                                        <Mail size={16} className="sm:w-[18px] sm:h-[18px] flex-shrink-0 text-white" />
+                                        <span className="break-all text-white">sheikhassim.bookings@gmail.com</span>
                                     </a>
                                     {/* <a href="https://wa.me/966123456789" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 sm:gap-3 text-white/90 hover:text-white transition-colors text-xs sm:text-sm">
                                         <Phone size={16} className="sm:w-[18px] sm:h-[18px] flex-shrink-0" />

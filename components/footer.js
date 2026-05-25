@@ -105,10 +105,10 @@ export default function Footer() {
                                         rel="noopener noreferrer"
                                         whileHover={{ scale: 1.15, y: -2 }}
                                         whileTap={{ scale: 0.95 }}
-                                        className={`p-2 sm:p-2.5 bg-white/10 rounded-lg sm:rounded-xl text-gray-300 transition-all duration-300 ${social.color} hover:text-white`}
+                                        className={`group p-2 sm:p-2.5 bg-white/10 rounded-lg sm:rounded-xl text-gray-300 transition-all duration-300 ${social.color} hover:text-white`}
                                         aria-label={social.label}
                                     >
-                                        <social.icon size={16} className="sm:w-[18px] sm:h-[18px]" />
+                                        <social.icon size={16} className="sm:w-[18px] sm:h-[18px] transition-colors group-hover:text-white" />
                                     </motion.a>
                                 ))}
                             </div>

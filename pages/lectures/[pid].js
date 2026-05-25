@@ -37,7 +37,7 @@ export default function LectureList({ initialVideos, initPlaylistId, playlists, 
   const ref = useRef();
   const dropdownRef = useRef();
   const isVisible = useOnScreen(ref);
-  const pageTitle = playlists?.playlistsTitle?.[initPlaylistId] || "Video Lectures";
+  const pageTitle = "Video Lectures";
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedPlaylist, setSelectedPlaylist] = useState(initPlaylistId);
@@ -75,6 +75,12 @@ export default function LectureList({ initialVideos, initPlaylistId, playlists, 
       setSelectedVideo({ id: videoID, title: videoTitle });
     }
   }, []);
+
+  useEffect(() => {
+    setSelectedPlaylist(initPlaylistId);
+    setDropdownOpen(false);
+    setSearchTerm("");
+  }, [initPlaylistId]);
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -143,7 +149,7 @@ export default function LectureList({ initialVideos, initPlaylistId, playlists, 
       />
 
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-[#24334d] via-[#2b3f5e] to-[#334a6b] py-6 sm:py-8 lg:py-10">
+      <section className="relative z-30 overflow-visible bg-gradient-to-br from-[#24334d] via-[#2b3f5e] to-[#334a6b] py-6 sm:py-8 lg:py-10">
         <div className="container max-w-[1260px] mx-auto px-4">
           <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
             <div className="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
@@ -152,7 +158,7 @@ export default function LectureList({ initialVideos, initPlaylistId, playlists, 
             </div>
             
             {/* Playlist Selector Dropdown - Overlay menu on top of content */}
-            <div className="relative inline-block" ref={dropdownRef}>
+            <div className="relative inline-block z-40" ref={dropdownRef}>
               <button
                 onClick={() => setDropdownOpen(!dropdownOpen)}
                 className="flex items-center justify-between w-[320px] sm:w-[350px] lg:w-[400px] max-w-full px-4 sm:px-5 py-2.5 sm:py-3 bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg sm:rounded-xl text-white hover:bg-white/20 transition-all group"
@@ -179,7 +185,7 @@ export default function LectureList({ initialVideos, initPlaylistId, playlists, 
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -8 }}
                     transition={{ duration: 0.2 }}
-                    className="absolute left-0 top-full mt-2 w-full sm:w-[350px] lg:w-[400px] bg-white rounded-lg sm:rounded-xl shadow-2xl border border-gray-100 overflow-hidden z-50"
+                      className="absolute left-0 top-full mt-2 w-full sm:w-[350px] lg:w-[400px] bg-white rounded-lg sm:rounded-xl shadow-2xl border border-gray-100 overflow-hidden z-[9999]"
                   >
                     {/* Search Input */}
                     <div className="p-3 border-b border-gray-100 sticky top-0 bg-white">
@@ -240,7 +246,7 @@ export default function LectureList({ initialVideos, initPlaylistId, playlists, 
       </section>
 
       {/* Videos Grid */}
-      <section className="py-8 sm:py-8 lg:py-10 bg-gray-50 min-h-[60vh]">
+      <section className="relative z-0 py-8 sm:py-8 lg:py-10 bg-gray-50 min-h-[60vh]">
         <div className="container max-w-[1260px] mx-auto px-4">
           {/* Results Count */}
           {/* <div className="mb-4 sm:mb-5">

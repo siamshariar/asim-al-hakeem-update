@@ -56,24 +56,24 @@ export default function ArticlesSection({ articles }) {
                       className="object-cover group-hover:scale-110 transition-transform duration-700"
                     />
                   </div>
-                  <div className="p-6 lg:p-8 flex flex-col justify-center">
-                    <div className="flex items-center gap-4 text-sm text-gray-500 mb-3">
+                  <div className="p-3 xs:p-4 sm:p-6 lg:p-8 flex flex-col justify-center">
+                    <div className="flex flex-col xs:flex-row xs:items-center gap-2 xs:gap-4 text-xs xs:text-sm text-gray-500 mb-2 xs:mb-3">
                       <span className="flex items-center gap-1">
-                        <Calendar size={14} />
+                        <Calendar size={13} />
                         {featuredArticle.postDate || featuredArticle.date}
                       </span>
                       <span className="flex items-center gap-1">
-                        <User size={14} />
+                        <User size={13} />
                         Sheikh Assim Al Hakeem
                       </span>
                     </div>
-                    <h4 className="h4 text-article-title font-bold text-primary mb-4 group-hover:text-gray-500 transition-colors">
+                    <h4 className="text-base xs:text-lg sm:text-xl font-bold text-primary mb-2 xs:mb-4 group-hover:text-gray-500 transition-colors line-clamp-2">
                       {featuredArticle.postTitle || featuredArticle.title}
                     </h4>
-                    <p className="text-article-desc text-gray-600 mb-6 line-clamp-3">
+                    <p className="text-xs xs:text-sm sm:text-base text-gray-600 mb-3 xs:mb-6 line-clamp-2 xs:line-clamp-3">
                       {featuredArticle.postExcerpt || featuredArticle.description}
                     </p>
-                    <div className="flex items-center text-accent font-medium group-hover:gap-2 transition-all">
+                    <div className="flex items-center text-accent font-medium text-sm xs:text-base group-hover:gap-2 transition-all">
                       <span>Read Full Article</span>
                       <ArrowRight size={16} className="opacity-0 group-hover:opacity-100 transition-all" />
                     </div>
@@ -90,7 +90,7 @@ export default function ArticlesSection({ articles }) {
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
-            className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6"
+            className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3 xs:gap-4 sm:gap-6"
           >
             {otherArticles.map((article, idx) => (
               <motion.div
@@ -100,10 +100,10 @@ export default function ArticlesSection({ articles }) {
                 viewport={{ once: true }}
                 transition={{ delay: idx * 0.1 }}
                 whileHover={{ y: -5 }}
-                className="group bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-all duration-300"
+                className="group bg-white rounded-lg sm:rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-all duration-300"
               >
                 <Link href={`/articles/${article.postSlug || article.id}`}>
-                  <div className="relative h-48 overflow-hidden">
+                  <div className="relative h-32 xs:h-40 sm:h-48 overflow-hidden">
                     <Image
                       src={article.imageSrc || "/img/articles/default.jpg"}
                       alt={article.postTitle || article.title}
@@ -111,15 +111,15 @@ export default function ArticlesSection({ articles }) {
                       className="object-cover group-hover:scale-110 transition-transform duration-500"
                     />
                   </div>
-                  <div className="p-5">
+                  <div className="p-3 xs:p-4 sm:p-5">
                     <div className="flex items-center text-xs text-gray-500 mb-2">
                       <Calendar size={12} className="mr-1" />
                       <span>{article.postDate || article.date}</span>
                     </div>
-                    <h4 className="h4 text-card-title font-semibold text-primary mb-2 line-clamp-2 group-hover:text-accent transition-colors">
+                    <h4 className="text-sm xs:text-base sm:text-lg font-semibold text-primary mb-2 line-clamp-2 group-hover:text-accent transition-colors">
                       {article.postTitle || article.title}
                     </h4>
-                    <p className="text-card-description text-gray-600 line-clamp-2">
+                    <p className="text-xs xs:text-sm text-gray-600 line-clamp-2">
                       {article.postExcerpt || article.description}
                     </p>
                   </div>

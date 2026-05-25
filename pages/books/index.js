@@ -54,31 +54,31 @@ function BookCard({ book }) {
                 </Link>
             </div>
 
-            <div className="card-content p-5 flex flex-col justify-between">
+            <div className="card-content p-4 sm:p-5 flex flex-col justify-between">
                 <div>
                     <div className="flex items-center gap-1.5 text-[#10b981] mb-2">
                         <BookOpen size={14} />
-                        <span className="text-xs font-semibold uppercase tracking-wider">Book</span>
+                        <span className="text-sm sm:text-sm font-semibold uppercase tracking-wider">Book</span>
                     </div>
-                    <h4 className="h4 text-card-title font-semibold font-primary text-primary mb-2 group-hover:text-gray-500 transition-colors duration-200 line-clamp-2 overflow-hidden break-words whitespace-normal max-h-[7rem]">
+                    <h4 className="h4 text-lg sm:text-lg lg:text-xl font-semibold font-primary text-primary mb-2 group-hover:text-gray-500 transition-colors duration-200 line-clamp-3 sm:line-clamp-2 overflow-hidden break-words whitespace-normal">
                         <Link href={`/books/${resolvedSlug}`} className="text-current">
                             {resolvedTitle}
                         </Link>
                     </h4>
                     <div className="flex items-center gap-1.5 text-card-meta text-gray-500 mb-2">
                         <User size={12} />
-                        <span className="text-card-meta text-gray-500">{resolvedAuthor}</span>
+                        <span className="text-base sm:text-card-meta text-gray-500 line-clamp-1">{resolvedAuthor}</span>
                     </div>
                     {resolvedExcerpt && (
-                        <p className="text-card-description text-gray-600 line-clamp-3 mb-3">
+                        <p className="text-base sm:text-card-description text-gray-600 line-clamp-2 sm:line-clamp-3 mb-3">
                             {resolvedExcerpt}
                         </p>
                     )}
                 </div>
 
-                <div className="mt-auto inline-flex items-center gap-1.5 text-[#10b981] text-[1rem] sm:text-[1rem] md:text-[1rem] lg:text-[1rem] font-semibold transition-all duration-300">
+                <div className="mt-auto inline-flex items-center gap-1.5 text-[#10b981] text-base sm:text-sm font-semibold transition-all duration-300">
                     <Link href={`/books/${resolvedSlug}`} className="inline-flex items-center gap-1.5">
-                        <span className="text-[0.875rem]">View Details</span>
+                        <span className="text-base sm:text-sm">View Details</span>
                         <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-1" />
                     </Link>
                 </div>
@@ -173,7 +173,7 @@ export default function BookList({
                             variants={containerVariants}
                             initial="hidden"
                             animate="show"
-                            className="grid grid-cols-1 lg:grid-cols-2 gap-5 lg:gap-6"
+                            className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-5 lg:gap-6"
                         >
                             {filteredBooks.map((book) => (
                                 <motion.div key={book.id} variants={itemVariants}>

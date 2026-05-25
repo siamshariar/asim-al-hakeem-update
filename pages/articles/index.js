@@ -202,7 +202,6 @@ export default function Articles({ playlists, headerLectures, qnaCategories, ini
         title="Islamic Articles"
         subtitle="Authentic Islamic knowledge and guidance through well-researched articles"
         Icon={FileText}
-        imageSrc="/img/articles/default.jpg"
         imageAlt="Islamic Articles"
       />
 
