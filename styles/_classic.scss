@@ -925,8 +925,9 @@ html body {
 
 .ah-ask__time {
 	display: flex;
-	align-items: center;
-	gap: 10px;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: 2px 10px;
 	margin-top: 4px;
 	font-size: 15px;
 
@@ -935,6 +936,7 @@ html body {
 		font-size: 30px;
 		font-weight: 600;
 		color: #fff;
+		white-space: nowrap;
 	}
 }
 
@@ -1412,7 +1414,7 @@ html body {
 	}
 
 	.ah-footer__top {
-		grid-template-columns: 1fr 1fr 1fr;
+		grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.5fr);
 	}
 
 	.ah-footer__brand {
@@ -1688,6 +1690,39 @@ html body {
 	.ah-lec-grid {
 		grid-template-columns: minmax(0, 1fr);
 		gap: 16px;
+	}
+}
+
+/* Small phones (iPhone SE, 360px Android): quick links become full-width rows */
+@media (max-width: 480px) {
+	.ah-quick__grid {
+		grid-template-columns: minmax(0, 1fr);
+		gap: 10px;
+	}
+
+	.ah-quick__card {
+		display: grid;
+		grid-template-columns: 40px minmax(0, 1fr);
+		column-gap: 14px;
+		align-items: center;
+		padding: 14px 16px;
+
+		h3 {
+			margin-top: 0;
+		}
+
+		p {
+			grid-column: 2;
+			margin-top: 2px;
+		}
+	}
+
+	.ah-quick__icon {
+		grid-row: span 2;
+	}
+
+	.ah-ask__time b {
+		font-size: 26px;
 	}
 }
 
