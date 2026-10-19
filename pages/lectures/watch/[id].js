@@ -1,11 +1,17 @@
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Share } from 'lucide-react';
+import Link from 'next/link';
+import { Eye, ArrowRight } from 'lucide-react';
 import Header2 from '../../../components/header1';
+import Meta from '../../../components/meta';
+import PageHero from '../../../components/page-hero';
+import ShareLinks from '../../../components/share-links';
+import { server, youtube } from '../../../lib/config';
+import { youtubeViews, cleanVideoTitle } from '../../../lib/format';
 import { getAllPlaylists2, getAllQnaCategory, getHeaderLectures } from '../../../lib/fetch'; 
 
-const API_KEY = process.env.NEXT_PUBLIC_YOUTUBE_API_KEY;
+const API_KEY = process.env.NEXT_PUBLIC_YOUTUBE_API_KEY || youtube.key;
 
 export default function LectureVideo({ playlists, headerLectures, qna_categories, videoData }) {
   const router = useRouter();
@@ -57,53 +63,82 @@ export default function LectureVideo({ playlists, headerLectures, qna_categories
   }, [id, videoData]);
 
   if (!video) {
-    return <p>Video data not found.</p>;
+    return (
+      <>
+        <Header2 playlists={playlists} headerLectures={headerLectures} qna_categories={qna_categories} />
+        <section className="ah ah-error">
+          <div className="ah-wrap">
+            {loading ? (
+              <div className="ah-loading" role="status">
+                <span className="ah-spinner" aria-hidden="true" />
+                Loading lecture...
+              </div>
+            ) : (
+              <>
+                <h1>Lecture not available</h1>
+                <p>This video could not be loaded. You can still watch it on YouTube or browse the other lectures.</p>
+                <div className="ah-actions">
+                  {id && <a href={`https://www.youtube.com/watch?v=${id}`} target="_blank" rel="noopener noreferrer" className="ah-btn ah-btn--primary">Watch on YouTube</a>}
+                  <Link href="/lectures/UUWsdcrre0WbCWML_PnuzoAg" className="ah-btn ah-btn--outline">All Lectures</Link>
+                </div>
+              </>
+            )}
+          </div>
+        </section>
+      </>
+    );
   }
+
+  const title = cleanVideoTitle(video.title);
 
   return (
     <>
+      <Meta
+        title={title}
+        description={(video.description || "Lecture by Sheikh Assim Al Hakeem").slice(0, 160)}
+        url={`${server}/lectures/watch/${id}`}
+        image={`https://i.ytimg.com/vi/${id}/hqdefault.jpg`}
+        type="video.other"
+      />
       <Header2 playlists={playlists} headerLectures={headerLectures} qna_categories={qna_categories} />
-      <div className="max-w-5xl mt-12 p-6 bg-white rounded-xl shadow-xl mx-auto">
-        <div className="relative aspect-video bg-gray-100 rounded-lg overflow-hidden">
-          <iframe
-            width="100%"
-            height="500"
-            src={`https://www.youtube.com/embed/${id}`}
-            frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-            title="YouTube video player"
-            className="w-full h-full object-cover"
-          ></iframe>
-        </div>
-        <div className="mt-4">
-          <div className="flex items-center justify-between">
-            <h1 className="text-2xl mr-8 font-semibold">{video.title}</h1>
-            <span className="text-lg text-gray-500 mb-6 whitespace-nowrap">{`${video.views} views`}</span>
+
+      <PageHero
+        eyebrow="Lecture"
+        title={title}
+        narrow
+        longTitle={title.length > 70}
+        breadcrumbs={[{ label: "Lectures", href: "/lectures/UUWsdcrre0WbCWML_PnuzoAg" }, { label: title }]}
+      >
+        {video.views && (
+          <div className="ah-meta">
+            <span><Eye size={16} aria-hidden="true" />{youtubeViews(video.views)} views</span>
           </div>
-          <div className="flex items-center justify-between mt-2">
-            <div className="flex items-center space-x-2 mt-2">
-              <img src={video.channelImage} alt="Channel avatar" className="w-12 h-12 rounded-full" />
-              <div>
-                <p className="font-medium text-xl">{video.channelTitle}</p>
-              </div>
+        )}
+      </PageHero>
+
+      <section className="ah ah-page ah-page--narrow">
+        <div className="ah-wrap">
+          <div className="ah-player">
+            <iframe
+              src={`https://www.youtube.com/embed/${id}`}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              title={title}
+            />
+          </div>
+
+          {video.description && (
+            <div className="ah-prose ah-desc" style={{ marginTop: 32 }}>
+              <p>{video.description}</p>
             </div>
-            <div className="flex items-center space-x-4 text-lg text-gray-700">
-              <button className="flex items-center space-x-1">
-                <Share className="w-5 h-5" />
-                <span>Share</span>
-              </button>
-            </div>
+          )}
+
+          <div className="ah-footnote" style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-between", gap: 16 }}>
+            <ShareLinks url={`${server}/lectures/watch/${id}`} title={title} label="Share this lecture" />
+            <Link href="/lectures/UUWsdcrre0WbCWML_PnuzoAg" className="ah-link">All lectures <ArrowRight size={17} aria-hidden="true" /></Link>
           </div>
         </div>
-        
-        <div className="mt-6 border-t-[2px] border-[#DCDCDC] pt-4">
-          <h2 className="font-bold mt-6">Description</h2>
-          <p className="text-lg text-gray-600 mt-5">
-            {video.description}
-          </p>
-        </div>
-      </div>
+      </section>
     </>
   );
 }

@@ -5,11 +5,19 @@ import { getAllPlaylists2, getHeaderLectures, getAllQnaCategory, getAllArticles 
 import Meta from "../../components/meta";
 import Header2 from "../../components/header1";
 import PageHero from "../../components/page-hero";
-import { motion } from "framer-motion";
-import { Calendar, User, ArrowRight, Search, X, FileText } from 'lucide-react';
+import Link from "next/link";
+import Image from "next/image";
+import { ArrowRight, Search, X } from 'lucide-react';
+import { date as formatDate } from "../../lib/format";
 import useOnScreen from "../../hooks/useOnScreen";
 
 const ARTICLES_PER_PAGE = 9;
+
+const formatArticleDate = (value) => {
+  if (!value) return "";
+  const parsed = new Date(value);
+  return Number.isNaN(parsed.getTime()) ? value : formatDate(value);
+};
 
 export default function Articles({ playlists, headerLectures, qnaCategories, initialArticlesPage }) {
   const router = useRouter();
@@ -199,160 +207,97 @@ export default function Articles({ playlists, headerLectures, qnaCategories, ini
       )}
 
       <PageHero
-        title="Islamic Articles"
-        subtitle="Authentic Islamic knowledge and guidance through well-researched articles"
-        Icon={FileText}
-        imageAlt="Islamic Articles"
+        eyebrow="Writings"
+        title="Articles"
+        subtitle="Articles, reflections and resources from Sheikh Assim Al Hakeem."
+        breadcrumbs={[{ label: "Articles" }]}
       />
 
-      {/* Search Bar */}
-      <section className="py-6 bg-white border-b border-gray-100 sticky top-0 z-30">
-        <div className="container max-w-[1260px] mx-auto px-4">
-          <div className="relative max-w-md">
+      <div className="ah ah-toolbar">
+        <div className="ah-wrap">
+          <div className="ah-search" role="search">
+            <Search size={17} aria-hidden="true" />
+            <label htmlFor="article-search" className="sr-only">Search articles</label>
             <input
-              type="text"
-              placeholder="Search articles..."
+              id="article-search"
+              type="search"
+              placeholder="Search articles"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-12 pr-10 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#10b981]/20 focus:border-[#10b981] text-[#1a1f2e]"
+              className="ah-input"
             />
             {searchTerm && (
-              <button
-                onClick={() => setSearchTerm("")}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-              >
-                <X size={16} />
+              <button type="button" onClick={() => setSearchTerm("")} className="ah-search__clear" aria-label="Clear search">
+                <X size={16} aria-hidden="true" />
               </button>
             )}
           </div>
           {searchTerm ? (
-            <div className="mt-2 text-xs sm:text-sm text-gray-500">
-              {displayedArticles.length} articles matching "{searchTerm}"
-            </div>
+            <p className="ah-toolbar__note" role="status">
+              <strong>{displayedArticles.length}</strong> {displayedArticles.length === 1 ? "article" : "articles"} matching &ldquo;{searchTerm}&rdquo;
+            </p>
           ) : null}
         </div>
-      </section>
+      </div>
 
-      {/* Articles Grid */}
-      <section className="py-8 md:py-12 lg:py-16 bg-gray-50 min-h-[60vh]">
-        <div className="container max-w-[1260px] mx-auto px-4">
+      <section className="ah ah-page ah-page--alt" aria-label="Articles">
+        <div className="ah-wrap">
           {isSearching ? (
-            <div className="text-center py-16">
-              <div className="mx-auto mb-4 h-10 w-10 rounded-full border-4 border-[#10b981] border-t-transparent animate-spin" />
-              <p className="text-gray-500">Searching articles...</p>
+            <div className="ah-loading" role="status">
+              <span className="ah-spinner" aria-hidden="true" />
+              Searching articles...
             </div>
           ) : displayedArticles.length > 0 ? (
             <>
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="ah-art-grid ah-art-grid--3">
                 {displayedArticles.map((article, idx) => (
-                  <motion.article
-                    key={article.slug || article.postSlug || `article-${idx}`}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: Math.min(idx * 0.03, 0.3) }}
-                    whileHover={{ y: -5 }}
-                    className="group bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300"
-                  >
-                    <a href={`/articles/${article.slug || article.postSlug}`} className="block">
-                      <div className="relative h-48 overflow-hidden">
-                        <img
-                          src={article.image || article.imageSrc || "/img/articles/default.jpg"}
-                          alt={article.title || article.postTitle}
-                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                          loading="lazy"
+                  <article key={article.slug || article.postSlug || `article-${idx}`} className="ah-acard">
+                    <Link href={`/articles/${article.slug || article.postSlug}`}>
+                      <div className="ah-acard__img">
+                        <Image
+                          src={article.imageSrc || article.image || "/img/articles/default.jpg"}
+                          alt=""
+                          fill
+                          sizes="(max-width: 680px) 100vw, (max-width: 1100px) 50vw, 380px"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                       </div>
-                      <div className="p-5 flex h-full flex-col">
-                        <div className="flex items-center gap-3 text-xs text-gray-500 mb-3">
-                          <span className="flex items-center gap-1">
-                            <Calendar size={12} className="text-[#10b981]" />
-                            {article.date || article.postDate}
-                          </span>
-                          <span className="flex items-center gap-1">
-                            <User size={12} className="text-[#10b981]" />
-                            Sheikh Assim
-                          </span>
-                        </div>
-                        <h3 className="text-lg font-bold text-[#1a1f2e] mb-2 line-clamp-2 group-hover:text-[#10b981] transition-colors">
-                          {article.title || article.postTitle}
-                        </h3>
-                        <p className="text-gray-600 text-sm line-clamp-3 mb-4 flex-1">
-                          {article.excerpt || article.postExcerpt || article.description}
-                        </p>
-                        <span className="inline-flex items-center gap-1 text-[#10b981] text-sm font-medium group-hover:gap-2 transition-all">
-                          Read More <ArrowRight size={14} />
+                      <div className="ah-acard__body">
+                        <p className="ah-acard__date">{formatArticleDate(article.date || article.postDate)}</p>
+                        <h3>{article.title || article.postTitle}</h3>
+                        <p className="ah-acard__excerpt">{article.excerpt || article.postExcerpt || article.description}</p>
+                        <span className="ah-link">
+                          Read article
+                          <ArrowRight size={17} aria-hidden="true" />
                         </span>
                       </div>
-                    </a>
-                  </motion.article>
+                    </Link>
+                  </article>
                 ))}
               </div>
 
-              {/* Load More Sentinel */}
-              <div 
-                ref={loadMoreRef} 
-                key={sentinelKey}
-                className="flex items-center justify-center py-8 sm:py-10 min-h-[80px]"
-              >
+              <div ref={loadMoreRef} key={sentinelKey} style={{ minHeight: 80 }}>
                 {isLoadingMore && hasMoreToLoad && (
-                  <motion.div 
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="flex flex-col items-center gap-3"
-                  >
-                    <svg className="animate-spin h-6 w-6 sm:h-7 sm:w-7 text-[#10b981]" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" />
-                    </svg>
-                    <span className="text-sm sm:text-base text-gray-500 font-medium">Loading more articles...</span>
-                  </motion.div>
+                  <div className="ah-loading" role="status">
+                    <span className="ah-spinner" aria-hidden="true" />
+                    Loading more articles...
+                  </div>
                 )}
               </div>
             </>
           ) : (
-            <motion.div 
-              initial={{ opacity: 0 }} 
-              animate={{ opacity: 1 }}
-              className="text-center py-16"
-            >
-              <Search size={48} className="text-gray-300 mx-auto mb-4" />
-              <p className="text-gray-500 text-lg mb-2">No articles found.</p>
-              <p className="text-gray-400 text-sm">Try adjusting your search terms.</p>
+            <div className="ah-empty">
+              <Search size={40} aria-hidden="true" />
+              <h2>No articles found</h2>
+              <p>Try a different search term.</p>
               {searchTerm && (
-                <button
-                  onClick={() => setSearchTerm('')}
-                  className="mt-4 px-4 py-2 bg-[#10b981] text-white rounded-lg text-sm hover:bg-[#059669] transition-colors"
-                >
-                  Clear Search
+                <button type="button" onClick={() => setSearchTerm('')} className="ah-btn ah-btn--primary">
+                  Clear search
                 </button>
               )}
-            </motion.div>
+            </div>
           )}
         </div>
       </section>
-
-      <style jsx global>{`
-        button:focus,
-        button:focus-visible,
-        button:active:focus,
-        button:focus:not(:focus-visible) {
-          outline: none !important;
-          box-shadow: none !important;
-        }
-        
-        button:focus-visible {
-          outline: none !important;
-        }
-        
-        button::-moz-focus-inner {
-          border: 0;
-        }
-        
-        button {
-          -webkit-tap-highlight-color: transparent;
-        }
-      `}</style>
     </>
   );
 }

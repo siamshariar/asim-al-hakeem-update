@@ -1,15 +1,15 @@
-import { useEffect, useRef, useState } from "react";
 import { useRouter } from 'next/router';
-import { Facebook, Twitter, Mail, Copy, CheckCircle, ArrowLeft, Calendar, User, Clock } from "lucide-react";
+import { ArrowRight, Calendar, User, Clock, FileText } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { getAllPlaylists2, getHeaderLectures, getAllQnaCategory } from "../../lib/fetch";
 import Meta from "../../components/meta";
 import Header2 from "../../components/header1";
 import PageHero from "../../components/page-hero";
+import ShareLinks from "../../components/share-links";
 import { server } from "../../lib/config";
+import { date as formatDate } from "../../lib/format";
 import articles from '../../data/airticles-data';
-import { motion } from "framer-motion";
 
 const ARABIC_CHAR_RE = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF]/;
 const LATIN_CHAR_RE = /[A-Za-z]/;
@@ -56,6 +56,17 @@ const ensureDirAttr = (existingAttrs = "", dir = "rtl") => {
   return `${existingAttrs} dir="${dir}"`;
 };
 
+const formatArticleDate = (value) => {
+  if (!value) return "";
+  const parsed = new Date(value);
+  return Number.isNaN(parsed.getTime()) ? value : formatDate(value);
+};
+
+const readingMinutes = (html = "") => {
+  const words = decodeHtmlEntities(stripHtmlTags(html)).trim().split(/\s+/).filter(Boolean).length;
+  return Math.max(1, Math.round(words / 200));
+};
+
 const enhanceArabicHtml = (html = "") => {
   let output = html;
 
@@ -75,152 +86,102 @@ const enhanceArabicHtml = (html = "") => {
   return output;
 };
 
-export default function ArticleDetail({ article, playlists, headerLectures, qnaCategories }) {
+export default function ArticleDetail({ article, related = [], playlists, headerLectures, qnaCategories }) {
   const router = useRouter();
-  const [copiedShare, setCopiedShare] = useState(false);
-  const shareTimeoutRef = useRef(null);
-
-  useEffect(() => {
-    return () => {
-      if (shareTimeoutRef.current) clearTimeout(shareTimeoutRef.current);
-    };
-  }, []);
 
   if (!article) {
     return (
       <>
         <Header2 playlists={playlists} lectures={headerLectures} qna_categories={qnaCategories} />
-        <div className="container max-w-[1260px] mx-auto px-4 py-16 sm:py-20 text-center">
-          <h1 className="text-xl sm:text-2xl font-bold text-[#1a1f2e] mb-2">Article Not Found</h1>
-          <Link href="/articles" className="text-[#10b981] hover:underline text-sm sm:text-base">Back to Articles</Link>
-        </div>
+        <section className="ah ah-error">
+          <div className="ah-wrap">
+            <FileText size={44} aria-hidden="true" style={{ margin: "0 auto", color: "var(--ah-crimson)" }} />
+            <h1>Article not found</h1>
+            <p>The article you are looking for may have moved or no longer exists.</p>
+            <div className="ah-actions">
+              <Link href="/articles" className="ah-btn ah-btn--primary">Back to Articles</Link>
+            </div>
+          </div>
+        </section>
       </>
     );
   }
 
   const { slug } = router.query;
-  const shareUrl = `${server}/articles/${slug}`;
+  const title = article.title || article.postTitle;
+  const shareUrl = `${server}/articles/${slug || article.postSlug || article.slug}`;
   const bodyHtml = article.contentHtml || article.content || "";
   const localizedBodyHtml = enhanceArabicHtml(bodyHtml);
   const hasRichBody = typeof bodyHtml === "string" && /<iframe|<video|<p|<h[1-6]|<ul|<ol|<blockquote/i.test(bodyHtml);
-
-  const handleCopyLink = () => {
-    const currentUrl = typeof window !== "undefined"
-      ? window.location.href
-      : shareUrl;
-
-    navigator.clipboard.writeText(currentUrl).then(() => {
-      setCopiedShare(true);
-      if (shareTimeoutRef.current) clearTimeout(shareTimeoutRef.current);
-      shareTimeoutRef.current = setTimeout(() => setCopiedShare(false), 2000);
-    }).catch(() => {
-      // Keep silent to avoid alert popups; UX stays non-blocking.
-    });
-  };
+  const minutes = readingMinutes(hasRichBody ? bodyHtml : article.description || "");
+  const image = article.imageSrc || article.image;
 
   return (
     <>
-      <Meta title={article.title || article.postTitle} description={article.description || article.postExcerpt} url={shareUrl} image={article.image || article.imageSrc} type="article" />
-
-      <style jsx global>{`
-        .article-body-html figure {
-          margin: 1rem 0 !important;
-        }
-      `}</style>
+      <Meta title={title} description={article.description || article.postExcerpt} url={shareUrl} image={article.image || article.imageSrc} type="article" />
 
       <Header2 playlists={playlists} lectures={headerLectures} qna_categories={qnaCategories} />
 
       <PageHero
-        title={article.title || article.postTitle}
-        subtitle="Authentic Islamic guidance and reflections"
-        Icon={Calendar}
-        align="left"
-        maxWidth="max-w-[900px]"
+        title={title}
+        narrow
+        breadcrumbs={[{ label: "Articles", href: "/articles" }, { label: title }]}
       >
-        <Link href="/articles" className="inline-flex items-center gap-1.5 sm:gap-2 text-slate-200 hover:text-white mb-3 sm:mb-4 transition-colors text-sm sm:text-base">
-          <ArrowLeft size={16} className="sm:w-[18px] sm:h-[18px]" /> Back to Articles
-        </Link>
+        <div className="ah-meta">
+          <span><Calendar size={16} aria-hidden="true" />{formatArticleDate(article.date || article.postDate)}</span>
+          <span><User size={16} aria-hidden="true" />{article.author || "Sheikh Assim Al Hakeem"}</span>
+          <span><Clock size={16} aria-hidden="true" />{minutes} min read</span>
+        </div>
       </PageHero>
 
-      <article className="py-6 sm:py-8 lg:py-10 bg-gray-50">
-        <div className="container max-w-[900px] mx-auto px-4">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-            className="bg-white rounded-xl sm:rounded-2xl shadow-xl overflow-hidden">
-            {/* Featured Image */}
-            <div className="relative h-[500px] sm:h-[350px] md:h-[400px] lg:h-[600px]">
-              <Image src={article.image || article.imageSrc} alt={article.title || article.postTitle} fill className="object-cover" priority unoptimized />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+      <article className="ah ah-page ah-page--narrow">
+        <div className="ah-wrap">
+          {image && (
+            <div className="ah-figure">
+              <Image src={image} alt="" fill sizes="(max-width: 960px) 100vw, 904px" priority />
             </div>
+          )}
 
-            {/* Content */}
-            <div className="p-5 sm:p-6 lg:p-8">
-              {/* Meta Info */}
-              <div className="flex flex-wrap items-center gap-3 sm:gap-4 text-xs sm:text-sm text-gray-500 mb-3 sm:mb-4">
-                <span className="flex items-center gap-1">
-                  <Calendar size={12} className="sm:w-3.5 sm:h-3.5 text-[#10b981]" />
-                  {article.date || article.postDate}
-                </span>
-                <span className="flex items-center gap-1">
-                  <User size={12} className="sm:w-3.5 sm:h-3.5 text-[#10b981]" />
-                  Sheikh Assim Al Hakeem
-                </span>
-                <span className="flex items-center gap-1">
-                  <Clock size={12} className="sm:w-3.5 sm:h-3.5 text-[#10b981]" />
-                  5 min read
-                </span>
-              </div>
+          <div className="ah-prose">
+            {hasRichBody ? (
+              <div dangerouslySetInnerHTML={{ __html: localizedBodyHtml }} />
+            ) : (
+              <p>{article.description || article.excerpt || article.postExcerpt}</p>
+            )}
+          </div>
 
-              {/* Title */}
-              <h1 className="text-xl sm:text-2xl lg:text-3xl xl:text-4xl font-bold text-[#1a1f2e] mb-4 sm:mb-6 leading-tight">
-                {article.title || article.postTitle}
-              </h1>
-
-              {/* Content */}
-              <div className="prose prose-sm sm:prose-base lg:prose-lg max-w-none mb-6 sm:mb-8 article-body">
-                {hasRichBody ? (
-                  <div
-                    className="article-body-html text-sm sm:text-base text-gray-700 leading-relaxed [&_iframe]:w-full [&_iframe]:max-w-full [&_iframe]:aspect-video [&_iframe]:rounded-xl [&_iframe]:my-4 [&_img]:max-w-full [&_img]:h-auto [&_p]:mb-4 [&_figure]:my-4 [&_figure]:mx-0"
-                    dangerouslySetInnerHTML={{ __html: localizedBodyHtml }}
-                  />
-                ) : (
-                  <p className="text-sm sm:text-base text-gray-700 leading-relaxed">{article.description || article.excerpt || article.postExcerpt}</p>
-                )}
-              </div>
-
-              {/* Share Section */}
-              <div className="pt-4 sm:pt-6 border-t border-gray-100">
-                <p className="text-xs sm:text-sm font-medium text-gray-700 mb-2 sm:mb-3">Share this article</p>
-                <div className="flex gap-2 sm:gap-3">
-                  <a href={`https://facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`} target="_blank" rel="noopener noreferrer"
-                    className="p-2 sm:p-2.5 bg-[#1877F2] text-white rounded-lg hover:bg-[#1877F2]/90 transition-colors">
-                    <Facebook size={16} className="sm:w-[18px] sm:h-[18px]" />
-                  </a>
-                  <a href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(article.title || article.postTitle)}`} target="_blank" rel="noopener noreferrer"
-                    className="p-2 sm:p-2.5 bg-[#1DA1F2] text-white rounded-lg hover:bg-[#1DA1F2]/90 transition-colors">
-                    <Twitter size={16} className="sm:w-[18px] sm:h-[18px]" />
-                  </a>
-                  <a href={`mailto:?subject=${encodeURIComponent(article.title || article.postTitle)}&body=${encodeURIComponent(shareUrl)}`}
-                    className="p-2 sm:p-2.5 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors">
-                    <Mail size={16} className="sm:w-[18px] sm:h-[18px]" />
-                  </a>
-                  <button
-                    onClick={handleCopyLink}
-                    className={`p-2 sm:p-2.5 text-white rounded-lg transition-colors ${copiedShare ? 'bg-green-500' : 'bg-[#10b981] hover:bg-[#059669]'}`}
-                    title={copiedShare ? 'Copied to clipboard!' : 'Copy link to clipboard'}
-                    aria-label={copiedShare ? 'Copied to clipboard!' : 'Copy link to clipboard'}
-                  >
-                    {copiedShare ? (
-                      <CheckCircle size={16} className="sm:w-[18px] sm:h-[18px] !text-white" />
-                    ) : (
-                      <Copy size={16} className="sm:w-[18px] sm:h-[18px] !text-white" />
-                    )}
-                  </button>
-                </div>
-              </div>
-            </div>
-          </motion.div>
+          <div className="ah-footnote">
+            <ShareLinks url={shareUrl} title={title} label="Share this article" />
+          </div>
         </div>
       </article>
+
+      {related.length > 0 && (
+        <section className="ah ah-page ah-page--alt" aria-labelledby="related-title">
+          <div className="ah-wrap">
+            <div className="ah-section-title">
+              <h2 id="related-title">More Articles</h2>
+              <Link href="/articles" className="ah-link">All articles <ArrowRight size={17} aria-hidden="true" /></Link>
+            </div>
+            <div className="ah-art-grid ah-art-grid--3">
+              {related.map((item) => (
+                <article key={item.slug} className="ah-acard">
+                  <Link href={`/articles/${item.slug}`}>
+                    <div className="ah-acard__img">
+                      <Image src={item.image} alt="" fill sizes="(max-width: 680px) 100vw, (max-width: 1100px) 50vw, 380px" />
+                    </div>
+                    <div className="ah-acard__body">
+                      <p className="ah-acard__date">{formatArticleDate(item.date)}</p>
+                      <h3>{item.title}</h3>
+                      <span className="ah-link">Read article <ArrowRight size={17} aria-hidden="true" /></span>
+                    </div>
+                  </Link>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
     </>
   );
 }
@@ -232,9 +193,20 @@ export async function getStaticProps({ params }) {
   const headerLectures = await getHeaderLectures();
   const qnaCategories = await getAllQnaCategory();
 
+  const related = articles
+    .filter((item) => item !== article && item.published !== false)
+    .slice(0, 3)
+    .map((item) => ({
+      slug: item.postSlug || item.slug,
+      title: item.postTitle || item.title,
+      image: item.imageSrc || item.image || "/img/articles/default.jpg",
+      date: item.postDate || item.date || "",
+    }));
+
   return {
     props: {
       article: article || null,
+      related,
       playlists: playlists?.playlists || [],
       headerLectures: headerLectures || null,
       qnaCategories: qnaCategories || [],

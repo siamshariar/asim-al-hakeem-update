@@ -63,15 +63,20 @@
 }
 
 .details {
-  padding: 15px;
+  padding: 16px 20px;
   background-color: #fff;
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  gap: 16px;
 }
 
 .title {
-  font-size: 1.2rem;
-  font-weight: bold;
+  font-family: var(--ah-serif, Georgia, serif);
+  font-size: 1.3rem;
+  font-weight: 600;
+  line-height: 1.35;
+  color: #1f1c19;
   margin: 0;
 }
 
@@ -87,13 +92,23 @@
 	right: 1.25rem;
 	height: 30px;
 	width: 30px;
+	padding: 0;
+	background: none;
+	border: 0;
 	cursor: pointer;
 	/* opacity: 0.65;
 	z-index: 10002; */
 }
 
-.close:hover {
+.close:hover,
+.close:focus {
 	opacity: 1;
+	background: none;
+}
+
+.close:focus-visible {
+	outline: 2px solid #fff;
+	outline-offset: 4px;
 }
 
 .close::before, .close::after {

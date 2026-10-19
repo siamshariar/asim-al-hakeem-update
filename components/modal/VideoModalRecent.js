@@ -17,6 +17,15 @@ export default function VideoModal({ isOpen, onClose, videoId, title, descriptio
         };
     }, [isOpen]);
 
+    useEffect(() => {
+        if (!isOpen) return undefined;
+        const handleKey = (e) => {
+            if (e.key === 'Escape') onClose();
+        };
+        window.addEventListener('keydown', handleKey);
+        return () => window.removeEventListener('keydown', handleKey);
+    }, [isOpen, onClose]);
+
     if (!isOpen) return null;
 
     const videoUrl = `/lectures/UUWsdcrre0WbCWML_PnuzoAg?v=${generateVParam(videoId, title)}`;
@@ -35,7 +44,7 @@ export default function VideoModal({ isOpen, onClose, videoId, title, descriptio
                         className={styles.content}
                         onClick={(e) => e.stopPropagation()}
                     >
-                        <span className={styles.close} onClick={onClose}></span>
+                        <button type="button" className={styles.close} onClick={onClose} aria-label="Close video"></button>
                         <div className={styles.iframeContainer}>
                             <iframe
                                 className={styles.iframe}

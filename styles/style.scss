@@ -37,5 +37,6 @@
 @use "opt-pages/opt-lecture";
 @use "opt-pages/opt-profile";
 
-// classic theme (header, footer, homepage)
+// classic theme (header, footer, homepage, inner pages)
 @use "classic";
+@use "classic-pages";

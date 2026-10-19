@@ -2,15 +2,14 @@ import { server, youtube, constants } from "../../lib/config";
 import { getAllPlaylists2, getYoutubeVideoListByUrl, getAllQnaCategory } from "../../lib/fetch";
 import { useState, useEffect, useRef } from "react";
 import Meta from "../../components/meta";
-import PostCardVideo2 from "../../components/card/post-card-video2";
-import Loader from "../../components/loader";
 import VideoModal from "../../components/modal/VideoModal";
 import Header2 from "../../components/header1";
+import PageHero from "../../components/page-hero";
 import fetcher from "../../lib/lecturesFetcher";
 import useOnScreen from "../../hooks/useOnScreen";
 import useSWRInfinite from "swr/infinite";
-import { motion, AnimatePresence } from "framer-motion";
-import { Video, ChevronDown, List, X, Check } from "lucide-react";
+import { Video, ChevronDown, List, X, Check, Search } from "lucide-react";
+import { date as formatDate, youtubeViews, cleanVideoTitle } from "../../lib/format";
 import { useRouter } from "next/router";
 
 const getKey = (pageIndex, previousPageData, playlistId) => {
@@ -137,7 +136,7 @@ export default function LectureList({ initialVideos, initPlaylistId, playlists, 
         title={pageTitle}
         description={`Watch ${pageTitle} by Sheikh Assim Al Hakeem. Authentic Islamic lectures and guidance.`}
         url={`${server}/lectures/${initPlaylistId}`}
-        image={`${server}/img/id/default_share.png`}
+        image={`${server}/img/id/default_share.jpeg`}
         type="website"
       />
 
@@ -148,164 +147,122 @@ export default function LectureList({ initialVideos, initPlaylistId, playlists, 
         qna_categories={qna_categories || []}
       />
 
-      {/* Hero Section */}
-      <section className="relative z-30 overflow-visible bg-gradient-to-br from-[#24334d] via-[#2b3f5e] to-[#334a6b] py-6 sm:py-8 lg:py-10">
-        <div className="container max-w-[1260px] mx-auto px-4">
-          <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
-            <div className="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
-              <Video size={24} className="sm:w-7 sm:h-7 lg:w-8 lg:h-8 text-[#10b981]" />
-              <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-white">{pageTitle}</h1>
-            </div>
-            
-            {/* Playlist Selector Dropdown - Overlay menu on top of content */}
-            <div className="relative inline-block z-40" ref={dropdownRef}>
-              <button
-                onClick={() => setDropdownOpen(!dropdownOpen)}
-                className="flex items-center justify-between w-[320px] sm:w-[350px] lg:w-[400px] max-w-full px-4 sm:px-5 py-2.5 sm:py-3 bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg sm:rounded-xl text-white hover:bg-white/20 transition-all group"
-              >
-                <div className="flex-1 min-w-0 flex items-center gap-2 sm:gap-3">
-                  <List size={16} className="sm:w-[18px] sm:h-[18px] text-[#10b981]" />
-                  <span className="text-sm sm:text-base font-medium whitespace-normal break-words text-left leading-snug">
-                    {currentPlaylistTitle}
-                  </span>
-                </div>
-                <motion.div
-                  animate={{ rotate: dropdownOpen ? 180 : 0 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  <ChevronDown size={18} className="sm:w-5 sm:h-5 text-white/70 group-hover:text-white" />
-                </motion.div>
-              </button>
+      <PageHero
+        eyebrow="Lectures"
+        title={currentPlaylistTitle}
+        subtitle="Lectures and short answers from Sheikh Assim Al Hakeem's YouTube channel. Choose a series to browse its videos."
+        breadcrumbs={[{ label: "Lectures", href: "/lectures/UUWsdcrre0WbCWML_PnuzoAg" }, { label: currentPlaylistTitle }]}
+      >
+        <div className="ah-select" ref={dropdownRef}>
+          <button
+            type="button"
+            onClick={() => setDropdownOpen(!dropdownOpen)}
+            className="ah-select__btn"
+            aria-expanded={dropdownOpen}
+            aria-haspopup="listbox"
+          >
+            <span>
+              <List size={18} aria-hidden="true" />
+              <span>{currentPlaylistTitle}</span>
+            </span>
+            <ChevronDown size={18} aria-hidden="true" style={{ transform: dropdownOpen ? "rotate(180deg)" : "none", transition: "transform .2s ease" }} />
+          </button>
 
-              {/* Dropdown Menu - Overlay on top of page content */}
-              <AnimatePresence>
-                {dropdownOpen && (
-                  <motion.div
-                    initial={{ opacity: 0, y: -8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -8 }}
-                    transition={{ duration: 0.2 }}
-                      className="absolute left-0 top-full mt-2 w-full sm:w-[350px] lg:w-[400px] bg-white rounded-lg sm:rounded-xl shadow-2xl border border-gray-100 overflow-hidden z-[9999]"
-                  >
-                    {/* Search Input */}
-                    <div className="p-3 border-b border-gray-100 sticky top-0 bg-white">
-                      <div className="relative">
-                        <input
-                          type="text"
-                          placeholder="Search playlists..."
-                          value={searchTerm}
-                          onChange={(e) => setSearchTerm(e.target.value)}
-                          className="w-full px-3 sm:px-4 py-2 sm:py-2.5 pr-8 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#10b981]/20 focus:border-[#10b981]"
-                          autoFocus
-                        />
-                        {searchTerm && (
-                          <button
-                            onClick={() => setSearchTerm("")}
-                            className="absolute right-2 top-1/2 -translate-y-1/2 p-1 text-gray-400 hover:text-gray-600"
-                          >
-                            <X size={14} />
-                          </button>
-                        )}
-                      </div>
-                    </div>
-
-                    {/* Playlist List */}
-                    <div className="max-h-[380px] sm:max-h-[420px] overflow-y-auto">
-                      {filteredPlaylists.length > 0 ? (
-                        filteredPlaylists.map((playlist) => (
-                          <button
-                            key={playlist.id}
-                            onClick={() => handlePlaylistChange(playlist.id)}
-                            className={`w-full flex items-center justify-between px-4 py-3 text-left text-sm hover:bg-gray-50 transition-colors border-b border-gray-50 last:border-0 ${
-                              playlist.id === selectedPlaylist ? 'bg-[#10b981]/5' : ''
-                            }`}
-                          >
-                            <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
-                              <Video size={14} className={`flex-shrink-0 ${playlist.id === selectedPlaylist ? 'text-[#10b981]' : 'text-gray-400'}`} />
-                              <span className={`whitespace-normal break-words ${playlist.id === selectedPlaylist ? 'text-[#10b981] font-medium' : 'text-[#1a1f2e]'}`}>
-                                {playlist.title}
-                              </span>
-                            </div>
-                            {playlist.id === selectedPlaylist && (
-                              <Check size={16} className="text-[#10b981] flex-shrink-0" />
-                            )}
-                          </button>
-                        ))
-                      ) : (
-                        <div className="px-4 py-8 text-center text-gray-500 text-sm">
-                          No playlists found
-                        </div>
-                      )}
-                    </div>
-                  </motion.div>
+          {dropdownOpen && (
+            <div className="ah-select__menu">
+              <div className="ah-search">
+                <Search size={16} aria-hidden="true" />
+                <input
+                  type="search"
+                  placeholder="Search series"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="ah-input"
+                  aria-label="Search lecture series"
+                  autoFocus
+                />
+                {searchTerm && (
+                  <button type="button" onClick={() => setSearchTerm("")} className="ah-search__clear" aria-label="Clear search">
+                    <X size={14} aria-hidden="true" />
+                  </button>
                 )}
-              </AnimatePresence>
+              </div>
+              <div className="ah-cat-list" role="listbox" aria-label="Lecture series">
+                {filteredPlaylists.length > 0 ? (
+                  filteredPlaylists.map((playlist) => (
+                    <button
+                      key={playlist.id}
+                      type="button"
+                      role="option"
+                      aria-selected={playlist.id === selectedPlaylist}
+                      onClick={() => handlePlaylistChange(playlist.id)}
+                      className={`ah-cat-item${playlist.id === selectedPlaylist ? " is-active" : ""}`}
+                    >
+                      <Video size={15} aria-hidden="true" />
+                      <span style={{ flex: 1 }}>{playlist.title}</span>
+                      {playlist.id === selectedPlaylist && <Check size={15} aria-hidden="true" />}
+                    </button>
+                  ))
+                ) : (
+                  <p className="ah-end-note">No series found</p>
+                )}
+              </div>
             </div>
-          </motion.div>
+          )}
         </div>
-      </section>
+      </PageHero>
 
-      {/* Videos Grid */}
-      <section className="relative z-0 py-8 sm:py-8 lg:py-10 bg-gray-50 min-h-[60vh]">
-        <div className="container max-w-[1260px] mx-auto px-4">
-          {/* Results Count */}
-          {/* <div className="mb-4 sm:mb-5">
-            <p className="text-sm text-gray-500">
-              {datas[0]?.videoLists?.videos?.length || 0} videos in this playlist
-            </p>
-          </div> */}
-
+      <section className="ah ah-page ah-page--alt" aria-label="Videos">
+        <div className="ah-wrap">
           {datas.length > 0 && datas[0]?.videoLists?.videos?.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 lg:gap-6">
+            <div className="ah-lec-grid ah-lec-grid--page">
               {datas.map((data) =>
-                data.videoLists.videos.map((video) => (
-                  <motion.div
-                    key={video.id}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    whileHover={{ y: -5 }}
-
-                  >
-                    <PostCardVideo2
-                    video={{
-                      id: video.id,
-                      title: video.title,
-                      image: video.image,
-                      date: video.date,
-                    }}
-                    views={data.videoLists.videoStats?.[video.id]}
-                    onClick={() => openModal(video)}
-                  />
-                  </motion.div>
-                ))
+                data.videoLists.videos.map((video) => {
+                  const views = Number(data.videoLists.videoStats?.[video.id]) || 0;
+                  return (
+                    <article key={video.id} className="ah-vcard">
+                      <a
+                        href={`/lectures/${initPlaylistId}?v=${generateVParam(video.id, video.title)}`}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          openModal(video);
+                        }}
+                      >
+                        <div className="ah-vcard__thumb">
+                          <img src={`https://i.ytimg.com/vi/${video.id}/hqdefault.jpg`} alt="" loading="lazy" />
+                          <span className="ah-vcard__play" aria-hidden="true" />
+                        </div>
+                        <div>
+                          <h3 className="ah-vcard__title">{cleanVideoTitle(video.title)}</h3>
+                          <p className="ah-vcard__meta">
+                            {video.date ? formatDate(video.date) : ""}
+                            {views > 0 && ` · ${youtubeViews(views)} views`}
+                          </p>
+                        </div>
+                      </a>
+                    </article>
+                  );
+                })
               )}
             </div>
           ) : isLoadingInitialData ? (
-            <div className="flex justify-center py-12 sm:py-16">
-              <Loader />
+            <div className="ah-loading" role="status">
+              <span className="ah-spinner" aria-hidden="true" />
+              Loading videos...
             </div>
           ) : (
-            <div className="text-center py-12 sm:py-16">
-              <Video size={40} className="sm:w-12 sm:h-12 text-gray-300 mx-auto mb-3 sm:mb-4" />
-              <p className="text-sm sm:text-base text-gray-500">No videos found in this playlist.</p>
+            <div className="ah-empty">
+              <Video size={40} aria-hidden="true" />
+              <h2>No videos found</h2>
+              <p>This series has no public videos yet.</p>
             </div>
           )}
 
-          {/* Load More Trigger */}
-          <div ref={ref} className="mt-6 sm:mt-8">
+          <div ref={ref} style={{ minHeight: 40 }}>
             {isLoadingMore && !isLoadingInitialData && (
-              <div className="flex items-center justify-center py-8 min-h-[80px]">
-                <motion.div 
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="flex flex-col items-center gap-3"
-                >
-                  <svg className="animate-spin h-6 w-6 sm:h-7 sm:w-7 text-[#10b981]" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" />
-                  </svg>
-                  <span className="text-sm sm:text-base text-gray-500 font-medium">Loading more videos...</span>
-                </motion.div>
+              <div className="ah-loading" role="status">
+                <span className="ah-spinner" aria-hidden="true" />
+                Loading more videos...
               </div>
             )}
           </div>

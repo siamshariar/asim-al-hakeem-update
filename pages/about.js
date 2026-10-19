@@ -1,11 +1,14 @@
 import { server } from "../lib/config";
 import Image from "next/image";
-import { Facebook, Youtube, Mail, Award, BookOpen, Users, Globe, Calendar, MapPin } from 'lucide-react';
+import Link from "next/link";
+import { Mail, MapPin, GraduationCap, Mic, Tv } from 'lucide-react';
 import { getAllPlaylists2, getAllQnaCategory, getHeaderLectures } from "../lib/fetch";
 import Meta from "../components/meta";
 import Header2 from "../components/header1";
 import PageHero from "../components/page-hero";
-import { motion } from "framer-motion";
+import SocialLinks from "../components/social-links";
+
+const profile = { email: 'sheikhassim.bookings@gmail.com' };
 
 const biographySections = [
   {
@@ -31,17 +34,12 @@ const biographySections = [
 ];
 
 export default function About({ playlists, headerLectures, qna_categories }) {
-  const profile = {
-    name: 'Asim Al Hakeem',
-    title: 'Islamic Scholar & Educator',
-    location: 'Jeddah, Saudi Arabia',
-    imageSrc: '/img/about/about-img.jpg',
-    socials: {
-      facebook: 'https://www.facebook.com/SheikhAssimAlhakeemTeam/',
-      youtube: 'https://www.youtube.com/user/assimalhakeem',
-      email: 'sheikhassim.bookings@gmail.com',
-    },
-  };
+  const facts = [
+    { term: "1962", detail: "Born in Al\u2011Khobar, Eastern Province", Icon: MapPin },
+    { term: "1980", detail: "Finished high school, then studied at King Fahd University of Petroleum and Minerals; majored in Linguistics", Icon: GraduationCap },
+    { term: "1989", detail: "Began delivering the Friday sermon in Arabic", Icon: Mic },
+    { term: "Television", detail: "English programmes on Iqra, Saudi National TV and Al\u2011Majd", Icon: Tv },
+  ];
 
   return (
     <>
@@ -49,61 +47,82 @@ export default function About({ playlists, headerLectures, qna_categories }) {
       <Header2 playlists={playlists} lectures={headerLectures} qna_categories={qna_categories} />
 
       <PageHero
-        title="About Sheikh Assim Al Hakeem"
-        subtitle="A lifetime dedicated to spreading authentic Islamic knowledge"
-        Icon={Users}
+        eyebrow="About the Sheikh"
+        title={"Sheikh Assim bin Luqman Al\u2011Hakeem"}
+        titleAr="الشيخ عاصم الحكيم"
+        subtitle="Islamic scholar and educator based in Jeddah, Saudi Arabia, teaching in Arabic and English."
+        breadcrumbs={[{ label: "About" }]}
       />
 
-      {/* Profile Section */}
-      <section className="py-8 sm:py-12 lg:py-16 bg-gray-50">
-        <div className="container max-w-[1260px] mx-auto px-4">
-          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-            className="bg-white rounded-xl sm:rounded-2xl lg:rounded-3xl shadow-lg overflow-hidden">
-            <div className="grid lg:grid-cols-2">
-              <div className="relative h-[250px] sm:h-[300px] lg:h-full">
-                <Image src={profile.imageSrc} alt={profile.name} fill className="object-cover" />
-              </div>
-              <div className="p-5 sm:p-6 lg:p-8 xl:p-10">
-                <div className="flex items-center gap-2 text-[#10b981] mb-2 sm:mb-3">
-                  <Award size={18} className="sm:w-5 sm:h-5" />
-                  <span className="font-semibold uppercase tracking-wider text-xs sm:text-sm">Islamic Scholar</span>
-                </div>
-                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#1a1f2e] mb-1 sm:mb-2">{profile.name}</h2>
-                <p className="text-base sm:text-lg text-gray-600 mb-1 sm:mb-2">{profile.title}</p>
-                <p className="flex items-center gap-1 sm:gap-2 text-gray-500 text-xs sm:text-sm mb-4 sm:mb-6"><MapPin size={14} className="sm:w-4 sm:h-4" />{profile.location}</p>
-                <div className="flex space-x-2 sm:space-x-3">
-                  <a href={profile.socials.facebook} target="_blank" className="group p-2.5 sm:p-3 bg-[#1877F2] text-white/80 rounded-lg transition-colors hover:bg-[#1877F2]/90 hover:text-white"><Facebook size={16} className="sm:w-[18px] sm:h-[18px] transition-colors text-white/80 group-hover:text-white" /></a>
-                  <a href={profile.socials.youtube} target="_blank" className="group p-2.5 sm:p-3 bg-[#FF0000] text-white/80 rounded-lg transition-colors hover:bg-[#FF0000]/90 hover:text-white"><Youtube size={16} className="sm:w-[18px] sm:h-[18px] transition-colors text-white/80 group-hover:text-white" /></a>
-                  <a href={`mailto:${profile.socials.email}`} className="group p-2.5 sm:p-3 bg-gray-600 text-white/80 rounded-lg transition-colors hover:bg-gray-700 hover:text-white"><Mail size={16} className="sm:w-[18px] sm:h-[18px] transition-colors text-white/80 group-hover:text-white" /></a>
-                </div>
-              </div>
+      <section className="ah ah-page">
+        <div className="ah-wrap ah-about-grid">
+          <figure className="ah-about__photo">
+            <div className="ah-about__img">
+              <Image src="/img/about/about-img.jpg" alt="Sheikh Assim Al Hakeem seated, wearing a white shemagh" fill sizes="(max-width: 920px) 100vw, 460px" priority />
             </div>
-          </motion.div>
+            <figcaption>Sheikh Assim bin Luqman Al&#8209;Hakeem</figcaption>
+          </figure>
+
+          <div className="ah-about__copy">
+            <p className="ah-eyebrow">At a glance</p>
+            <h2>A life of teaching and da'wah</h2>
+            <p>
+              {biographySections[0].text}
+            </p>
+            <dl className="ah-facts">
+              {facts.map(({ term, detail, Icon }) => (
+                <div key={term}>
+                  <span className="ah-facts__icon"><Icon size={20} aria-hidden="true" /></span>
+                  <div>
+                    <dt>{term}</dt>
+                    <dd>{detail}</dd>
+                  </div>
+                </div>
+              ))}
+            </dl>
+            <div className="ah-actions">
+              <a href={`mailto:${profile.email}`} className="ah-btn ah-btn--primary"><Mail size={18} aria-hidden="true" />Contact</a>
+              <SocialLinks className="ah-about__social" />
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* Biography */}
-      <section className="py-8 sm:py-12 lg:py-16 bg-white">
-        <div className="container max-w-[900px] mx-auto px-4">
-          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-            <div className="flex flex-col items-center mb-6 sm:mb-8 text-center">
-              <span className="text-[#10b981] font-semibold uppercase tracking-wider text-xs sm:text-sm mb-2">Interview 2010</span>
-              <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-[#1a1f2e]">Biography</h2>
+      <section className="ah ah-page ah-page--alt" aria-labelledby="biography-title">
+        <div className="ah-wrap" style={{ maxWidth: 960 }}>
+          <div className="ah-section-title">
+            <div>
+              <p className="ah-eyebrow">From his 2010 interview</p>
+              <h2 id="biography-title">Biography</h2>
             </div>
-            <div className="grid gap-4 sm:gap-5 md:grid-cols-2">
-              {biographySections.map((item) => (
-                <div key={item.title} className="rounded-2xl border border-gray-100 bg-gray-50 p-4 sm:p-5 shadow-sm">
-                  <h3 className="text-base sm:text-lg font-semibold text-[#1a1f2e] mb-2">{item.title}</h3>
-                  <p className="text-sm sm:text-base leading-7 text-gray-700">{item.text}</p>
-                </div>
-              ))}
-            </div>
-            <div className="mt-5 sm:mt-6 rounded-2xl bg-[#f8fbfa] border border-[#d9f1eb] p-4 sm:p-5">
-              <p className="text-sm sm:text-base leading-7 text-gray-700">
-                He is known for balancing family life, teaching, travel, counseling, and public media work with a strong sense of responsibility. His interview makes it clear that da'wah is not one single activity for him, but a full way of life that includes family, study, teaching, and service to people.
-              </p>
-            </div>
-          </motion.div>
+          </div>
+          <ol className="ah-timeline">
+            {biographySections.map((item) => (
+              <li key={item.title} className="ah-timeline__item">
+                <h3>{item.title}</h3>
+                <p>{item.text}</p>
+              </li>
+            ))}
+          </ol>
+          <p className="ah-quote">
+            He is known for balancing family life, teaching, travel, counseling, and public media work with a strong sense of responsibility. His interview makes it clear that da'wah is not one single activity for him, but a full way of life that includes family, study, teaching, and service to people.
+          </p>
+          <p className="ah-footnote">
+            Read the full interview: <Link href="/articles/biography-of-sheikh-assim-alhakeem" className="ah-link">Biography of Sheikh Assim Alhakeem (Interview 2010)</Link>
+          </p>
+        </div>
+      </section>
+
+      <section className="ah ah-cta-band" aria-label="Explore">
+        <div className="ah-wrap">
+          <div>
+            <h2>Learn with Sheikh Assim</h2>
+            <p>Watch his lectures or browse thousands of answered questions.</p>
+          </div>
+          <div className="ah-cta-band__actions">
+            <Link href="/lectures/UUWsdcrre0WbCWML_PnuzoAg" className="ah-btn ah-btn--white">Watch Lectures</Link>
+            <Link href="/qna" className="ah-btn ah-btn--ghost-light">Browse Q&amp;A</Link>
+          </div>
         </div>
       </section>
     </>

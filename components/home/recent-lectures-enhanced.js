@@ -2,7 +2,7 @@ import { useEffect, useState, useCallback } from 'react';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import VideoModal from '../modal/VideoModalRecent';
-import { date as formatDate, youtubeViews } from '../../lib/format';
+import { date as formatDate, youtubeViews, cleanVideoTitle } from '../../lib/format';
 
 export const generateVParam = (videoID, title) => {
   const formattedTitle = encodeURIComponent((title || "").split(" ").join("=$"));
@@ -14,15 +14,6 @@ const parseVParam = (slug) => {
   const videoTitle = decodeURIComponent(encodedTitle).split("=$").join(" ");
   return { videoID, videoTitle };
 };
-
-// YouTube titles end with the channel name and sometimes a flag emoji
-const cleanTitle = (title = "") =>
-  title
-    .replace(/[\u{1F1E6}-\u{1F1FF}]{2}/gu, "")
-    .replace(/\s*\|\|\s*assim al ?hakeem\s*$/i, "")
-    .replace(/\s+assim al ?hakeem\s*$/i, "")
-    .replace(/\s{2,}/g, " ")
-    .trim();
 
 const formatLectureDate = (value) => {
   if (!value) return "";
@@ -39,7 +30,7 @@ export default function RecentLecturesEnhanced({ lectures }) {
   const videos = list.slice(0, 4).map((video) => ({
     id: video.id,
     title: video.title,
-    displayTitle: cleanTitle(video.title),
+    displayTitle: cleanVideoTitle(video.title),
     date: formatLectureDate(video.date),
     views: Number(lectures?.videoStats?.[video.id]) || 0,
     description: video.description,

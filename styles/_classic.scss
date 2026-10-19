@@ -22,6 +22,14 @@
 	--ah-radius: 8px;
 }
 
+/* `body { overflow-x: hidden }` (globals.css, _utils.scss) turns <body> into a
+   scroll container, which breaks the sticky header. `clip` still prevents
+   sideways scrolling without creating one; older browsers keep `hidden`. */
+html body {
+	overflow-x: hidden;
+	overflow-x: clip;
+}
+
 /* Scoped resets (zero extra specificity, so component classes below win) */
 .ah {
 	--ah-hover: currentColor;
@@ -79,6 +87,11 @@
 	display: block;
 	max-width: 100%;
 	height: auto;
+}
+
+// Icons sit in flex rows; never let them be squeezed
+.ah :where(svg) {
+	flex-shrink: 0;
 }
 
 /* Shared building blocks */

@@ -5,49 +5,64 @@ import {
 	getAllQnaCategory,
 } from "../../lib/fetch";
 import Meta from "../../components/meta";
-import Header from "../../components/header";
+import Header2 from "../../components/header1";
+import PageHero from "../../components/page-hero";
 
 import React from 'react';
 import { useRouter } from 'next/router';
 import { verses } from '../../data/verses';
-import styles from '../../styles/VerseDetails.module.scss';
 
 const VerseDetails = ({ playlists, headerLectures, qnaCategories }) => {
   const router = useRouter();
   const { id } = router.query;
 
 
-  console.log("ID from query:", id);
 
 
   const verse = verses.find((v) => v.id === parseInt(id));
 
   if (!verse) {
-    return <p>Verse not found</p>;
+    return (
+      <>
+        <Header2 playlists={playlists} lectures={headerLectures} qna_categories={qnaCategories} />
+        <section className="ah ah-error">
+          <div className="ah-wrap">
+            <h1>Verse not found</h1>
+            <div className="ah-actions"><a href="/" className="ah-btn ah-btn--primary">Back to Home</a></div>
+          </div>
+        </section>
+      </>
+    );
   }
 
   return (
     <>
       <Meta
-        title="Tafseer"
-        description="Learn more about this verse..."
+        title={`Tafseer of ${verse.verse}`}
+        description={verse.word}
         url={`${server}/verse-details/${id}`}
         image={`${server}/img/id/default_share.jpeg`}
         type="website"
       />
 
-      <Header
-        playlists={playlists}
-        lectures={headerLectures}
-        qna_categories={qnaCategories}
+      <Header2 playlists={playlists} lectures={headerLectures} qna_categories={qnaCategories} />
+
+      <PageHero
+        eyebrow="Tafseer"
+        title={verse.verse}
+        subtitle={verse.word}
+        narrow
+        breadcrumbs={[{ label: "Tafseer" }, { label: verse.verse }]}
       />
-    
-      <div className={styles.verseDetails}>
-        <h1>{verse.verse}</h1>
-        <p>{verse.word}</p>
-        <h2 style={{ fontSize: '20px' }}>Tafseer of this verse:</h2>
-        <p style={{ fontSize: '18px', marginTop: '10px' }}>{verse.tafseer}</p>
-      </div>
+
+      <section className="ah ah-page ah-page--narrow">
+        <div className="ah-wrap">
+          <h2 style={{ fontSize: 28, marginBottom: 16 }}>Tafseer of this verse</h2>
+          <div className="ah-prose">
+            <p>{verse.tafseer}</p>
+          </div>
+        </div>
+      </section>
     </>
   );
 };

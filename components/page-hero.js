@@ -1,49 +1,44 @@
-import { motion } from "framer-motion";
+import Link from "next/link";
+import { ChevronRight } from "lucide-react";
 
+// Inner-page header: breadcrumb, eyebrow, title, optional subtitle/meta.
+// `breadcrumbs` is a list of { label, href }; the last item is the current page.
 export default function PageHero({
+  eyebrow,
   title,
   subtitle,
-  Icon,
+  breadcrumbs = [],
   children,
-  imageSrc, // optional image shown on mobile above the text
-  imageAlt = "",
-  align = "center",
-  maxWidth = "max-w-[1260px]",
+  narrow = false,
+  longTitle = false,
+  titleAr,
 }) {
-  const isCenter = align === "center";
-
   return (
-    <section className="relative overflow-hidden">
-      {/** Mobile image at the very top when provided */}
-      {imageSrc ? (
-        <div className="md:hidden w-full">
-          <img src={imageSrc} alt={imageAlt} className="w-full h-56 object-cover" />
-        </div>
-      ) : null}
-
-      <div className={`relative overflow-hidden bg-gradient-to-br from-[#24334d] via-[#2b3f5e] to-[#334a6b] ${imageSrc ? "py-6 sm:py-8 md:py-10 lg:py-14" : "py-8 sm:py-10 lg:py-14"}`}>
-        <div className="absolute inset-0 opacity-30 pointer-events-none">
-          <div className="absolute -top-24 -left-10 h-56 w-56 rounded-full bg-[#10b981]/20 blur-3xl" />
-          <div className="absolute -bottom-28 -right-10 h-64 w-64 rounded-full bg-[#93c5fd]/20 blur-3xl" />
-        </div>
-
-        <div className={`container ${maxWidth} mx-auto px-4 relative z-10 ${isCenter ? "text-center" : ""}`}>
-          {children}
-          <motion.div initial={{ opacity: 0, y: -16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-            {Icon ? (
-              <Icon
-                size={36}
-                className={`${isCenter ? "mx-auto" : ""} mb-3 sm:mb-4 text-[#34d399] sm:w-10 sm:h-10 lg:w-12 lg:h-12`}
-              />
-            ) : null}
-            <h1 className={`page-title text-white ${subtitle ? "mb-2 sm:mb-3" : ""}`}>{title}</h1>
-            {subtitle ? (
-              <p className={`text-sm sm:text-base text-slate-200 max-w-2xl ${isCenter ? "mx-auto" : ""}`}>
-                {subtitle}
-              </p>
-            ) : null}
-          </motion.div>
-        </div>
+    <section className={`ah ah-page-hero${narrow ? " ah-page-hero--narrow" : ""}`}>
+      <div className="ah-wrap">
+        {breadcrumbs.length > 0 && (
+          <div aria-label="Breadcrumb" className="ah-breadcrumb" role="navigation">
+            <Link href="/">Home</Link>
+            {breadcrumbs.map((crumb, idx) => {
+              const isLast = idx === breadcrumbs.length - 1;
+              return (
+                <span key={`${crumb.label}-${idx}`} className="ah-breadcrumb__item">
+                  <ChevronRight size={14} aria-hidden="true" />
+                  {isLast || !crumb.href ? (
+                    <span aria-current={isLast ? "page" : undefined}>{crumb.label}</span>
+                  ) : (
+                    <Link href={crumb.href} onClick={crumb.onClick}>{crumb.label}</Link>
+                  )}
+                </span>
+              );
+            })}
+          </div>
+        )}
+        {eyebrow && <p className="ah-eyebrow">{eyebrow}</p>}
+        <h1 className={`ah-page-hero__title${longTitle ? " ah-page-hero__title--long" : ""}`}>{title}</h1>
+        {titleAr && <p className="ah-page-hero__ar" lang="ar" dir="rtl">{titleAr}</p>}
+        {subtitle && <p className="ah-page-hero__subtitle">{subtitle}</p>}
+        {children}
       </div>
     </section>
   );

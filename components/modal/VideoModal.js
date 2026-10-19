@@ -19,6 +19,15 @@ export default function VideoModal({ isOpen, onClose, videoId, title, playlistId
         };
     }, [isOpen]);
 
+    useEffect(() => {
+        if (!isOpen) return undefined;
+        const handleKey = (e) => {
+            if (e.key === 'Escape') onClose();
+        };
+        window.addEventListener('keydown', handleKey);
+        return () => window.removeEventListener('keydown', handleKey);
+    }, [isOpen, onClose]);
+
     if (!isOpen) return null; // Render nothing if the modal is closed
 
     const handleCloseModal = (e) => {
@@ -46,7 +55,7 @@ export default function VideoModal({ isOpen, onClose, videoId, title, playlistId
                         onClick={(e) => e.stopPropagation()} // Prevent modal from closing when content is clicked
                     >
                         {/* Close icon button with direct onClick */}
-                        <span className={styles.close} onClick={onClose}></span>
+                        <button type="button" className={styles.close} onClick={onClose} aria-label="Close video"></button>
                         
                         <div className={styles.iframeContainer}>
                             <iframe

@@ -1,29 +1,16 @@
 import { useState, useRef } from 'react';
+import Link from 'next/link';
 import { getAllPlaylists2, getAllQnaCategory, getHeaderLectures } from '../lib/fetch';
 import Meta from '../components/meta';
 import Header2 from '../components/header1';
 import PageHero from '../components/page-hero';
-import { motion } from 'framer-motion';
-import { Mail, Phone, MapPin, Clock, Send, Facebook, Youtube, Instagram, Twitter, CheckCircle } from 'lucide-react';
+import SocialLinks from '../components/social-links';
+import { Mail, MapPin, Send, CheckCircle, AlertCircle, Calendar, HelpCircle } from 'lucide-react';
 
 export default function Contact({ playlists, headerLectures, qna_categories }) {
     const [formData, setFormData] = useState({ firstName: '', subject: '', email: '', phone: '', message: '' });
     const [formStatus, setFormStatus] = useState({ submitted: false, success: false, message: '' });
     const [errors, setErrors] = useState({});
-
-    const contactInfo = [
-        { icon: Phone, title: 'Phone', details: ['+966 12 345 6789'], color: 'bg-green-500' },
-        { icon: Mail, title: 'Email', details: ['sheikhassim.bookings@gmail.com'], color: 'bg-blue-500' },
-        { icon: MapPin, title: 'Location', details: ['Jeddah, Saudi Arabia'], color: 'bg-red-500' },
-        { icon: Clock, title: 'Working Hours', details: ['Sat-Thu: 9AM-6PM', 'Friday: Closed'], color: 'bg-purple-500' }
-    ];
-
-    const socialLinks = [
-        { icon: Facebook, href: 'https://www.facebook.com/SheikhAssimAlhakeemTeam/', color: 'hover:bg-blue-600' },
-        { icon: Youtube, href: 'https://www.youtube.com/user/assimalhakeem', color: 'hover:bg-red-600' },
-        { icon: Instagram, href: 'https://www.instagram.com/assimalhakeem?igshid=1v9psnayget6c', color: 'hover:bg-pink-600' },
-        { icon: Twitter, href: 'https://x.com/Assimalhakee', color: 'hover:bg-sky-500' },
-    ];
 
     const validateForm = () => {
         const newErrors = {};
@@ -89,141 +76,118 @@ export default function Contact({ playlists, headerLectures, qna_categories }) {
         }
     };
 
+    const fieldClass = (name) => `ah-input${errors[name] ? ' is-invalid' : ''}`;
+
     return (
         <>
             <Meta title="Contact Sheikh Assim Al Hakeem" description="Get in touch with Sheikh Assim Al Hakeem" />
             <Header2 playlists={playlists} headerLectures={headerLectures} qna_categories={qna_categories} />
-            
+
             <PageHero
-                title="Get In Touch"
-                subtitle="Have questions or need guidance? We're here to help. Reach out to us anytime."
-                Icon={Mail}
+                eyebrow="Contact"
+                title="Get in Touch"
+                subtitle="Have a question about the website, lectures or bookings? Send a message and the team will reply by email."
+                breadcrumbs={[{ label: 'Contact' }]}
             />
 
-            {/* Contact Info Cards */}
-            {/* <section className="py-8 sm:py-12 lg:py-16">
-                <div className="container max-w-[1260px] mx-auto px-4">
-                    <div className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-5">
-                        {contactInfo.map((info, idx) => (
-                            <motion.div key={idx} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: idx * 0.1 }}
-                                whileHover={{ y: -3 }} className="bg-white rounded-xl sm:rounded-2xl shadow-lg p-4 sm:p-5 text-center hover:shadow-xl transition-all">
-                                <div className={`w-12 h-12 sm:w-14 sm:h-14 ${info.color} rounded-xl flex items-center justify-center mx-auto mb-3 shadow-md`}>
-                                    <info.icon size={22} className="sm:w-6 sm:h-6 text-white" />
+            <section className="ah ah-page ah-page--alt">
+                <div className="ah-wrap ah-layout">
+                    <div className="ah-card">
+                        <h2>Send a Message</h2>
+
+                        {formStatus.submitted && formStatus.success && (
+                            <div className="ah-alert ah-alert--success" role="status" style={{ marginBottom: 18 }}>
+                                <CheckCircle size={18} aria-hidden="true" />
+                                <span>{formStatus.message}</span>
+                            </div>
+                        )}
+                        {formStatus.submitted && !formStatus.success && formStatus.message !== 'Sending...' && (
+                            <div className="ah-alert ah-alert--error" role="alert" style={{ marginBottom: 18 }}>
+                                <AlertCircle size={18} aria-hidden="true" />
+                                <span>{formStatus.message}</span>
+                            </div>
+                        )}
+
+                        <form onSubmit={handleSubmit} className="ah-form" noValidate>
+                            <div className="ah-form__row">
+                                <div className="ah-field">
+                                    <label htmlFor="contact-name">Full name <span className="ah-field__req">*</span></label>
+                                    <input id="contact-name" ref={firstNameRef} type="text" name="firstName" value={formData.firstName} onChange={handleChange}
+                                        className={fieldClass('firstName')} placeholder="Your name" autoComplete="name"
+                                        aria-invalid={!!errors.firstName} aria-describedby={errors.firstName ? 'contact-name-error' : undefined} />
+                                    {errors.firstName && <p id="contact-name-error" className="ah-field__error">{errors.firstName}</p>}
                                 </div>
-                                <h3 className="text-base sm:text-lg font-semibold text-[#1a1f2e] mb-2">{info.title}</h3>
-                                {info.details.map((detail, i) => (
-                                    <p key={i} className="text-xs sm:text-sm text-gray-600">{detail}</p>
-                                ))}
-                            </motion.div>
-                        ))}
-                    </div>
-                </div>
-            </section> */}
-
-            {/* Contact Form */}
-            <section className="py-8 sm:py-12 lg:py-16">
-                <div className="container max-w-[1260px] mx-auto px-4">
-                    <div className="grid lg:grid-cols-2 gap-6 lg:gap-8">
-                        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-                            className="bg-white rounded-xl sm:rounded-2xl lg:rounded-3xl shadow-xl p-5 sm:p-6 lg:p-8">
-                            <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-[#1a1f2e] mb-4 sm:mb-6">Send Us a Message</h2>
-                            
-                            {formStatus.success && (
-                                <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}
-                                    className="mb-4 sm:mb-6 p-3 sm:p-4 bg-green-50 border border-green-200 rounded-lg sm:rounded-xl flex items-center gap-2 sm:gap-3 text-green-700 text-xs sm:text-sm">
-                                    <CheckCircle size={16} className="sm:w-[18px] sm:h-[18px] flex-shrink-0" />
-                                    <span>{formStatus.message}</span>
-                                </motion.div>
-                            )}
-
-                            <form onSubmit={handleSubmit} className="space-y-4">
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                    <div>
-                                        <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">Full Name *</label>
-                                        <input ref={firstNameRef} type="text" name="firstName" value={formData.firstName} onChange={handleChange}
-                                            className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 border rounded-lg sm:rounded-xl focus:outline-none focus:ring-2 transition-all text-sm ${errors.firstName ? 'border-red-300 focus:ring-red-200' : 'border-gray-200 focus:ring-[#10b981]/20 focus:border-[#10b981]'}`}
-                                            placeholder="Your name" />
-                                        {errors.firstName && <p className="text-red-500 text-xs mt-1">{errors.firstName}</p>}
-                                    </div>
-                                    <div>
-                                        <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">Subject *</label>
-                                        <input ref={subjectRef} type="text" name="subject" value={formData.subject} onChange={handleChange}
-                                            className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 border rounded-lg sm:rounded-xl focus:outline-none focus:ring-2 transition-all text-sm ${errors.subject ? 'border-red-300 focus:ring-red-200' : 'border-gray-200 focus:ring-[#10b981]/20 focus:border-[#10b981]'}`}
-                                            placeholder="Message subject" />
-                                        {errors.subject && <p className="text-red-500 text-xs mt-1">{errors.subject}</p>}
-                                    </div>
-                                </div>
-
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                    <div>
-                                        <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">Email *</label>
-                                        <input ref={emailRef} type="email" name="email" value={formData.email} onChange={handleChange}
-                                            className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 border rounded-lg sm:rounded-xl focus:outline-none focus:ring-2 transition-all text-sm ${errors.email ? 'border-red-300 focus:ring-red-200' : 'border-gray-200 focus:ring-[#10b981]/20 focus:border-[#10b981]'}`}
-                                            placeholder="your@email.com" />
-                                        {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
-                                    </div>
-                                    <div>
-                                        <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">Phone (Optional)</label>
-                                        <input type="tel" name="phone" value={formData.phone} onChange={handleChange}
-                                            className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border border-gray-200 rounded-lg sm:rounded-xl focus:outline-none focus:ring-2 focus:ring-[#10b981]/20 focus:border-[#10b981] text-sm"
-                                            placeholder="+966 XX XXX XXXX" />
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">Message *</label>
-                                    <textarea ref={messageRef} name="message" rows="4" value={formData.message} onChange={handleChange}
-                                        className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 border rounded-lg sm:rounded-xl focus:outline-none focus:ring-2 transition-all resize-none text-sm ${errors.message ? 'border-red-300 focus:ring-red-200' : 'border-gray-200 focus:ring-[#10b981]/20 focus:border-[#10b981]'}`}
-                                        placeholder="Your message..." />
-                                    {errors.message && <p className="text-red-500 text-xs mt-1">{errors.message}</p>}
-                                </div>
-
-                                <motion.button whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.99 }} type="submit"
-                                    disabled={(formStatus.submitted && !formStatus.success)}
-                                    title={!canSubmit ? 'Please complete all required fields correctly' : ''}
-                                    className="w-full py-3 sm:py-4 bg-gradient-to-r from-[#10b981] to-[#059669] text-white rounded-lg sm:rounded-xl text-sm sm:text-base font-medium flex items-center justify-center gap-2 disabled:opacity-50">
-                                    <Send size={16} className="sm:w-[18px] sm:h-[18px]" />
-                                    {formStatus.submitted && !formStatus.success ? 'Sending...' : 'Send Message'}
-                                </motion.button>
-                            </form>
-                        </motion.div>
-
-                        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }}
-                            className="space-y-4 sm:space-y-5 lg:space-y-6">
-                            <div className="bg-white rounded-xl sm:rounded-2xl lg:rounded-3xl shadow-xl p-5 sm:p-6 lg:p-8">
-                                <h3 className="text-lg sm:text-xl font-semibold text-[#1a1f2e] mb-4">Connect With Us</h3>
-                                <p className="text-xs sm:text-sm text-gray-600 mb-4 sm:mb-5">
-                                    Follow us on social media for the latest updates, lectures, and Islamic content.
-                                </p>
-                                <div className="flex gap-2 sm:gap-3">
-                                    {socialLinks.map((social, idx) => (
-                                        <motion.a key={idx} href={social.href} target="_blank" rel="noopener noreferrer"
-                                            whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}
-                                            className={`group p-3 sm:p-3.5 bg-gray-100 rounded-lg sm:rounded-xl text-gray-600 transition-all ${social.color} hover:text-white`}>
-                                            <social.icon size={18} className="sm:w-5 sm:h-5 transition-colors group-hover:text-white" />
-                                        </motion.a>
-                                    ))}
+                                <div className="ah-field">
+                                    <label htmlFor="contact-subject">Subject <span className="ah-field__req">*</span></label>
+                                    <input id="contact-subject" ref={subjectRef} type="text" name="subject" value={formData.subject} onChange={handleChange}
+                                        className={fieldClass('subject')} placeholder="What is it about?"
+                                        aria-invalid={!!errors.subject} aria-describedby={errors.subject ? 'contact-subject-error' : undefined} />
+                                    {errors.subject && <p id="contact-subject-error" className="ah-field__error">{errors.subject}</p>}
                                 </div>
                             </div>
 
-                            <div className="bg-gradient-to-br from-[#10b981] to-[#059669] rounded-xl sm:rounded-2xl lg:rounded-3xl shadow-xl p-5 sm:p-6 lg:p-8 text-white">
-                                <h3 className="text-white text-lg sm:text-xl font-semibold mb-3 sm:mb-4">Need Urgent Help?</h3>
-                                <p className="text-white/90 text-xs sm:text-sm mb-4 sm:mb-5">
-                                    For counseling sessions or urgent inquiries, you can reach out directly:
-                                </p>
-                                <div className="space-y-2 sm:space-y-3">
-                                    <a href="mailto:sheikhassim.bookings@gmail.com" className="flex items-center gap-2 sm:gap-3 text-white text-xs sm:text-sm hover:text-white hover:underline hover:decoration-white hover:underline-offset-4">
-                                        <Mail size={16} className="sm:w-[18px] sm:h-[18px] flex-shrink-0 text-white" />
-                                        <span className="break-all text-white">sheikhassim.bookings@gmail.com</span>
-                                    </a>
-                                    {/* <a href="https://wa.me/966123456789" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 sm:gap-3 text-white/90 hover:text-white transition-colors text-xs sm:text-sm">
-                                        <Phone size={16} className="sm:w-[18px] sm:h-[18px] flex-shrink-0" />
-                                        <span>WhatsApp: +966 12 345 6789</span>
-                                    </a> */}
+                            <div className="ah-form__row">
+                                <div className="ah-field">
+                                    <label htmlFor="contact-email">Email <span className="ah-field__req">*</span></label>
+                                    <input id="contact-email" ref={emailRef} type="email" name="email" value={formData.email} onChange={handleChange}
+                                        className={fieldClass('email')} placeholder="your@email.com" autoComplete="email"
+                                        aria-invalid={!!errors.email} aria-describedby={errors.email ? 'contact-email-error' : undefined} />
+                                    {errors.email && <p id="contact-email-error" className="ah-field__error">{errors.email}</p>}
+                                </div>
+                                <div className="ah-field">
+                                    <label htmlFor="contact-phone">Phone <span className="ah-field__hint">(optional)</span></label>
+                                    <input id="contact-phone" type="tel" name="phone" value={formData.phone} onChange={handleChange}
+                                        className="ah-input" placeholder="Include country code" autoComplete="tel" />
                                 </div>
                             </div>
-                        </motion.div>
+
+                            <div className="ah-field">
+                                <label htmlFor="contact-message">Message <span className="ah-field__req">*</span></label>
+                                <textarea id="contact-message" ref={messageRef} name="message" rows="6" value={formData.message} onChange={handleChange}
+                                    className={fieldClass('message')} placeholder="Write your message"
+                                    aria-invalid={!!errors.message} aria-describedby={errors.message ? 'contact-message-error' : undefined} />
+                                {errors.message && <p id="contact-message-error" className="ah-field__error">{errors.message}</p>}
+                            </div>
+
+                            <div>
+                                <button type="submit" className="ah-btn ah-btn--primary"
+                                    disabled={formStatus.submitted && !formStatus.success && formStatus.message === 'Sending...'}
+                                    title={!canSubmit ? 'Please complete all required fields correctly' : ''}>
+                                    <Send size={17} aria-hidden="true" />
+                                    {formStatus.submitted && !formStatus.success && formStatus.message === 'Sending...' ? 'Sending...' : 'Send Message'}
+                                </button>
+                            </div>
+                        </form>
                     </div>
+
+                    <aside className="ah-aside" aria-label="Contact details">
+                        <div className="ah-box">
+                            <h3>Contact Details</h3>
+                            <ul className="ah-footer__contact ah-contact-list">
+                                <li>
+                                    <Mail size={17} aria-hidden="true" />
+                                    <a href="mailto:sheikhassim.bookings@gmail.com">sheikhassim.bookings@gmail.com</a>
+                                </li>
+                                <li>
+                                    <MapPin size={17} aria-hidden="true" />
+                                    <span>Jeddah, Saudi Arabia</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div className="ah-box">
+                            <h3>Follow</h3>
+                            <p className="ah-box__text">Lectures, short answers and updates are shared on these channels.</p>
+                            <SocialLinks className="ah-about__social" />
+                        </div>
+
+                        <div className="ah-box ah-ask">
+                            <h3>Looking for something else?</h3>
+                            <p className="ah-ask__note">Religious questions are answered through the daily question form, and private sessions are booked separately.</p>
+                            <Link href="/ask-question" className="ah-btn ah-btn--white"><HelpCircle size={17} aria-hidden="true" />Ask a Question</Link>
+                            <Link href="/counselling" className="ah-btn ah-btn--ghost-light" style={{ width: '100%', marginTop: 10 }}><Calendar size={17} aria-hidden="true" />Book Counselling</Link>
+                        </div>
+                    </aside>
                 </div>
             </section>
         </>

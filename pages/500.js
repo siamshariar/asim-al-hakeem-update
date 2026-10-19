@@ -1,57 +1,26 @@
-import React from 'react';
-import Head from 'next/head';
-import Footer from '../components/footer';
-const Custom500 = () => {
-  
+import Link from 'next/link';
+import Meta from '../components/meta';
+import Header2 from '../components/header1';
+
+export default function Custom500() {
   return (
     <>
-    <Head>
-        <title>500: INTERNAL_SERVER_ERROR</title>
-        <link rel="icon" href="data:," />
-
-    </Head>
-    <main class="view-port" >
-        <div class="container-error">
-            <div class="view-port error">
-                    <div>
-                        <p class="error-title error-title-guilty">
-                            <stronger>This Serverless Function</stronger>
-                            <span> has crashed.</span>
-                        </p>
-                        <p class="error-title error-title-innocent">
-                            <stronger>Your connection</stronger>
-                            <span> is working correctly.</span>
-                        </p>
-                        <p class="error-title error-title-innocent">
-                            <stronger>Vercel</stronger>
-                            <span> is working correctly.</span>
-                        </p>
-                    </div>
-                    <p class="devinfo-container">
-                        <span class="error-code">
-                            <stronger>500</stronger>
-                            : INTERNAL_SERVER_ERROR
-                        </span>
-                        <span class="devinfo-error">Code: <code>FUNCTION_INVOCATION_FAILED</code></span>
-                        <span class="devinfo-error">ID:{' '}                                 
-                            <code>bom1::x94bg-1724137123895-d9a61c79c56f</code>
-                            </span>
-                    </p>
-                    <p>
-                    </p>
-                    <ul>
-                        <li>If you are a visitor, contact the website owner or try again later.</li>
-                            <li class="owner-error">If you are the owner, <a target="_blank" href="https://vercel.com/docs/error/application/FUNCTION_INVOCATION_FAILED" rel="noopener noreferrer">learn how to fix the error</a> and <a href="/_logs?requestId=bom1::x94bg-1724137123895-d9a61c79c56f" target="_blank">check the logs</a>.
-                        </li>
-                    </ul>
-                    <p>
-                    </p>
-            </div>
+      <Meta title="Something went wrong" description="An unexpected error occurred." />
+      <Header2 />
+      <section className="ah ah-error">
+        <div className="ah-wrap">
+          <p className="ah-error__code">500</p>
+          <h1>Something went wrong</h1>
+          <p>
+            An unexpected error occurred while loading this page. Please try again in a moment,
+            or continue browsing from one of the pages below.
+          </p>
+          <div className="ah-actions">
+            <Link href="/" className="ah-btn ah-btn--primary">Back to Home</Link>
+            <Link href="/qna" className="ah-btn ah-btn--outline">Browse Q&amp;A</Link>
+          </div>
         </div>
-    </main>
+      </section>
     </>
   );
-  
-};
-
-export default Custom500;
+}

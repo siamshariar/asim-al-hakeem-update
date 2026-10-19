@@ -27,7 +27,7 @@ class CustomDocument extends Document {
           />
           
           {/* Favicon */}
-          <link rel="icon" href="/favicon.ico" />
+          <link rel="icon" href="/img/id/favicon.ico" />
           
           {/* Google Analytics - Only load if GA_TRACKING_ID is set */}
           {GA_TRACKING_ID && GA_TRACKING_ID !== "G-XXXXXXXXXX" && (

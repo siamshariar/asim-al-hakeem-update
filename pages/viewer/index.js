@@ -14,10 +14,9 @@ export default function PDFViewer() {
 
   return <>
     <Meta
-      title={file || "File"}
-      description="ইসলামিক ব্লগ"
-      url="http://deeniit.com/"
-      image="/img/id/profile-01.png"
+      title="Document viewer"
+      description="Read documents shared by Sheikh Assim Al Hakeem."
+      image="/img/id/default_share.jpeg"
       type="website"
     />
 
