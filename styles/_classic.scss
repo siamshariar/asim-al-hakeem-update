@@ -278,25 +278,53 @@ html body {
 }
 
 .ah-nav__link {
+	position: relative;
 	display: inline-flex;
 	align-items: center;
 	gap: 4px;
-	padding: 8px 13px;
+	padding: 9px 13px;
 	border-radius: 6px;
 	font-size: 15px;
 	font-weight: 500;
 	color: var(--ah-ink);
 	white-space: nowrap;
+	transition: background-color 0.2s ease, color 0.2s ease;
 	--ah-hover: var(--ah-crimson);
+
+	&::after {
+		content: "";
+		position: absolute;
+		left: 13px;
+		right: 13px;
+		bottom: 3px;
+		height: 2px;
+		border-radius: 2px;
+		background: var(--ah-crimson);
+		transform: scaleX(0);
+		transition: transform 0.2s ease;
+	}
 
 	&:hover {
 		background: var(--ah-cream);
 	}
 
 	&[aria-current="page"] {
+		background: var(--ah-crimson-soft);
 		color: var(--ah-crimson);
 		font-weight: 600;
+		--ah-hover: var(--ah-crimson);
+
+		&::after {
+			transform: scaleX(1);
+		}
 	}
+}
+
+// Keep the active item highlighted while its dropdown is open
+.ah-nav li:hover > .ah-nav__link:not([aria-current="page"]),
+.ah-nav li:focus-within > .ah-nav__link:not([aria-current="page"]) {
+	background: var(--ah-cream);
+	color: var(--ah-crimson);
 }
 
 .ah-dropdown {
@@ -335,6 +363,12 @@ html body {
 
 		&:hover {
 			background: var(--ah-cream);
+		}
+
+		&[aria-current="page"] {
+			background: var(--ah-crimson-soft);
+			color: var(--ah-crimson);
+			font-weight: 600;
 		}
 	}
 }
@@ -434,6 +468,8 @@ html body {
 		}
 
 		&[aria-current="page"] {
+			background: var(--ah-crimson-soft);
+			box-shadow: inset 3px 0 0 var(--ah-crimson);
 			color: var(--ah-crimson);
 			font-weight: 600;
 		}

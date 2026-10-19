@@ -59,7 +59,7 @@ export default function Header2({ playlists, lectures, qna_categories, activePla
     {
       name: "Q&A",
       href: "/qna",
-      match: ["/qna", "/questions"],
+      match: ["/qna", "/questions", "/ask-question"],
       dropdownItems: qna_categories?.filter((c) => c.slug !== "all").slice(0, 6).map((c) => ({ name: c.title, href: `/qna/${c.slug}` })) || [],
       viewAllText: "View all Q&A",
     },
@@ -72,6 +72,8 @@ export default function Header2({ playlists, lectures, qna_categories, activePla
     if (link.href === "/") return router.pathname === "/";
     return link.match.some((prefix) => router.pathname === prefix || router.pathname.startsWith(`${prefix}/`));
   };
+
+  const currentPath = (router.asPath || "").split(/[?#]/)[0];
 
   return (
     <>
@@ -110,7 +112,7 @@ export default function Header2({ playlists, lectures, qna_categories, activePla
                       <ul>
                         {link.dropdownItems.map((item) => (
                           <li key={item.href}>
-                            <Link href={item.href}>{item.name}</Link>
+                            <Link href={item.href} aria-current={currentPath === item.href ? "page" : undefined}>{item.name}</Link>
                           </li>
                         ))}
                       </ul>
