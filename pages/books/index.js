@@ -133,7 +133,7 @@ export default function BookList({ books = [], playlists, headerLectures, qnaCat
                 )}
             </PageHero>
 
-            <section className="ah ah-page ah-page--alt" aria-label="Books">
+            <section className="ah ah-page" aria-label="Books">
                 <div className="ah-wrap">
                     {books.length > 0 ? (
                         <div className="ah-shelf">

@@ -316,7 +316,7 @@ export default function QnaAnswerDetail({ answer, playlists, headerLectures, qna
         </div>
       </PageHero>
 
-      <section className="ah ah-page ah-page--alt">
+      <section className="ah ah-page">
         <div className="ah-wrap ah-layout">
           <article className="ah-card">
             <p className="ah-answer__label"><MessageCircle size={16} aria-hidden="true" />Answer</p>

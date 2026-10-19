@@ -90,7 +90,7 @@ export default function Contact({ playlists, headerLectures, qna_categories }) {
                 breadcrumbs={[{ label: 'Contact' }]}
             />
 
-            <section className="ah ah-page ah-page--alt">
+            <section className="ah ah-page">
                 <div className="ah-wrap ah-layout">
                     <div className="ah-card">
                         <h2>Send a Message</h2>

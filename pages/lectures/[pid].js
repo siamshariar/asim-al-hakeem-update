@@ -212,7 +212,7 @@ export default function LectureList({ initialVideos, initPlaylistId, playlists, 
         </div>
       </PageHero>
 
-      <section className="ah ah-page ah-page--alt" aria-label="Videos">
+      <section className="ah ah-page" aria-label="Videos">
         <div className="ah-wrap">
           {datas.length > 0 && datas[0]?.videoLists?.videos?.length > 0 ? (
             <div className="ah-lec-grid ah-lec-grid--page">
@@ -232,7 +232,7 @@ export default function LectureList({ initialVideos, initPlaylistId, playlists, 
                           <img src={`https://i.ytimg.com/vi/${video.id}/hqdefault.jpg`} alt="" loading="lazy" />
                           <span className="ah-vcard__play" aria-hidden="true" />
                         </div>
-                        <div>
+                        <div className="ah-vcard__body">
                           <h3 className="ah-vcard__title">{cleanVideoTitle(video.title)}</h3>
                           <p className="ah-vcard__meta">
                             {video.date ? formatDate(video.date) : ""}

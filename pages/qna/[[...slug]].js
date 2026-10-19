@@ -938,7 +938,7 @@ export default function QnaPage({ playlists, headerLectures, qnaCategories, init
           )}
         </AnimatePresence>
 
-        <section className="ah ah-page ah-page--alt" ref={containerRef}>
+        <section className="ah ah-page" ref={containerRef}>
           <div className="ah-wrap ah-layout ah-layout--left">
             <aside className="ah-hide-tablet ah-sticky" aria-label="Categories">
               <div className="ah-cat-box">

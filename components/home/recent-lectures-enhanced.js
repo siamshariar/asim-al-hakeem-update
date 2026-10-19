@@ -105,7 +105,7 @@ export default function RecentLecturesEnhanced({ lectures }) {
                     />
                     <span className="ah-vcard__play" aria-hidden="true" />
                   </div>
-                  <div>
+                  <div className="ah-vcard__body">
                     <h3 className="ah-vcard__title">{video.displayTitle}</h3>
                     <p className="ah-vcard__meta">
                       {video.date}

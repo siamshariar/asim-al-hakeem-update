@@ -20,6 +20,17 @@
 	flex-grow: 1;
 }
 
+/* Cards sit on white pages under the cream page header; a soft shadow keeps them distinct */
+.ah-page .ah-card,
+.ah-page .ah-box,
+.ah-page .ah-cat-box,
+.ah-page .ah-qrow,
+.ah-page .ah-shelf-item,
+.ah-page .ah-acard > a,
+.ah-page .ah-book > a {
+	box-shadow: 0 1px 2px rgba(31, 28, 25, 0.04), 0 4px 14px rgba(31, 28, 25, 0.04);
+}
+
 /* Button focus states (Materialize paints focused buttons teal) */
 .ah-btn--primary:focus {
 	background: var(--ah-crimson);
@@ -1465,6 +1476,11 @@
 
 	.ah-form__row {
 		grid-template-columns: 1fr;
+	}
+
+	// iOS Safari zooms the page when focusing an input under 16px
+	.ah .ah-input {
+		font-size: 16px !important;
 	}
 
 	.ah-aside--split {

@@ -33,7 +33,7 @@ export default function AskAQuestion({ playlists, headerLectures, qna_categories
         breadcrumbs={[{ label: 'Q&A', href: '/qna' }, { label: 'Ask a Question' }]}
       />
 
-      <section className="ah ah-page ah-page--alt">
+      <section className="ah ah-page">
         <div className="ah-wrap ah-layout">
           <div className="ah-card">
             <h2>Submit Your Question</h2>

@@ -240,7 +240,7 @@ export default function Articles({ playlists, headerLectures, qnaCategories, ini
         </div>
       </div>
 
-      <section className="ah ah-page ah-page--alt" aria-label="Articles">
+      <section className="ah ah-page" aria-label="Articles">
         <div className="ah-wrap">
           {isSearching ? (
             <div className="ah-loading" role="status">
