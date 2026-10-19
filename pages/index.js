@@ -4,35 +4,32 @@ import {
   getHomeArticles,
   getAllPlaylists2,
   getHomeBooks,
-  getHomeQna,
   getQnaByLimit,
   getHeaderLectures,
   getAllQnaCategory,
+  getQnaOverview,
 } from "../lib/fetch";
 
 import Meta from "../components/meta";
 import Header2 from "../components/header1";
 import HeroBanner from "../components/home/hero-banner";
+import QuickAccess from "../components/home/quick-access";
 import RecentLecturesEnhanced from "../components/home/recent-lectures-enhanced";
+import RecentQnaEnhanced from "../components/home/recent-qna-enhanced";
+import AboutPreview from "../components/home/about-preview";
 import FeaturedBooks from "../components/home/featured-books";
 import ArticlesSection from "../components/home/articles-enhanced";
-import RecentQnaEnhanced from "../components/home/recent-qna-enhanced";
-import QASection from "../components/home/qa-section";
 import CounsellingCTA from "../components/home/counselling-cta";
-import TestimonialsSection from "../components/home/testimonials-section";
-import NewsletterSection from "../components/home/newsletter-section";
-import AboutPreview from "../components/home/about-preview";
-import AskQuestionCounselling from "../components/home/askquestion-counselling";
 
 export default function Home({
   lectures = null,
   headerLectures = null,
-  quotes = [],
   articles = [],
   playlists = [],
   books = [],
   qna = [],
   qna_categories = [],
+  qnaOverview = { totalAnswers: 0, totalTopics: 0, topTopics: [] },
 }) {
   return (
     <>
@@ -40,7 +37,7 @@ export default function Home({
         title="Sheikh Assim Al Hakeem - Official Website"
         description="Sheikh Assim bin Luqman al-Hakeem is a prominent Islamic scholar providing authentic Islamic knowledge through lectures, books, articles, and Q&A sessions."
         url="https://assimalhakeem.com"
-        image="/img/og-image.jpg"
+        image="/img/id/default_share.jpeg"
         type="website"
       />
 
@@ -51,39 +48,19 @@ export default function Home({
       />
 
       <main className="overflow-x-hidden">
-        {/* Hero Banner - Dark Background */}
-        <HeroBanner />
-
-        {/* Recent Lectures - Light Gray Background */}
+        <HeroBanner totalAnswers={qnaOverview.totalAnswers} totalTopics={qnaOverview.totalTopics} />
+        <QuickAccess totalAnswers={qnaOverview.totalAnswers} totalTopics={qnaOverview.totalTopics} />
         <RecentLecturesEnhanced lectures={lectures} />
-
-        {/* Articles Section - Light Gray Background */}
-        <ArticlesSection articles={articles} />
-        
-        {/* About Preview - White Background */}
+        <RecentQnaEnhanced
+          qna={qna}
+          topics={qnaOverview.topTopics}
+          totalAnswers={qnaOverview.totalAnswers}
+          totalTopics={qnaOverview.totalTopics}
+        />
         <AboutPreview />
-
-        {/* Featured Books - Light Gray Background */}
         <FeaturedBooks books={books} />
-
-        {/* Recent Q&A - Light Green Background */}
-        <RecentQnaEnhanced qna={qna} />
-
-        {/* Q&A and Counselling - Distinct Light Blue Background */}
-        <section className="py-12 lg:py-20 bg-gradient-to-br from-[#eef2ff] via-[#f7f7fe] to-white">
-          <div className="container max-w-[1260px] mx-auto px-4 sm:px-6">
-            <div className="grid lg:grid-cols-2 gap-8">
-              <QASection qna={qna} />
-              <CounsellingCTA />
-            </div>
-          </div>
-        </section>
-
-        {/* Testimonials - White Background */}
-        <TestimonialsSection />
-
-        {/* Newsletter - Accent Gradient Background */}
-       
+        <ArticlesSection articles={articles} />
+        <CounsellingCTA />
       </main>
     </>
   );
@@ -101,6 +78,7 @@ export async function getStaticProps(context) {
       qna,
       qnaFallback,
       qna_categories,
+      qnaOverview,
     ] = await Promise.all([
       getHomeLectures().catch(() => null),
       getHeaderLectures().catch(() => null),
@@ -108,9 +86,10 @@ export async function getStaticProps(context) {
       getHomeArticles().catch(() => []),
       getAllPlaylists2().catch(() => ({ playlists: [], playlistsTitle: {} })),
       getHomeBooks().catch(() => []),
-      getQnaByLimit(3).catch(() => []),
-      getQnaByLimit(3).catch(() => []),
+      getQnaByLimit(4).catch(() => []),
+      getQnaByLimit(4).catch(() => []),
       getAllQnaCategory().catch(() => []),
+      getQnaOverview(6).catch(() => null),
     ]);
 
     return {
@@ -123,6 +102,7 @@ export async function getStaticProps(context) {
         books: books || [],
         qna: (qna && qna.length ? qna : qnaFallback) || [],
         qna_categories: qna_categories || [],
+        qnaOverview: qnaOverview || { totalAnswers: 0, totalTopics: 0, topTopics: [] },
       },
       revalidate: 60,
     };
@@ -138,6 +118,7 @@ export async function getStaticProps(context) {
         books: [],
         qna: [],
         qna_categories: [],
+        qnaOverview: { totalAnswers: 0, totalTopics: 0, topTopics: [] },
       },
       revalidate: 60,
     };

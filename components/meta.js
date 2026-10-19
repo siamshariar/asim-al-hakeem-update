@@ -7,7 +7,7 @@ export default function Meta(props) {
 			<meta charSet="utf-8" />
 			<meta
 				name="viewport"
-				content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no, uc-fitscreen=yes"
+				content="width=device-width, initial-scale=1"
 			/>
 			<meta name="description" content={props.description || ""} />
 			<meta name="author" content="" />
@@ -15,7 +15,7 @@ export default function Meta(props) {
 			<meta httpEquiv="X-UA-Compatible" content="ie=edge" />
 
 			{/* Android phone */}
-			<meta name="theme-color" content="#369fae" />
+			<meta name="theme-color" content="#8e1c2b" />
 			<meta name="mobile-web-app-capable" content="yes" />
 
 			{/* iOS phone */}

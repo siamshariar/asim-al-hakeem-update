@@ -1,136 +1,59 @@
 import Link from "next/link";
 import Image from "next/image";
-import { motion } from "framer-motion";
-import { Calendar, User, ArrowRight, TrendingUp } from "lucide-react";
+import { ArrowRight } from "lucide-react";
+import { date as formatDate } from "../../lib/format";
+
+const formatArticleDate = (value) => {
+  if (!value) return "";
+  const parsed = new Date(value);
+  return Number.isNaN(parsed.getTime()) ? value : formatDate(value);
+};
 
 export default function ArticlesSection({ articles }) {
-  const featuredArticle = articles?.[0];
-  const otherArticles = articles?.slice(1, 4) || [];
+  const items = articles?.slice(0, 4) || [];
 
-  const fadeInUp = {
-    initial: { opacity: 0, y: 30 },
-    whileInView: { opacity: 1, y: 0 },
-    viewport: { once: true },
-    transition: { duration: 0.6 }
-  };
-
-  if (!articles?.length) return null;
+  if (!items.length) return null;
 
   return (
-    <section className="py-12 lg:py-20 bg-gradient-to-br from-[#f8fafc] via-[#eff6ff] to-[#f0f9ff]">
-      <div className="container max-w-[1260px] mx-auto px-4 sm:px-6">
-        <motion.div
-          {...fadeInUp}
-          className="flex items-start justify-between gap-4 mb-10"
-        >
-          <div className="min-w-0 flex-1">
-            <span className="text-accent font-semibold uppercase tracking-wider text-sm">Insights & Knowledge</span>
-            <h2 className="section-title text-primary mt-2">Latest Articles</h2>
+    <section className="ah ah-sec" aria-labelledby="articles-title">
+      <div className="ah-wrap">
+        <div className="ah-sec-head">
+          <div>
+            <p className="ah-eyebrow">Writings</p>
+            <h2 id="articles-title">Selected Articles</h2>
           </div>
-          <div className="shrink-0 ml-auto">
-            <Link href="/articles">
-              <motion.button
-                whileHover={{ x: 5 }}
-                className="inline-flex items-center gap-2 text-accent font-medium hover:text-accent-secondary transition-colors text-sm"
-              >
-                <span>View All Articles</span>
-                <ArrowRight size={16} />
-              </motion.button>
-            </Link>
-          </div>
-        </motion.div>
+          <Link href="/articles" className="ah-link">
+            View all articles
+            <ArrowRight size={17} aria-hidden="true" />
+          </Link>
+        </div>
 
-        {featuredArticle && (
-          <motion.div
-            {...fadeInUp}
-            className="mb-8"
-          >
-            <Link href={`/articles/${featuredArticle.postSlug || featuredArticle.id}`}>
-              <div className="group bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300">
-                <div className="grid lg:grid-cols-2 gap-6">
-                  <div className="relative h-64 lg:h-full overflow-hidden">
-                    <Image
-                      src={featuredArticle.imageSrc || "/img/articles/default.jpg"}
-                      alt={featuredArticle.postTitle || featuredArticle.title}
-                      fill
-                      className="object-cover group-hover:scale-110 transition-transform duration-700"
-                    />
-                  </div>
-                  <div className="p-3 xs:p-4 sm:p-6 lg:p-8 flex flex-col justify-center">
-                    <div className="flex flex-col xs:flex-row xs:items-center gap-2 xs:gap-4 text-xs xs:text-sm text-gray-500 mb-2 xs:mb-3">
-                      <span className="flex items-center gap-1">
-                        <Calendar size={13} />
-                        {featuredArticle.postDate || featuredArticle.date}
-                      </span>
-                      <span className="flex items-center gap-1">
-                        <User size={13} />
-                        Sheikh Assim Al Hakeem
-                      </span>
-                    </div>
-                    <h4 className="text-base xs:text-lg sm:text-xl font-bold text-primary mb-2 xs:mb-4 group-hover:text-gray-500 transition-colors line-clamp-2">
-                      {featuredArticle.postTitle || featuredArticle.title}
-                    </h4>
-                    <p className="text-xs xs:text-sm sm:text-base text-gray-600 mb-3 xs:mb-6 line-clamp-2 xs:line-clamp-3">
-                      {featuredArticle.postExcerpt || featuredArticle.description}
-                    </p>
-                    <div className="flex items-center text-accent font-medium text-sm xs:text-base group-hover:gap-2 transition-all">
-                      <span>Read Full Article</span>
-                      <ArrowRight size={16} className="opacity-0 group-hover:opacity-100 transition-all" />
-                    </div>
-                  </div>
+        <div className="ah-art-grid">
+          {items.map((article) => (
+            <article key={article.id} className="ah-acard">
+              <Link href={`/articles/${article.postSlug || article.id}`}>
+                <div className="ah-acard__img">
+                  <Image
+                    src={article.imageSrc || "/img/articles/default.jpg"}
+                    alt=""
+                    fill
+                    sizes="(max-width: 680px) 100vw, (max-width: 1100px) 50vw, 280px"
+                  />
                 </div>
-              </div>
-            </Link>
-          </motion.div>
-        )}
-
-        {otherArticles.length > 0 && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
-            className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3 xs:gap-4 sm:gap-6"
-          >
-            {otherArticles.map((article, idx) => (
-              <motion.div
-                key={article.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: idx * 0.1 }}
-                whileHover={{ y: -5 }}
-                className="group bg-white rounded-lg sm:rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-all duration-300"
-              >
-                <Link href={`/articles/${article.postSlug || article.id}`}>
-                  <div className="relative h-32 xs:h-40 sm:h-48 overflow-hidden">
-                    <Image
-                      src={article.imageSrc || "/img/articles/default.jpg"}
-                      alt={article.postTitle || article.title}
-                      fill
-                      className="object-cover group-hover:scale-110 transition-transform duration-500"
-                    />
-                  </div>
-                  <div className="p-3 xs:p-4 sm:p-5">
-                    <div className="flex items-center text-xs text-gray-500 mb-2">
-                      <Calendar size={12} className="mr-1" />
-                      <span>{article.postDate || article.date}</span>
-                    </div>
-                    <h4 className="text-sm xs:text-base sm:text-lg font-semibold text-primary mb-2 line-clamp-2 group-hover:text-accent transition-colors">
-                      {article.postTitle || article.title}
-                    </h4>
-                    <p className="text-xs xs:text-sm text-gray-600 line-clamp-2">
-                      {article.postExcerpt || article.description}
-                    </p>
-                  </div>
-                </Link>
-              </motion.div>
-            ))}
-          </motion.div>
-        )}
-
+                <div className="ah-acard__body">
+                  <p className="ah-acard__date">{formatArticleDate(article.postDate || article.date)}</p>
+                  <h3>{article.postTitle || article.title}</h3>
+                  <p className="ah-acard__excerpt">{article.postExcerpt || article.description}</p>
+                  <span className="ah-link">
+                    Read article
+                    <ArrowRight size={17} aria-hidden="true" />
+                  </span>
+                </div>
+              </Link>
+            </article>
+          ))}
+        </div>
       </div>
     </section>
   );
-  
 }

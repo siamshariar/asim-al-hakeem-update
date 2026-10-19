@@ -1,55 +1,59 @@
 import Link from "next/link";
-import { motion } from "framer-motion";
-import { Award, BookOpen, Users, ArrowRight } from "lucide-react";
+import Image from "next/image";
+import { MapPin, GraduationCap, Mic, Tv } from "lucide-react";
+
+const facts = [
+  { term: "1962", detail: "Born in Al‑Khobar, Eastern Province", Icon: MapPin },
+  { term: "KFUPM", detail: "University studies; major in Linguistics", Icon: GraduationCap },
+  { term: "1989", detail: "Began delivering the Friday sermon", Icon: Mic },
+  { term: "Television", detail: "English programmes on Iqra, Saudi National TV and Al‑Majd", Icon: Tv },
+];
 
 export default function AboutPreview() {
   return (
-    <section className="py-12 lg:py-20 bg-gradient-to-br from-[#f0fdf4] via-[#ffffff] to-[#e6fffa]">
-      <div className="container max-w-[1260px] mx-auto px-4 sm:px-6">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <span className="text-[#10b981] font-semibold uppercase tracking-wider text-sm">About Sheikh Assim</span>
-            <h2 className="section-title text-[#1a1f2e] mt-2 mb-4 leading-tight">
-              Guiding the Ummah with Authentic Knowledge
-            </h2>
-            <p className="text-gray-600 text-lg leading-relaxed mb-6">
-              Sheikh Assim bin Luqman al-Hakeem was born in 1962 in Al-Khobar, Saudi Arabia. 
-              With decades of experience in Islamic scholarship and a unique ability to communicate 
-              in both Arabic and English, he has become one of the most trusted voices in Islamic 
-              education worldwide.
-            </p>
-
-            <Link href="/about">
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="inline-flex items-center gap-1.5 px-5 py-2.5 text-base tracking-wide sm:px-6 sm:py-3 md:px-7 md:py-3.5 bg-[#10b981] text-white rounded-full font-medium shadow-lg shadow-[#10b981]/25 hover:shadow-xl transition-all"
-              >
-                <span>Learn more</span>
-                <ArrowRight size={18} />
-              </motion.button>
-            </Link>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="relative"
-          >
-            <div className="absolute inset-0 bg-gradient-to-tr from-[#10b981]/20 to-transparent rounded-3xl -rotate-3"></div>
-            <img 
-              src="/img/about/about-img.jpg" 
-              alt="Sheikh Assim Al Hakeem" 
-              className="rounded-3xl shadow-2xl relative z-10 w-full object-cover"
+    <section className="ah ah-sec" aria-labelledby="about-title">
+      <div className="ah-wrap ah-about-grid">
+        <figure className="ah-about__photo">
+          <div className="ah-about__img">
+            <Image
+              src="/img/about/about-img.jpg"
+              alt="Sheikh Assim Al Hakeem seated, wearing a white shemagh"
+              fill
+              sizes="(max-width: 920px) 100vw, 460px"
             />
-          </motion.div>
+          </div>
+          <figcaption>Sheikh Assim bin Luqman Al&#8209;Hakeem</figcaption>
+        </figure>
+
+        <div className="ah-about__copy">
+          <p className="ah-eyebrow">About the Sheikh</p>
+          <h2 id="about-title">Sheikh Assim bin Luqman Al&#8209;Hakeem</h2>
+          <p>
+            Born in Al&#8209;Khobar in the Eastern Province of Saudi Arabia, Sheikh Assim moved with
+            his family to Jeddah at the age of twelve. His public da'wah began in 1989, when he
+            started delivering the Friday sermon in Arabic.
+          </p>
+          <p>
+            Through English television programmes and, later, online Q&amp;A, his teaching reached
+            Muslims around the world. Alongside his da'wah he teaches classes after 'Isha, travels
+            for lectures and answers questions from people seeking advice.
+          </p>
+          <dl className="ah-facts">
+            {facts.map(({ term, detail, Icon }) => (
+              <div key={term}>
+                <span className="ah-facts__icon">
+                  <Icon size={20} aria-hidden="true" />
+                </span>
+                <div>
+                  <dt>{term}</dt>
+                  <dd>{detail}</dd>
+                </div>
+              </div>
+            ))}
+          </dl>
+          <Link href="/about" className="ah-btn ah-btn--outline">
+            Read Full Biography
+          </Link>
         </div>
       </div>
     </section>
