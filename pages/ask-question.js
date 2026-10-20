@@ -5,6 +5,7 @@ import Meta from "../components/meta";
 import Header2 from "../components/header1";
 import PageHero from "../components/page-hero";
 import ShareLinks from "../components/share-links";
+import EmailText from "../components/email-text";
 import { Mail, DollarSign, Clock, CheckCircle, Send } from 'lucide-react';
 import { useState } from 'react';
 
@@ -95,7 +96,7 @@ export default function AskAQuestion({ playlists, headerLectures, qna_categories
               <h3>Counselling Sessions</h3>
               <p className="ah-box__text">Need marriage counselling or one-to-one live counselling with Sheikh Assim?</p>
               <ul className="ah-footer__contact ah-contact-list">
-                <li><Mail size={17} aria-hidden="true" /><a href="mailto:sheikhassim.bookings@gmail.com">sheikhassim.bookings@gmail.com</a></li>
+                <li><Mail size={17} aria-hidden="true" /><a href="mailto:sheikhassim.bookings@gmail.com"><EmailText email="sheikhassim.bookings@gmail.com" /></a></li>
                 <li><DollarSign size={17} aria-hidden="true" /><span>$100 / half hour</span></li>
               </ul>
               <Link href="/counselling" className="ah-link" style={{ marginTop: 12 }}>Book a session</Link>
@@ -104,7 +105,7 @@ export default function AskAQuestion({ playlists, headerLectures, qna_categories
             <div className="ah-box ah-ask">
               <h3>Donate for the Needy</h3>
               <p className="ah-ask__note">Help a brother or sister in need who cannot afford counselling.</p>
-              <p className="ah-ask__note">Contact: sheikhassim.bookings@gmail.com</p>
+              <p className="ah-ask__note">Contact: <EmailText email="sheikhassim.bookings@gmail.com" /></p>
               <Link href="/counselling#donate" className="ah-btn ah-btn--white">Learn about donations</Link>
             </div>
           </aside>

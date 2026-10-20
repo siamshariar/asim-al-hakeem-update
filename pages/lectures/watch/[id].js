@@ -13,6 +13,20 @@ import { getAllPlaylists2, getAllQnaCategory, getHeaderLectures } from '../../..
 
 const API_KEY = process.env.NEXT_PUBLIC_YOUTUBE_API_KEY || youtube.key;
 
+const URL_RE = /(https?:\/\/[^\s<>"]+)/g;
+
+// YouTube descriptions contain plain-text links; render them as real links
+const linkify = (text = "") =>
+  String(text).split(URL_RE).map((part, idx) =>
+    idx % 2 === 1 ? (
+      <a key={idx} href={part} target="_blank" rel="noopener noreferrer nofollow">
+        {part.replace(/^https?:\/\/(www\.)?/, "")}
+      </a>
+    ) : (
+      part
+    )
+  );
+
 export default function LectureVideo({ playlists, headerLectures, qna_categories, videoData }) {
   const router = useRouter();
   const { id } = router.query;
@@ -129,7 +143,7 @@ export default function LectureVideo({ playlists, headerLectures, qna_categories
 
           {video.description && (
             <div className="ah-prose ah-desc" style={{ marginTop: 32 }}>
-              <p>{video.description}</p>
+              <p>{linkify(video.description)}</p>
             </div>
           )}
 

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Clock, DollarSign, User, Phone, Mail } from "lucide-react";
+import EmailText from "../email-text";
 
 const details = [
   { term: "Duration", value: "30 minutes", Icon: Clock },
@@ -39,7 +40,7 @@ export default function CounsellingCTA() {
                 </span>
                 <div>
                   <dt>{term}</dt>
-                  <dd>{value}</dd>
+                  <dd>{value.includes("@") ? <EmailText email={value} /> : value}</dd>
                 </div>
               </div>
             ))}

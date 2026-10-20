@@ -5,6 +5,7 @@ import Meta from '../components/meta';
 import Header2 from '../components/header1';
 import PageHero from '../components/page-hero';
 import SocialLinks from '../components/social-links';
+import EmailText from '../components/email-text';
 import { Mail, MapPin, Send, CheckCircle, AlertCircle, Calendar, HelpCircle } from 'lucide-react';
 
 export default function Contact({ playlists, headerLectures, qna_categories }) {
@@ -166,7 +167,7 @@ export default function Contact({ playlists, headerLectures, qna_categories }) {
                             <ul className="ah-footer__contact ah-contact-list">
                                 <li>
                                     <Mail size={17} aria-hidden="true" />
-                                    <a href="mailto:sheikhassim.bookings@gmail.com">sheikhassim.bookings@gmail.com</a>
+                                    <a href="mailto:sheikhassim.bookings@gmail.com"><EmailText email="sheikhassim.bookings@gmail.com" /></a>
                                 </li>
                                 <li>
                                     <MapPin size={17} aria-hidden="true" />

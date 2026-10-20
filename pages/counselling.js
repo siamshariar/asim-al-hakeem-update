@@ -6,6 +6,7 @@ import Meta from "../components/meta";
 import Header2 from "../components/header1";
 import PageHero from "../components/page-hero";
 import ShareLinks from "../components/share-links";
+import EmailText from "../components/email-text";
 import { Send, Clock, DollarSign, User, Phone, Mail, Heart, CheckCircle } from 'lucide-react';
 
 const details = [
@@ -184,7 +185,7 @@ export default function CounsellingSession({ playlists, headerLectures, qna_cate
                   <span className="ah-chips__icon"><Icon size={18} aria-hidden="true" /></span>
                   <div>
                     <dt>{term}</dt>
-                    <dd>{value}</dd>
+                    <dd>{value.includes("@") ? <EmailText email={value} /> : value}</dd>
                   </div>
                 </div>
               ))}
@@ -193,7 +194,7 @@ export default function CounsellingSession({ playlists, headerLectures, qna_cate
             <div className="ah-box ah-ask" id="donate">
               <h3><Heart size={18} aria-hidden="true" style={{ display: 'inline', verticalAlign: '-2px', marginRight: 8 }} />Donate for the Needy</h3>
               <p className="ah-ask__note">Help a brother or sister in need who cannot afford counselling for marital issues, OCD, waswas and more.</p>
-              <p className="ah-ask__note">Contact: sheikhassim.bookings@gmail.com</p>
+              <p className="ah-ask__note">Contact: <EmailText email="sheikhassim.bookings@gmail.com" /></p>
               <a href="mailto:sheikhassim.bookings@gmail.com?subject=Donation%20for%20counselling" className="ah-btn ah-btn--white">Contact to Donate</a>
             </div>
 

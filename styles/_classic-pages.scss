@@ -549,6 +549,18 @@
 	}
 }
 
+// Stretch the question link over the whole card
+.ah-qrow h3 a::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	border-radius: inherit;
+}
+
+.ah-qrow:focus-within {
+	border-color: var(--ah-crimson);
+}
+
 /* Listing grids */
 .ah-art-grid--3 {
 	grid-template-columns: repeat(3, 1fr);
@@ -565,6 +577,7 @@
 }
 
 .ah-qrow {
+	position: relative;
 	padding: 22px 24px;
 	background: #fff;
 	border: 1px solid var(--ah-line);
@@ -1229,6 +1242,10 @@
 
 .ah-desc {
 	white-space: pre-line;
+
+	a {
+		overflow-wrap: anywhere;
+	}
 }
 
 /* About page */
@@ -1396,13 +1413,6 @@
 		grid-template-columns: minmax(0, 1fr);
 	}
 
-	.ah-layout--left {
-		grid-template-columns: minmax(0, 1fr);
-	}
-
-	.ah-sticky {
-		position: static;
-	}
 
 	.ah-aside--split {
 		grid-template-columns: 1fr 1fr;
@@ -1424,13 +1434,28 @@
 	}
 }
 
-@media (max-width: 1100px) {
+@media (max-width: 1023px) {
+	.ah-layout--left {
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	.ah-sticky {
+		position: static;
+	}
+
 	.ah-hide-tablet {
 		display: none !important;
 	}
 }
 
-@media (min-width: 1101px) {
+@media (min-width: 1024px) and (max-width: 1100px) {
+	.ah-layout--left {
+		grid-template-columns: 280px minmax(0, 1fr);
+		gap: 24px;
+	}
+}
+
+@media (min-width: 1024px) {
 	.ah-show-tablet {
 		display: none !important;
 	}
@@ -1476,6 +1501,11 @@
 
 	.ah-form__row {
 		grid-template-columns: 1fr;
+	}
+
+	.ah-share__label {
+		flex-basis: 100%;
+		margin: 0 0 2px;
 	}
 
 	// iOS Safari zooms the page when focusing an input under 16px

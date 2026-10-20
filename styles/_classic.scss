@@ -195,6 +195,42 @@ html body {
 	}
 }
 
+/* Small text links get an invisible 44px-tall hit area for touch screens */
+.ah-link,
+.ah-breadcrumb a,
+a.ah-topbar__item,
+.ah-contact-list a,
+.ah-footer__contact a,
+.ah-shelf-item h2 a {
+	position: relative;
+}
+
+.ah-link::before,
+.ah-breadcrumb a::before,
+a.ah-topbar__item::before,
+.ah-contact-list a::before,
+.ah-footer__contact a::before,
+.ah-shelf-item h2 a::before {
+	content: "";
+	position: absolute;
+	top: 50%;
+	left: -4px;
+	right: -4px;
+	height: 44px;
+	transform: translateY(-50%);
+}
+
+@media (pointer: coarse) {
+	.ah-footer [role="navigation"] li {
+		padding: 0;
+	}
+
+	.ah-footer [role="navigation"] li > a {
+		display: inline-block;
+		padding: 10px 0;
+	}
+}
+
 /* Top bar */
 .ah-topbar {
 	background: var(--ah-ink);
@@ -1265,7 +1301,7 @@ html body {
 		font-size: 15.5px;
 		font-weight: 600;
 		color: var(--ah-ink);
-		overflow-wrap: anywhere;
+		overflow-wrap: break-word;
 	}
 }
 
@@ -1354,7 +1390,7 @@ html body {
 	}
 
 	a {
-		overflow-wrap: anywhere;
+		overflow-wrap: break-word;
 	}
 }
 
@@ -1436,7 +1472,8 @@ html body {
 	}
 }
 
-@media (max-width: 920px) {
+/* The full menu needs about 1000px; narrower screens use the Menu button */
+@media (max-width: 1023px) {
 	.ah-nav,
 	.ah-header__ask {
 		display: none;
@@ -1449,7 +1486,9 @@ html body {
 	.ah-header__row {
 		min-height: 74px;
 	}
+}
 
+@media (max-width: 920px) {
 	.ah-hero__figure::before {
 		width: 360px;
 		height: 360px;
