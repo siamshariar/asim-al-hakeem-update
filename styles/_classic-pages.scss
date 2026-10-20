@@ -1152,7 +1152,10 @@
 
 /* Lectures playlist picker */
 .ah-select {
+	// The hero's entrance animation makes this its own layer, so it needs a z-index to keep
+	// the open menu above the video cards below the hero
 	position: relative;
+	z-index: 40;
 	display: inline-block;
 	width: 100%;
 	max-width: 480px;
