@@ -1,28 +1,44 @@
-// share button
+// Share button + share dialog (used by the video player and older detail pages)
+
 .wrapper {
 	display: flex;
+	flex: none;
 }
 
 .btn {
-	display: flex;
-	justify-content: center;
+	display: inline-flex;
 	align-items: center;
-	font-weight: bold;
-	color: #718096;
-}
+	gap: 8px;
+	padding: 9px 16px;
+	background: #fff;
+	border: 1px solid #d9cfbf;
+	border-radius: 6px;
+	font-family: "Inter", -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+	font-size: 14.5px;
+	font-weight: 600;
+	line-height: 1.2;
+	color: #1f1c19;
+	white-space: nowrap;
+	cursor: pointer;
+	transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 
-.btn svg {
-	color: inherit;
-	padding: 0;
-	margin-left: 0.75rem;
-	/* width: 1.25rem; */
-	/* height: 1.25rem; */
-	font-size: 1.5rem;
-}
+	svg {
+		width: 18px;
+		height: 18px;
+		color: #8e1c2b;
+	}
 
-.btn svg:hover {
-	background-color: unset;
-	color: unset;
+	&:hover,
+	&:focus {
+		background: #f5e8ea;
+		border-color: #8e1c2b;
+		color: #8e1c2b;
+	}
+
+	&:focus-visible {
+		outline: 2px solid #8e1c2b;
+		outline-offset: 2px;
+	}
 }
 
 .btn_mobile {
@@ -30,93 +46,211 @@
 }
 
 .btn_web {
-	display: flex;
+	display: inline-flex;
 }
 
 @media only screen and (max-width: 767px) {
 	.btn_mobile {
-		display: flex;
+		display: inline-flex;
 	}
+
 	.btn_web {
 		display: none;
 	}
 }
 
-// share modal
-.root {
-	display: block;
-}
-
+// Share dialog
 .backdrop {
-	opacity: 0.9 !important;
+	background-color: rgba(20, 16, 14, 0.7) !important;
 }
 
 .modal {
-	width: 90%;
-	max-width: 518px;
-	background-color: #fff;
 	position: absolute;
 	top: 50%;
 	left: 50%;
+	width: calc(100% - 32px);
+	max-width: 520px;
+	max-height: calc(100vh - 32px);
+	overflow-y: auto;
+	padding: 28px;
+	background: #fff;
+	border-radius: 12px;
+	box-shadow: 0 24px 60px rgba(0, 0, 0, 0.3);
 	transform: translate(-50%, -50%);
-	padding: 32px 32px;
-	border-radius: 10px;
+	outline: none;
+	font-family: "Inter", -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+	color: #433e38;
 }
 
 .close {
 	position: absolute;
-	top: 20px;
-	right: 20px;
-	height: 34px;
-	width: 34px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	border: none;
-	background-color: var(--bg12);
-	transition: all 0.3s ease;
+	top: 16px;
+	right: 16px;
+	display: grid;
+	place-items: center;
+	width: 36px;
+	height: 36px;
+	padding: 0;
+	background: #f7f3ec;
+	border: 0;
 	border-radius: 50%;
+	color: #1f1c19;
 	cursor: pointer;
-	opacity: 0.8;
-}
 
-.close:hover {
-	opacity: 1;
-}
+	svg {
+		width: 20px;
+		height: 20px;
+	}
 
-.close span {
-	width: 22px;
-	height: 22px;
-	color: var(--txt12);
-	display: flex;
-	justify-content: center;
-	align-items: center;
+	&:hover,
+	&:focus {
+		background: #efe7da;
+	}
+
+	&:focus-visible {
+		outline: 2px solid #8e1c2b;
+		outline-offset: 2px;
+	}
 }
 
 .title {
-	font-size: 20px;
-	margin-bottom: 20px;
-	padding-bottom: 20px;
-	border-bottom: 1px dashed var(--bdr11);
-	line-height: 1;
-	color: var(--txt12);
+	margin: 0 44px 0 0;
+	font-family: "Source Serif 4", Georgia, serif;
+	font-size: 24px;
+	font-weight: 600;
+	line-height: 1.2;
+	color: #1f1c19;
+}
+
+.subtitle {
+	display: -webkit-box;
+	margin: 6px 44px 0 0;
+	overflow: hidden;
+	font-size: 14px;
+	line-height: 1.5;
+	color: #675f55;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
 }
 
 .lists {
-	display: flex;
-	flex-wrap: wrap;
-	margin: 0 -5px;
+	display: grid;
+	grid-template-columns: repeat(4, minmax(0, 1fr));
+	gap: 16px 8px;
+	margin-top: 22px;
+	padding-top: 20px;
+	border-top: 1px solid #e5ddd0;
 }
 
 .item {
-	padding: 5px;
-}
-
-.item button {
 	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 6px;
+	text-align: center;
+
+	button {
+		display: flex;
+		border-radius: 50%;
+		transition: transform 0.15s ease;
+
+		&:hover {
+			transform: translateY(-2px);
+		}
+
+		&:focus-visible {
+			outline: 2px solid #8e1c2b;
+			outline-offset: 3px;
+		}
+	}
 }
 
-.item button svg {
-	width: 48px;
-	height: 48px;
+.itemLabel {
+	font-size: 12.5px;
+	color: #675f55;
+}
+
+.copyRow {
+	display: flex;
+	gap: 8px;
+	margin-top: 22px;
+}
+
+.copyInput {
+	flex: 1;
+	min-width: 0;
+	height: auto !important;
+	margin: 0 !important;
+	padding: 10px 12px !important;
+	box-sizing: border-box !important;
+	background: #f7f3ec !important;
+	border: 1px solid #e5ddd0 !important;
+	border-radius: 6px !important;
+	box-shadow: none !important;
+	font-size: 14px !important;
+	color: #1f1c19 !important;
+
+	&:focus {
+		border-color: #8e1c2b !important;
+		outline: none;
+	}
+}
+
+.copyBtn {
+	flex: none;
+	padding: 10px 16px;
+	background: #8e1c2b;
+	border: 0;
+	border-radius: 6px;
+	font-size: 14px;
+	font-weight: 600;
+	color: #fff;
+	cursor: pointer;
+
+	&:hover,
+	&:focus {
+		background: #721421;
+	}
+
+	&:focus-visible {
+		outline: 2px solid #8e1c2b;
+		outline-offset: 2px;
+	}
+}
+
+.status {
+	min-height: 18px;
+	margin: 8px 0 0;
+	font-size: 13px;
+	color: #1d5b32;
+}
+
+.srOnly {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+	clip: rect(0 0 0 0);
+	white-space: nowrap;
+}
+
+@media only screen and (max-width: 480px) {
+	.modal {
+		padding: 22px 18px;
+	}
+
+	.lists {
+		gap: 14px 4px;
+	}
+
+	.copyRow {
+		flex-direction: column;
+	}
+}
+
+// iOS Safari zooms when focusing an input under 16px
+@media only screen and (max-width: 767px) {
+	.copyInput {
+		font-size: 16px !important;
+	}
 }

@@ -1,8 +1,6 @@
-import { server } from "../lib/config";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import Modal from "@mui/material/Modal";
-import Backdrop from "@mui/material/Backdrop";
 import Fade from "@mui/material/Fade";
 
 import ShareIcon from "@mui/icons-material/Share";
@@ -13,204 +11,160 @@ import {
 	EmailIcon,
 	FacebookShareButton,
 	FacebookIcon,
-	FacebookMessengerShareButton,
-	FacebookMessengerIcon,
 	TwitterShareButton,
 	TwitterIcon,
 	LinkedinShareButton,
 	LinkedinIcon,
 	WhatsappShareButton,
 	WhatsappIcon,
-	LineShareButton,
-	LineIcon,
 	TelegramShareButton,
 	TelegramIcon,
-	ViberShareButton,
-	ViberIcon,
 	RedditShareButton,
 	RedditIcon,
-	TumblrShareButton,
-	TumblrIcon,
 } from "react-share";
 
 import styles from "./share.module.scss";
 
-export default function Share({ urlWeb, urlMobile, title }) {
+// The video player modal sits at z-index 10001; the share dialog must open above it.
+const SHARE_MODAL_Z_INDEX = 10050;
+
+// Accepts an absolute URL or a site path ("/lectures/...", "books/...") and
+// returns an absolute URL on the domain the visitor is actually using.
+const toAbsoluteUrl = (value = "") => {
+	if (/^https?:\/\//i.test(value)) return value;
+	const path = `/${String(value).replace(/^\/+/, "")}`;
+	if (typeof window === "undefined") return path;
+	return `${window.location.origin}${path}`;
+};
+
+// `url` is preferred; `urlWeb` / `urlMobile` are kept for existing callers.
+export default function Share({ url, urlWeb, urlMobile, title = "" }) {
 	const [shareOpen, setShareOpen] = useState(false);
 	const [shareUrl, setShareUrl] = useState("");
-	const [shareTitle, setShareTitle] = useState("");
 
-	const handleShareClose = (open) => (event) => {
-		if (
-			event.type === "keydown" &&
-			(event.key === "Tab" || event.key === "Shift")
-		) {
-			return;
-		}
-		setShareOpen(open);
-	};
+	const resolveUrl = () => toAbsoluteUrl(url || urlWeb || urlMobile || "");
 
-	const handleWebShare = () => {
-		setShareUrl(`${server}/${urlWeb}`);
-		setShareTitle(title);
+	const openDialog = () => {
+		setShareUrl(resolveUrl());
 		setShareOpen(true);
 	};
 
-	const handleMobileShare = () => {
-		if (navigator.share) {
-			navigator.share({
-				title: title,
-				url: urlMobile,
-			});
-		} else {
-			setShareUrl(`${server}/${urlWeb}`);
-			setShareTitle(title);
-			setShareOpen(true);
+	// Phones get the native share sheet when the browser supports it
+	const handleMobileShare = async () => {
+		const target = resolveUrl();
+		if (typeof navigator !== "undefined" && navigator.share) {
+			try {
+				await navigator.share({ title, url: target });
+			} catch (error) {
+				// AbortError = the visitor closed the share sheet; anything else falls back
+				if (error?.name !== "AbortError") openDialog();
+			}
+			return;
 		}
+		openDialog();
 	};
 
 	return (
 		<>
 			<div className={styles.wrapper}>
-				<button
-					onClick={() => handleMobileShare()}
-					className={`${styles.btn} ${styles.btn_mobile}`}>
-					Share <ShareIcon />
+				<button type="button" onClick={handleMobileShare} className={`${styles.btn} ${styles.btn_mobile}`}>
+					<ShareIcon aria-hidden="true" />
+					<span>Share</span>
 				</button>
 
-				<button
-					onClick={() => handleWebShare()}
-					className={`${styles.btn} ${styles.btn_web}`}>
-					Share <ShareIcon />
+				<button type="button" onClick={openDialog} className={`${styles.btn} ${styles.btn_web}`}>
+					<ShareIcon aria-hidden="true" />
+					<span>Share</span>
 				</button>
 			</div>
 
-			<ShareModal
-				open={shareOpen}
-				closer={handleShareClose}
-				url={shareUrl}
-				title={shareTitle}
-			/>
+			<ShareModal open={shareOpen} onClose={() => setShareOpen(false)} url={shareUrl} title={title} />
 		</>
 	);
 }
 
-function ShareModal({ open, closer, url, title }) {
+function ShareModal({ open, onClose, url, title }) {
+	const [copied, setCopied] = useState(false);
+	const timeoutRef = useRef(null);
+
+	useEffect(() => {
+		if (!open) setCopied(false);
+	}, [open]);
+
+	useEffect(() => () => {
+		if (timeoutRef.current) clearTimeout(timeoutRef.current);
+	}, []);
+
+	const handleCopy = async () => {
+		try {
+			await navigator.clipboard.writeText(url);
+		} catch (error) {
+			// Older browsers / insecure contexts: select the field so the visitor can copy it
+			const input = document.getElementById("share-url-field");
+			if (input) {
+				input.select();
+				document.execCommand?.("copy");
+			}
+		}
+		setCopied(true);
+		if (timeoutRef.current) clearTimeout(timeoutRef.current);
+		timeoutRef.current = setTimeout(() => setCopied(false), 2000);
+	};
+
+	const networks = [
+		{ label: "Facebook", Button: FacebookShareButton, Icon: FacebookIcon, props: {} },
+		{ label: "WhatsApp", Button: WhatsappShareButton, Icon: WhatsappIcon, props: { title } },
+		{ label: "X (Twitter)", Button: TwitterShareButton, Icon: TwitterIcon, props: { title } },
+		{ label: "Telegram", Button: TelegramShareButton, Icon: TelegramIcon, props: { title } },
+		{ label: "LinkedIn", Button: LinkedinShareButton, Icon: LinkedinIcon, props: { title } },
+		{ label: "Reddit", Button: RedditShareButton, Icon: RedditIcon, props: { title } },
+		{ label: "Email", Button: EmailShareButton, Icon: EmailIcon, props: { subject: title } },
+	];
+
 	return (
 		<Modal
 			open={open}
-			onClose={closer(false)}
-			className={styles.root}
+			onClose={onClose}
 			closeAfterTransition
-			BackdropComponent={Backdrop}
-			BackdropProps={{
-				timeout: 100,
-				classes: {
-					root: styles.backdrop,
-				},
-			}}>
-			<Fade in={open} timeout={100} style={{ transitionDelay: "0ms" }}>
-				<div className={styles.modal}>
-					<span className={styles.close} onClick={closer(false)}>
-						<CloseIcon />
-					</span>
+			sx={{ zIndex: SHARE_MODAL_Z_INDEX }}
+			slotProps={{ backdrop: { className: styles.backdrop } }}
+			aria-labelledby="share-dialog-title"
+		>
+			<Fade in={open} timeout={150}>
+				<div className={styles.modal} role="dialog" aria-modal="true" aria-labelledby="share-dialog-title">
+					<button type="button" className={styles.close} onClick={onClose} aria-label="Close share dialog">
+						<CloseIcon aria-hidden="true" />
+					</button>
 
-					<div className={styles.title}>Share the post</div>
+					<h2 id="share-dialog-title" className={styles.title}>Share</h2>
+					{title && <p className={styles.subtitle}>{title}</p>}
 
 					<div className={styles.lists}>
-						<div className={styles.item}>
-							<EmailShareButton
-								url={url}
-								subject={title}
-								onShareWindowClose={closer(false)}>
-								<EmailIcon size={32} round={true} />
-							</EmailShareButton>
-						</div>
-
-						<div className={styles.item}>
-							<FacebookShareButton url={url} onShareWindowClose={closer(false)}>
-								<FacebookIcon size={32} round={true} />
-							</FacebookShareButton>
-						</div>
-
-						{/* <div className={styles.item}>
-							<FacebookMessengerShareButton url={url}>
-								<FacebookMessengerIcon size={32} round={true} />
-							</FacebookMessengerShareButton>
-						</div> */}
-
-						<div className={styles.item}>
-							<TwitterShareButton
-								url={url}
-								title={title}
-								onShareWindowClose={closer(false)}>
-								<TwitterIcon size={32} round={true} />
-							</TwitterShareButton>
-						</div>
-
-						<div className={styles.item}>
-							<LinkedinShareButton
-								url={url}
-								title={title}
-								onShareWindowClose={closer(false)}>
-								<LinkedinIcon size={32} round={true} />
-							</LinkedinShareButton>
-						</div>
-
-						<div className={styles.item}>
-							<WhatsappShareButton
-								url={url}
-								title={title}
-								onShareWindowClose={closer(false)}>
-								<WhatsappIcon size={32} round={true} />
-							</WhatsappShareButton>
-						</div>
-
-						<div className={styles.item}>
-							<LineShareButton
-								url={url}
-								title={title}
-								onShareWindowClose={closer(false)}>
-								<LineIcon size={32} round={true} />
-							</LineShareButton>
-						</div>
-
-						<div className={styles.item}>
-							<TelegramShareButton
-								url={url}
-								title={title}
-								onShareWindowClose={closer(false)}>
-								<TelegramIcon size={32} round={true} />
-							</TelegramShareButton>
-						</div>
-
-						<div className={styles.item}>
-							<ViberShareButton
-								url={url}
-								title={title}
-								onShareWindowClose={closer(false)}>
-								<ViberIcon size={32} round={true} />
-							</ViberShareButton>
-						</div>
-
-						<div className={styles.item}>
-							<RedditShareButton
-								url={url}
-								title={title}
-								onShareWindowClose={closer(false)}>
-								<RedditIcon size={32} round={true} />
-							</RedditShareButton>
-						</div>
-
-						<div className={styles.item}>
-							<TumblrShareButton
-								url={url}
-								title={title}
-								onShareWindowClose={closer(false)}>
-								<TumblrIcon size={32} round={true} />
-							</TumblrShareButton>
-						</div>
+						{networks.map(({ label, Button, Icon, props }) => (
+							<div className={styles.item} key={label}>
+								<Button url={url} aria-label={`Share on ${label}`} {...props}>
+									<Icon size={44} round />
+								</Button>
+								<span className={styles.itemLabel}>{label}</span>
+							</div>
+						))}
 					</div>
+
+					<div className={styles.copyRow}>
+						<label htmlFor="share-url-field" className={styles.srOnly}>Link</label>
+						<input
+							id="share-url-field"
+							className={styles.copyInput}
+							type="text"
+							value={url}
+							readOnly
+							onFocus={(e) => e.target.select()}
+						/>
+						<button type="button" className={styles.copyBtn} onClick={handleCopy}>
+							{copied ? "Copied" : "Copy link"}
+						</button>
+					</div>
+					<p className={styles.status} role="status" aria-live="polite">{copied ? "Link copied to clipboard" : ""}</p>
 				</div>
 			</Fade>
 		</Modal>

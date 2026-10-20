@@ -66,9 +66,10 @@
   padding: 16px 20px;
   background-color: #fff;
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
-  gap: 16px;
+  gap: 12px 16px;
 }
 
 .title {
@@ -80,10 +81,14 @@
   margin: 0;
 }
 
+.title {
+  flex: 1 1 260px;
+  min-width: 0;
+}
+
 .share {
-  margin-top: 2px;
-  justify-content: end;
-  margin-left: 10px;
+  flex: none;
+  margin-left: auto;
 }
 
 .close {
