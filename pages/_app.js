@@ -9,6 +9,7 @@ import "../styles/style.scss";
 import "../styles/QuranSlider.scss";
 import '../styles/globals.css';
 import Layout from "../components/layout";
+import ScrollReveal from "../components/scroll-reveal";
 import useScrollRestoration from '../hooks/use-scroll-restoration';
 
 const App = ({ Component, pageProps }) => {
@@ -29,6 +30,7 @@ const App = ({ Component, pageProps }) => {
 
   return (
     <Layout>
+      <ScrollReveal />
       <Component {...pageProps} />
     </Layout>
   );

@@ -1,0 +1,166 @@
+// Motion: restrained and quick, so it guides the eye without getting in the way of reading.
+// Only opacity and transform are animated (no layout shift), headings and the hero photo never
+// start invisible (they paint at once), and all of it is off for visitors who ask their device
+// for reduced motion.
+
+:root {
+	--ah-ease: cubic-bezier(0.22, 1, 0.36, 1);
+	--ah-rise: 18px;
+}
+
+@media (max-width: 640px) {
+	:root {
+		--ah-rise: 12px;
+	}
+}
+
+@keyframes ah-fade-up {
+	from {
+		opacity: 0;
+		transform: translate3d(0, 14px, 0);
+	}
+}
+
+// Moves without fading, for headings and photos that must paint immediately
+@keyframes ah-settle {
+	from {
+		transform: translate3d(0, 12px, 0);
+	}
+}
+
+@keyframes ah-ring-in {
+	from {
+		opacity: 0;
+		transform: translateX(-50%) scale(0.92);
+	}
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	/* Scroll reveal: components/scroll-reveal.js adds these classes */
+	.ah-motion .ah-reveal {
+		opacity: 0;
+		transform: translate3d(0, var(--ah-rise), 0);
+	}
+
+	.ah-motion .ah-reveal.is-revealed {
+		opacity: 1;
+		transform: none;
+		transition:
+			opacity 0.55s var(--ah-ease) var(--ah-reveal-delay, 0ms),
+			transform 0.7s var(--ah-ease) var(--ah-reveal-delay, 0ms);
+	}
+
+	/* Page entrance: the hero text settles in on every page, also after in-site navigation */
+	.ah-hero__copy > *,
+	.ah-page-hero .ah-wrap > * {
+		animation: ah-fade-up 0.6s var(--ah-ease) both;
+	}
+
+	.ah-hero__copy > :nth-child(2),
+	.ah-page-hero .ah-wrap > :nth-child(2) {
+		animation-delay: 70ms;
+	}
+
+	.ah-hero__copy > :nth-child(3),
+	.ah-page-hero .ah-wrap > :nth-child(3) {
+		animation-delay: 140ms;
+	}
+
+	.ah-hero__copy > :nth-child(4),
+	.ah-page-hero .ah-wrap > :nth-child(4) {
+		animation-delay: 210ms;
+	}
+
+	.ah-hero__copy > :nth-child(n + 5),
+	.ah-page-hero .ah-wrap > :nth-child(n + 5) {
+		animation-delay: 280ms;
+	}
+
+	.ah-hero__title,
+	.ah-page-hero__title {
+		animation-name: ah-settle;
+	}
+
+	.ah-hero__figure img {
+		animation: ah-settle 0.8s var(--ah-ease) both;
+	}
+
+	.ah-hero__figure::before,
+	.ah-hero__figure::after {
+		animation: ah-ring-in 1s var(--ah-ease) 0.1s both;
+	}
+
+	/* Buttons press in slightly */
+	.ah-btn {
+		transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.15s var(--ah-ease);
+
+		&:active {
+			transform: translateY(1px) scale(0.985);
+		}
+	}
+}
+
+/* Hover polish, for mouse and trackpad only (no "stuck" hover after a tap on phones) */
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+	.ah-quick__card,
+	.ah-vcard > a {
+		transition: border-color 0.2s ease, box-shadow 0.25s ease, transform 0.25s var(--ah-ease);
+	}
+
+	.ah-acard > a,
+	.ah-book > a {
+		transition: border-color 0.2s ease, box-shadow 0.25s ease, transform 0.25s var(--ah-ease);
+	}
+
+	.ah-quick__card:hover,
+	.ah-vcard > a:hover,
+	.ah-acard > a:hover,
+	.ah-book > a:hover {
+		transform: translateY(-3px);
+		box-shadow: 0 12px 28px rgba(31, 28, 25, 0.1);
+	}
+
+	.ah-vcard__play {
+		transition: background-color 0.2s ease, transform 0.25s var(--ah-ease);
+	}
+
+	.ah-vcard > a:hover .ah-vcard__play {
+		transform: scale(1.12);
+	}
+
+	.ah-social a {
+		transition: background-color 0.2s ease, transform 0.2s var(--ah-ease);
+
+		&:hover {
+			transform: translateY(-2px);
+		}
+	}
+
+	// Underline grows in under menu items, full strength only on the current page
+	.ah-nav__link::after {
+		transition: transform 0.25s var(--ah-ease);
+	}
+
+	.ah-nav__link:not([aria-current="page"])::after {
+		opacity: 0.35;
+	}
+
+	.ah-nav__link:not([aria-current="page"]):hover::after {
+		transform: scaleX(1);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.ah *,
+	.ah *::before,
+	.ah *::after {
+		animation: none !important;
+	}
+}
+
+@media print {
+	.ah-reveal {
+		opacity: 1 !important;
+		transform: none !important;
+	}
+}
