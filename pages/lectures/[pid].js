@@ -281,7 +281,6 @@ export default function LectureList({ initialVideos, initPlaylistId, playlists, 
         title={modalTitle}
         description={selectedVideo?.description}
         playlistId={selectedVideo?.playlistId}
-        preloadVideoId={datas[0]?.videoLists?.videos?.[0]?.id}
       />
     </>
   );

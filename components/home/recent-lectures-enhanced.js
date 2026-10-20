@@ -128,7 +128,6 @@ export default function RecentLecturesEnhanced({ lectures }) {
         videoId={selectedVideo?.id}
         title={modalTitle}
         description={selectedVideo?.description}
-        preloadVideoId={videos[0]?.id}
       />
     </>
   );

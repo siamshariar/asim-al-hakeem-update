@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import styles from './Video.module.css';
 import Share from '../../components/share';
 import Meta from '../meta';
-import YouTubePlayer, { needsPreloadedPlayer } from '../youtube-player';
+import YouTubePlayer, { needsBackgroundPlayer } from '../youtube-player';
 import { generateVParam } from '../../pages/lectures/[pid]';
 import { cleanVideoTitle } from '../../lib/format';
 
@@ -18,21 +18,22 @@ const resolvePlaylistId = (playlistId) => {
     return UPLOADS_PLAYLIST_ID;
 };
 
-export default function VideoModal({ isOpen, onClose, videoId, title, playlistId, description, preloadVideoId }) {
+export default function VideoModal({ isOpen, onClose, videoId, title, playlistId, description }) {
     // Once the player exists it stays loaded (hidden while closed), so the next card tap
     // can start its lecture with sound (see playWithSound)
     const [keepPlayer, setKeepPlayer] = useState(false);
+    // iOS/Safari: a muted background player runs from page load, so even the first tap works
+    const [background, setBackground] = useState(false);
 
     useEffect(() => {
         if (isOpen) setKeepPlayer(true);
     }, [isOpen]);
 
     useEffect(() => {
-        // Safari/iOS need the player loaded before the tap: do it once the page has settled
-        if (keepPlayer || isOpen || !preloadVideoId || !needsPreloadedPlayer()) return undefined;
-        const timer = setTimeout(() => setKeepPlayer(true), 2000);
-        return () => clearTimeout(timer);
-    }, [keepPlayer, isOpen, preloadVideoId]);
+        if (!needsBackgroundPlayer()) return;
+        setBackground(true);
+        setKeepPlayer(true);
+    }, []);
 
     useEffect(() => {
         if (!isOpen) return undefined;
@@ -83,7 +84,7 @@ export default function VideoModal({ isOpen, onClose, videoId, title, playlistId
                         <button type="button" className={styles.close} onClick={onClose} aria-label="Close video" data-keep-muted></button>
 
                         <div className={styles.iframeContainer}>
-                            <YouTubePlayer videoId={videoId || preloadVideoId} title={displayTitle} className={styles.iframe} active={isOpen} />
+                            <YouTubePlayer videoId={videoId} title={displayTitle} className={styles.iframe} active={isOpen} background={background} />
                         </div>
                         {isOpen && (
                             <div className={styles.details}>

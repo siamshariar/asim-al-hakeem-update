@@ -1,13 +1,17 @@
 // YouTube player for lectures. Starts playing as soon as it opens.
 // Browsers only allow sound after the visitor has interacted with the page, and iOS/Safari only
-// when the tap reaches a player that is already loaded. So:
-// - a lecture opened from a card starts with sound: playWithSound() hands the tap to the page's
-//   ready player (where needed, pages with cards load one in advance, see needsPreloadedPlayer)
+// when the tap reaches a player that is already running. So:
+// - a lecture opened from a card starts with sound: playWithSound() swaps it into the page's
+//   running player inside the tap (on iOS/Safari a muted background clip keeps one running from
+//   page load, see needsBackgroundPlayer)
 // - a lecture opened straight from a shared link starts muted, and the sound comes on with the
 //   visitor's first tap, click or key press, on the video or anywhere else.
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { VolumeX } from 'lucide-react';
 import styles from './youtube-player.module.scss';
+
+// Short clip from the Sheikh's channel that keeps the hidden background player running (muted)
+const BACKGROUND_VIDEO_ID = 'PWgNAtIkQ8A';
 
 let apiPromise = null;
 let embedCount = 0;
@@ -32,54 +36,58 @@ function loadYouTubeApi() {
     return apiPromise;
 }
 
-// The page's player once it is ready (kept between lectures) and the lecture loaded in it
-const shared = { player: null, videoId: null };
+// The page's player once it is ready (kept between lectures), the video loaded in it, and
+// whether a tap just asked for sound (confirmed again once the new lecture starts loading)
+const shared = { player: null, videoId: null, confirmSound: false };
 
-// Call from the click/tap that opens a lecture, before showing the player. Starting it on a
-// player that is already loaded passes the tap along, so even iOS plays it with sound.
+// Call from the click/tap that opens a lecture, before showing the player. Swapping the lecture
+// into a running player inside the tap is the one way iOS allows sound.
 // Returns false when no player is ready yet; the player then starts the lecture itself.
 export function playWithSound(videoId) {
     const { player } = shared;
     if (!player) return false;
     shared.videoId = videoId;
-    player.unMute();
+    shared.confirmSound = true;
     player.loadVideoById(videoId);
+    player.unMute();
+    player.playVideo();
     return true;
 }
 
-// Safari and every iOS browser refuse sound in a player created after the tap
-export function needsPreloadedPlayer() {
+// Safari and every iOS browser refuse sound in a player that wasn't running before the tap
+export function needsBackgroundPlayer() {
     const ua = navigator.userAgent;
     const iOS = /iP(hone|ad|od)/.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1);
     const safari = /Safari/.test(ua) && !/Chrome|Chromium|CriOS|Edg|OPR|Firefox|FxiOS|Android/.test(ua);
     return iOS || safari;
 }
 
-// What the iframe is created with; later lectures load into it through the API
-function buildEmbed(videoId, autoplay) {
+// What the iframe is created with; later videos load into it through the API
+function buildEmbed(videoId, muted = false) {
     const activation = navigator.userActivation;
     embedCount += 1;
-    return { id: embedCount, videoId, autoplay, startMuted: autoplay && !(activation && activation.hasBeenActive) };
+    return { id: embedCount, videoId, startMuted: muted || !(activation && activation.hasBeenActive) };
 }
 
-export default function YouTubePlayer({ videoId, title, className, active = true }) {
+export default function YouTubePlayer({ videoId, title, className, active = true, background = false }) {
     const iframeRef = useRef(null);
     const playerRef = useRef(null);
-    const activeRef = useRef(active);
+    const latest = useRef({ videoId, active });
     const checkTimer = useRef(null);
     // null until mounted: only the browser knows whether the visitor has interacted yet
     const [embed, setEmbed] = useState(null);
     const [showUnmute, setShowUnmute] = useState(false);
 
     useEffect(() => {
-        if (!embed) setEmbed(buildEmbed(videoId, active));
-    }, [embed, videoId, active]);
+        if (embed || !(active || background)) return;
+        setEmbed(active ? buildEmbed(videoId) : buildEmbed(BACKGROUND_VIDEO_ID, true));
+    }, [embed, videoId, active, background]);
 
-    // Sound can still be refused (iOS without a ready player): play muted instead of staying
-    // paused, and let the next tap turn the sound on
+    // Sound can still be refused (a tap before the player was running): play muted instead of
+    // staying paused, and let the next tap turn the sound on
     const playMuted = useCallback(() => {
         const player = playerRef.current;
-        if (!player || !activeRef.current) return;
+        if (!player || !latest.current.active) return;
         player.mute();
         player.playVideo();
         setShowUnmute(true);
@@ -92,7 +100,7 @@ export default function YouTubePlayer({ videoId, title, className, active = true
         let checks = 0;
         const check = () => {
             const player = playerRef.current;
-            if (!player || !activeRef.current) return;
+            if (!player || !latest.current.active) return;
             const state = player.getPlayerState();
             const { UNSTARTED, CUED, BUFFERING } = window.YT.PlayerState;
             if (state === UNSTARTED || state === CUED) playMuted();
@@ -103,6 +111,36 @@ export default function YouTubePlayer({ videoId, title, className, active = true
         };
         checkTimer.current = setTimeout(check, 2500);
     }, [playMuted]);
+
+    // Bring the player in line with the props: the open lecture, or when closed the muted
+    // background clip (kept running for the next tap) or simply paused
+    const sync = useCallback(() => {
+        const player = playerRef.current;
+        if (!player) return;
+        const { videoId: want, active: open } = latest.current;
+        if (!open) {
+            clearTimeout(checkTimer.current);
+            shared.confirmSound = false;
+            setShowUnmute(false);
+            if (background) {
+                if (shared.videoId !== BACKGROUND_VIDEO_ID) {
+                    shared.videoId = BACKGROUND_VIDEO_ID;
+                    player.loadVideoById(BACKGROUND_VIDEO_ID);
+                }
+                player.mute();
+                player.playVideo();
+            } else {
+                player.pauseVideo();
+            }
+            return;
+        }
+        if (shared.videoId !== want) {
+            // Not started from a tap (playWithSound)
+            shared.videoId = want;
+            player.loadVideoById(want);
+        }
+        watchForRefusedSound();
+    }, [background, watchForRefusedSound]);
 
     useEffect(() => {
         if (!embed) return undefined;
@@ -116,14 +154,31 @@ export default function YouTubePlayer({ videoId, title, className, active = true
                         playerRef.current = player;
                         shared.player = player;
                         shared.videoId = embed.videoId;
-                        if (!embed.autoplay) return; // loaded in advance, waiting for a tap
-                        if (embed.startMuted) setShowUnmute(true);
+                        const { videoId: want, active: open } = latest.current;
+                        if (!open || want !== embed.videoId) sync();
+                        else if (embed.startMuted) setShowUnmute(true);
                         else watchForRefusedSound();
+                    },
+                    onStateChange: (e) => {
+                        if (cancelled) return;
+                        const { PLAYING, BUFFERING, ENDED } = YT.PlayerState;
+                        // Real iOS can drop a tapped lecture back to muted once it starts loading;
+                        // confirm the tap's sound then (no new tap needed)
+                        if (shared.confirmSound && (e.data === PLAYING || e.data === BUFFERING)) {
+                            shared.confirmSound = false;
+                            player.unMute();
+                            player.playVideo();
+                        }
+                        // Keep the background clip looping, always muted
+                        if (e.data === ENDED && background && !latest.current.active) {
+                            player.mute();
+                            player.playVideo();
+                        }
                     },
                     // The browser refused to start it: play muted instead, or if even muted
                     // playback is refused (iOS Low Power Mode), the unmute button's tap starts it
                     onAutoplayBlocked: () => {
-                        if (cancelled) return;
+                        if (cancelled || !latest.current.active) return;
                         if (player.isMuted()) setShowUnmute(true);
                         else playMuted();
                     },
@@ -136,34 +191,24 @@ export default function YouTubePlayer({ videoId, title, className, active = true
             if (shared.player && shared.player === playerRef.current) {
                 shared.player = null;
                 shared.videoId = null;
+                shared.confirmSound = false;
             }
             playerRef.current = null;
         };
-    }, [embed, watchForRefusedSound, playMuted]);
+    }, [embed, background, sync, playMuted, watchForRefusedSound]);
 
     // Opening, closing and switching lectures
     useEffect(() => {
-        activeRef.current = active;
-        const player = playerRef.current;
-        if (!player) {
-            // Not ready yet (or the API is blocked): rebuild the iframe for this lecture
-            if (embed && active && (embed.videoId !== videoId || !embed.autoplay)) setEmbed(buildEmbed(videoId, true));
-            if (embed && !active && embed.autoplay) setEmbed(buildEmbed(videoId, false));
+        latest.current = { videoId, active };
+        if (playerRef.current) {
+            sync();
             return;
         }
-        if (!active) {
-            clearTimeout(checkTimer.current);
-            player.pauseVideo();
-            setShowUnmute(false);
-            return;
-        }
-        if (shared.videoId !== videoId) {
-            // Not started from a tap (playWithSound)
-            shared.videoId = videoId;
-            player.loadVideoById(videoId);
-        }
-        watchForRefusedSound();
-    }, [videoId, active, embed, watchForRefusedSound]);
+        // Not ready yet (or the API is blocked): rebuild the iframe for what should be showing
+        if (!embed) return;
+        if (active && embed.videoId !== videoId) setEmbed(buildEmbed(videoId));
+        if (!active && embed.videoId !== BACKGROUND_VIDEO_ID) setEmbed(background ? buildEmbed(BACKGROUND_VIDEO_ID, true) : null);
+    }, [videoId, active, embed, background, sync]);
 
     const unmute = useCallback(() => {
         const player = playerRef.current;
@@ -199,7 +244,7 @@ export default function YouTubePlayer({ videoId, title, className, active = true
     if (!embed) return null;
 
     const params = new URLSearchParams({
-        autoplay: embed.autoplay ? '1' : '0',
+        autoplay: '1',
         mute: embed.startMuted ? '1' : '0',
         playsinline: '1',
         rel: '0',
