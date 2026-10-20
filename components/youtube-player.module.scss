@@ -1,10 +1,45 @@
-// "Tap to unmute" button over a video that had to start muted (opened from a link)
+// While a video opened from a link plays muted, the whole picture is one big unmute button:
+// a tap on the video turns the sound on (instead of reaching YouTube, which would pause it),
+// and the pill shows what the tap will do.
 
 .unmute {
 	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 2;
+	display: block;
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	background: transparent;
+	border: 0;
+	border-radius: 0;
+	cursor: pointer;
+	-webkit-tap-highlight-color: transparent;
+
+	// .unmute:focus also beats Materialize's teal button:focus
+	&:hover,
+	&:focus {
+		background: transparent;
+	}
+
+	&:focus-visible {
+		outline: 3px solid #fff;
+		outline-offset: -3px;
+	}
+
+	&:hover .pill,
+	&:focus-visible .pill {
+		background: #8e1c2b;
+		border-color: #8e1c2b;
+	}
+}
+
+.pill {
+	position: absolute;
 	top: 12px;
 	left: 12px;
-	z-index: 2;
 	display: inline-flex;
 	align-items: center;
 	gap: 8px;
@@ -19,24 +54,11 @@
 	line-height: 1.2;
 	color: #fff;
 	white-space: nowrap;
-	cursor: pointer;
 	transition: background-color 0.2s ease, border-color 0.2s ease;
 
 	svg {
 		width: 18px;
 		height: 18px;
 		flex: none;
-	}
-
-	// .unmute:focus also beats Materialize's teal button:focus
-	&:hover,
-	&:focus {
-		background: #8e1c2b;
-		border-color: #8e1c2b;
-	}
-
-	&:focus-visible {
-		outline: 2px solid #fff;
-		outline-offset: 2px;
 	}
 }

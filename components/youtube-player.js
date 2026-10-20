@@ -1,7 +1,7 @@
 // YouTube embed that starts playing as soon as it opens.
 // Browsers only autoplay with sound after the visitor has interacted with the page, so a video
 // opened straight from a shared link starts muted, and the sound comes on with the visitor's
-// first tap, click or key press (or the unmute button) instead of the video sitting paused.
+// first tap, click or key press, on the video or anywhere else, instead of the video sitting paused.
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { VolumeX } from 'lucide-react';
 import styles from './youtube-player.module.scss';
@@ -131,8 +131,10 @@ export default function YouTubePlayer({ videoId, title, className }) {
             ></iframe>
             {showUnmute && (
                 <button type="button" className={styles.unmute} onClick={unmute}>
-                    <VolumeX aria-hidden="true" />
-                    Tap to unmute
+                    <span className={styles.pill}>
+                        <VolumeX aria-hidden="true" />
+                        Tap to unmute
+                    </span>
                 </button>
             )}
         </>
