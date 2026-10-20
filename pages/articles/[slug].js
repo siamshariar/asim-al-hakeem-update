@@ -7,6 +7,7 @@ import Meta from "../../components/meta";
 import Header2 from "../../components/header1";
 import PageHero from "../../components/page-hero";
 import ShareLinks from "../../components/share-links";
+import ArticleCardImage from "../../components/article-card-image";
 import { server } from "../../lib/config";
 import { date as formatDate } from "../../lib/format";
 import articles from '../../data/airticles-data';
@@ -167,9 +168,7 @@ export default function ArticleDetail({ article, related = [], playlists, header
               {related.map((item) => (
                 <article key={item.slug} className="ah-acard">
                   <Link href={`/articles/${item.slug}`}>
-                    <div className="ah-acard__img">
-                      <Image src={item.image} alt="" fill sizes="(max-width: 680px) 100vw, (max-width: 1100px) 50vw, 380px" />
-                    </div>
+                    <ArticleCardImage article={item} sizes="(max-width: 680px) 100vw, (max-width: 1100px) 50vw, 380px" />
                     <div className="ah-acard__body">
                       <p className="ah-acard__date">{formatArticleDate(item.date)}</p>
                       <h3>{item.title}</h3>
@@ -201,6 +200,8 @@ export async function getStaticProps({ params }) {
       title: item.postTitle || item.title,
       image: item.imageSrc || item.image || "/img/articles/default.jpg",
       date: item.postDate || item.date || "",
+      imageLetterbox: !!item.imageLetterbox,
+      imageFocus: item.imageFocus || null,
     }));
 
   return {

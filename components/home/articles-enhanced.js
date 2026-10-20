@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Image from "next/image";
+import ArticleCardImage from "../article-card-image";
 import { ArrowRight } from "lucide-react";
 import { date as formatDate } from "../../lib/format";
 
@@ -32,14 +32,7 @@ export default function ArticlesSection({ articles }) {
           {items.map((article) => (
             <article key={article.id} className="ah-acard">
               <Link href={`/articles/${article.postSlug || article.id}`}>
-                <div className="ah-acard__img">
-                  <Image
-                    src={article.imageSrc || "/img/articles/default.jpg"}
-                    alt=""
-                    fill
-                    sizes="(max-width: 680px) 100vw, (max-width: 1100px) 50vw, 280px"
-                  />
-                </div>
+                <ArticleCardImage article={article} sizes="(max-width: 680px) 100vw, (max-width: 1100px) 50vw, 300px" />
                 <div className="ah-acard__body">
                   <p className="ah-acard__date">{formatArticleDate(article.postDate || article.date)}</p>
                   <h3>{article.postTitle || article.title}</h3>

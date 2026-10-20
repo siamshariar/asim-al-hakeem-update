@@ -6,7 +6,7 @@ import Meta from "../../components/meta";
 import Header2 from "../../components/header1";
 import PageHero from "../../components/page-hero";
 import Link from "next/link";
-import Image from "next/image";
+import ArticleCardImage from "../../components/article-card-image";
 import { ArrowRight, Search, X } from 'lucide-react';
 import { date as formatDate } from "../../lib/format";
 import useOnScreen from "../../hooks/useOnScreen";
@@ -253,14 +253,7 @@ export default function Articles({ playlists, headerLectures, qnaCategories, ini
                 {displayedArticles.map((article, idx) => (
                   <article key={article.slug || article.postSlug || `article-${idx}`} className="ah-acard">
                     <Link href={`/articles/${article.slug || article.postSlug}`}>
-                      <div className="ah-acard__img">
-                        <Image
-                          src={article.imageSrc || article.image || "/img/articles/default.jpg"}
-                          alt=""
-                          fill
-                          sizes="(max-width: 680px) 100vw, (max-width: 1100px) 50vw, 380px"
-                        />
-                      </div>
+                      <ArticleCardImage article={article} sizes="(max-width: 680px) 100vw, (max-width: 1100px) 50vw, 380px" />
                       <div className="ah-acard__body">
                         <p className="ah-acard__date">{formatArticleDate(article.date || article.postDate)}</p>
                         <h3>{article.title || article.postTitle}</h3>

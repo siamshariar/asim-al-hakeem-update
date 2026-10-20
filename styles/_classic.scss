@@ -1131,13 +1131,27 @@ html body {
 .ah-acard__img {
 	position: relative;
 	overflow: hidden;
-	aspect-ratio: 5 / 2;
+	aspect-ratio: 16 / 9;
 	background: var(--ah-cream);
+	border-bottom: 1px solid var(--ah-line);
 
 	img {
 		object-fit: cover;
-		transform: scale(1.03);
+		transition: transform 0.35s ease;
 	}
+}
+
+// Images with black bars baked in (content band about 2.55:1): zoom to fill 16:9
+.ah-acard__img--letterbox img {
+	transform: scale(1.44);
+}
+
+.ah-acard > a:hover .ah-acard__img img {
+	transform: scale(1.04);
+}
+
+.ah-acard > a:hover .ah-acard__img--letterbox img {
+	transform: scale(1.48);
 }
 
 .ah-acard__body {
