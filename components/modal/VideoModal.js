@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import styles from './Video.module.css';
 import Share from '../../components/share';
 import Meta from '../meta';
+import YouTubePlayer from '../youtube-player';
 import { generateVParam } from '../../pages/lectures/[pid]';
 import { cleanVideoTitle } from '../../lib/format';
 
@@ -58,14 +59,7 @@ export default function VideoModal({ isOpen, onClose, videoId, title, playlistId
                         <button type="button" className={styles.close} onClick={onClose} aria-label="Close video"></button>
 
                         <div className={styles.iframeContainer}>
-                            <iframe
-                                className={styles.iframe}
-                                src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=0&rel=0`}
-                                title={displayTitle}
-                                frameBorder="0"
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                allowFullScreen
-                            ></iframe>
+                            <YouTubePlayer videoId={videoId} title={displayTitle} className={styles.iframe} />
                         </div>
                         <div className={styles.details}>
                             <h2 className={styles.title}>{displayTitle}</h2>

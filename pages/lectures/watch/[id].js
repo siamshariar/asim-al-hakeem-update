@@ -7,6 +7,7 @@ import Header2 from '../../../components/header1';
 import Meta from '../../../components/meta';
 import PageHero from '../../../components/page-hero';
 import ShareLinks from '../../../components/share-links';
+import YouTubePlayer from '../../../components/youtube-player';
 import { server, youtube } from '../../../lib/config';
 import { youtubeViews, cleanVideoTitle } from '../../../lib/format';
 import { getAllPlaylists2, getAllQnaCategory, getHeaderLectures } from '../../../lib/fetch'; 
@@ -133,12 +134,7 @@ export default function LectureVideo({ playlists, headerLectures, qna_categories
       <section className="ah ah-page ah-page--narrow">
         <div className="ah-wrap">
           <div className="ah-player">
-            <iframe
-              src={`https://www.youtube.com/embed/${id}`}
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-              title={title}
-            />
+            <YouTubePlayer videoId={id} title={title} />
           </div>
 
           {video.description && (
