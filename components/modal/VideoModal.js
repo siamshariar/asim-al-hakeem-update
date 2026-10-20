@@ -56,7 +56,7 @@ export default function VideoModal({ isOpen, onClose, videoId, title, playlistId
             <section className={styles.modalWrapper} role="dialog" aria-modal="true" aria-label={displayTitle || 'Video player'}>
                 <div className={styles.overlay}>
                     <div className={styles.content} onClick={(e) => e.stopPropagation()}>
-                        <button type="button" className={styles.close} onClick={onClose} aria-label="Close video"></button>
+                        <button type="button" className={styles.close} onClick={onClose} aria-label="Close video" data-keep-muted></button>
 
                         <div className={styles.iframeContainer}>
                             <YouTubePlayer videoId={videoId} title={displayTitle} className={styles.iframe} />
