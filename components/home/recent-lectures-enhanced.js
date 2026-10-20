@@ -2,6 +2,7 @@ import { useEffect, useState, useCallback } from 'react';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import VideoModal from '../modal/VideoModalRecent';
+import { playWithSound } from '../youtube-player';
 import { date as formatDate, youtubeViews, cleanVideoTitle } from '../../lib/format';
 
 export const generateVParam = (videoID, title) => {
@@ -48,6 +49,8 @@ export default function RecentLecturesEnhanced({ lectures }) {
   }, []);
 
   const openModal = useCallback((video) => {
+    // Inside the tap, so a ready player starts it with sound (also on iOS)
+    playWithSound(video.id);
     setSelectedVideo(video);
     setModalTitle(video.title);
     setIsModalOpen(true);
@@ -119,15 +122,14 @@ export default function RecentLecturesEnhanced({ lectures }) {
         </div>
       </section>
 
-      {isModalOpen && selectedVideo && (
-        <VideoModal
-          isOpen={isModalOpen}
-          onClose={closeModal}
-          videoId={selectedVideo.id}
-          title={modalTitle}
-          description={selectedVideo.description}
-        />
-      )}
+      <VideoModal
+        isOpen={isModalOpen && !!selectedVideo}
+        onClose={closeModal}
+        videoId={selectedVideo?.id}
+        title={modalTitle}
+        description={selectedVideo?.description}
+        preloadVideoId={videos[0]?.id}
+      />
     </>
   );
 }

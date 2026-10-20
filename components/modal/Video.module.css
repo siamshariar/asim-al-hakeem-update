@@ -187,3 +187,9 @@
   }
 
 }
+
+/* Closed: the player stays loaded out of sight, ready for the next lecture */
+.closed {
+  visibility: hidden;
+  pointer-events: none;
+}

@@ -3,6 +3,7 @@ import { getAllPlaylists2, getYoutubeVideoListByUrl, getAllQnaCategory } from ".
 import { useState, useEffect, useRef } from "react";
 import Meta from "../../components/meta";
 import VideoModal from "../../components/modal/VideoModal";
+import { playWithSound } from "../../components/youtube-player";
 import Header2 from "../../components/header1";
 import PageHero from "../../components/page-hero";
 import fetcher from "../../lib/lecturesFetcher";
@@ -105,7 +106,10 @@ export default function LectureList({ initialVideos, initPlaylistId, playlists, 
     const description = item?.snippet?.description || item?.description || "";
     
     if (!id) return;
-    
+
+    // Inside the tap, so a ready player starts it with sound (also on iOS)
+    playWithSound(id);
+
     setSelectedVideo({ id, title, description, playlistId: initPlaylistId });
     setModalTitle(title);
     
@@ -270,16 +274,15 @@ export default function LectureList({ initialVideos, initPlaylistId, playlists, 
       </section>
 
       {/* Video Modal */}
-      {selectedVideo && (
-        <VideoModal
-          isOpen={!!selectedVideo}
-          onClose={closeModal}
-          videoId={selectedVideo.id}
-          title={modalTitle}
-          description={selectedVideo.description}
-          playlistId={selectedVideo.playlistId}
-        />
-      )}
+      <VideoModal
+        isOpen={!!selectedVideo}
+        onClose={closeModal}
+        videoId={selectedVideo?.id}
+        title={modalTitle}
+        description={selectedVideo?.description}
+        playlistId={selectedVideo?.playlistId}
+        preloadVideoId={datas[0]?.videoLists?.videos?.[0]?.id}
+      />
     </>
   );
 }
