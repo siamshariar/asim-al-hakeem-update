@@ -1225,8 +1225,9 @@ a.ah-topbar__item::before,
 }
 
 /* Counselling (by appointment panel) */
+// Follows the (also white) articles section, whose bottom padding already spaces it
 .ah-counsel {
-	padding: 88px 0;
+	padding: 0 0 88px;
 	background: #fff;
 }
 
@@ -1627,9 +1628,12 @@ a.ah-topbar__item::before,
 		height: 40px;
 	}
 
-	.ah-sec,
-	.ah-counsel {
+	.ah-sec {
 		padding: 60px 0;
+	}
+
+	.ah-counsel {
+		padding: 0 0 60px;
 	}
 
 	.ah-sec--tight-top {
