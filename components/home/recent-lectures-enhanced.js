@@ -94,7 +94,7 @@ export default function RecentLecturesEnhanced({ lectures }) {
             {videos.map((video) => (
               <article key={video.id} className="ah-vcard">
                 <a
-                  href={`https://www.youtube.com/watch?v=${video.id}`}
+                  href={`/lectures/UUWsdcrre0WbCWML_PnuzoAg?v=${generateVParam(video.id, video.title)}`}
                   onClick={(e) => {
                     e.preventDefault();
                     openModal(video);

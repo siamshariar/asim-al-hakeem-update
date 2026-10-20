@@ -11,12 +11,7 @@ import PageHero from "../../components/page-hero";
 import { BookOpen, Download, PlayCircle, ArrowRight, FileText } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
-
-// "https://www.youtube.com/watch?v=...&list=PL..." -> "PL..."
-const playlistIdFromLink = (link = "") => {
-    const match = String(link).match(/[?&]list=([^&#]+)/);
-    return match ? match[1] : "";
-};
+import { playlistIdFromLink } from "../../lib/format";
 
 const hostFromLink = (link = "") => {
     try {

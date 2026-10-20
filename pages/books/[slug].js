@@ -7,8 +7,9 @@ import Header2 from "../../components/header1";
 import PageHero from "../../components/page-hero";
 import ShareLinks from "../../components/share-links";
 import { BookOpen, Download, PlayCircle, FileText, ArrowRight } from "lucide-react";
+import { playlistIdFromLink } from "../../lib/format";
 
-export default function BookDetail({ detail, otherBooks = [], playlists, headerLectures, qnaCategories }) {
+export default function BookDetail({ detail, series, otherBooks = [], playlists, headerLectures, qnaCategories }) {
   if (!detail) {
     return (
       <>
@@ -76,7 +77,12 @@ export default function BookDetail({ detail, otherBooks = [], playlists, headerL
                   Download
                 </a>
               )}
-              {detail.playlistLink && (
+              {series ? (
+                <Link className="ah-btn ah-btn--outline" href={`/lectures/${series.id}`}>
+                  <PlayCircle size={18} aria-hidden="true" />
+                  Watch the lecture series
+                </Link>
+              ) : detail.playlistLink && (
                 <a className="ah-btn ah-btn--outline" target="_blank" rel="noopener noreferrer" href={detail.playlistLink}>
                   <PlayCircle size={18} aria-hidden="true" />
                   Watch the lecture series
@@ -149,9 +155,14 @@ export async function getStaticProps({ params }) {
       author: book.author || book.writer || "",
     }));
 
+  // The lecture series opens on this site when the playlist is known (same rule as the books page)
+  const seriesId = playlistIdFromLink(detail?.playlistLink);
+  const seriesTitle = playlists?.playlistsTitle?.[seriesId];
+
   return {
     props: {
       detail: detail || null,
+      series: seriesTitle ? { id: seriesId, title: seriesTitle } : null,
       otherBooks,
       playlists: playlists?.playlists || [],
       headerLectures: headerLectures || null,
