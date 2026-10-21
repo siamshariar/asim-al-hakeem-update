@@ -25,7 +25,6 @@
 .ah-page .ah-box,
 .ah-page .ah-cat-box,
 .ah-page .ah-qrow,
-.ah-page .ah-shelf-item,
 .ah-page .ah-acard > a,
 .ah-page .ah-book > a {
 	box-shadow: 0 1px 2px rgba(31, 28, 25, 0.04), 0 4px 14px rgba(31, 28, 25, 0.04);
@@ -120,6 +119,13 @@
 	max-width: 42em;
 	margin-top: 14px;
 	font-size: 18px;
+
+	a {
+		font-weight: 600;
+		color: var(--ah-crimson);
+		text-decoration: underline;
+		text-underline-offset: 3px;
+	}
 }
 
 .ah-page-hero__ar {
@@ -149,6 +155,11 @@
 	svg {
 		color: var(--ah-crimson);
 	}
+
+	span a {
+		font-weight: 600;
+		color: var(--ah-crimson);
+	}
 }
 
 /* Page body and layouts */
@@ -174,6 +185,33 @@
 
 .ah-layout--left {
 	grid-template-columns: 300px minmax(0, 1fr);
+}
+
+// Form pages (Ask a Question, Contact, Counselling): the form card grows to the sidebar's height and
+// its message box takes the extra room, so both columns end on the same line
+.ah-layout--match {
+	align-items: stretch;
+
+	> .ah-card {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.ah-form {
+		display: flex;
+		flex: 1;
+		flex-direction: column;
+	}
+
+	.ah-field--grow {
+		display: flex;
+		flex: 1;
+		flex-direction: column;
+
+		textarea {
+			flex: 1;
+		}
+	}
 }
 
 .ah-aside {
@@ -526,6 +564,54 @@
 	}
 }
 
+// Keyboard focus inside a scrolling list: an inset ring that the list cannot clip
+.ah .ah-cat-item:focus-visible {
+	background: var(--ah-cream);
+	outline-offset: -2px;
+}
+
+.ah-cat-item__text {
+	display: grid;
+	flex: 1;
+	min-width: 0;
+
+	small {
+		font-size: 12.5px;
+		font-weight: 400;
+		color: var(--ah-muted);
+	}
+}
+
+// "All Lectures" sits apart from the series below it
+.ah-cat-item--all {
+	font-weight: 600;
+}
+
+.ah .ah-cat-item.is-active small {
+	color: rgba(255, 255, 255, 0.8);
+}
+
+.ah-cat-group {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	margin: 10px 2px 4px;
+	padding: 12px 10px 4px;
+	border-top: 1px solid var(--ah-line);
+	font-size: 11.5px;
+	font-weight: 600;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: var(--ah-muted);
+
+	span {
+		padding: 1px 7px;
+		background: var(--ah-cream);
+		border-radius: 999px;
+		letter-spacing: 0;
+	}
+}
+
 .ah .ah-cat-item.is-active,
 .ah .ah-cat-item.is-active:focus,
 .ah .ah-cat-item.is-active:hover {
@@ -661,25 +747,45 @@
 	display: flex;
 	flex-direction: column;
 	max-height: 85vh;
+	max-height: 85dvh;
 	background: #fff;
 	border-radius: 16px 16px 0 0;
+	box-shadow: 0 -10px 30px rgba(31, 28, 25, 0.12);
+
+	&:focus {
+		outline: none;
+	}
 
 	.ah-cat-box__head {
 		display: grid;
 		gap: 0;
+		padding-top: 10px;
 	}
 
 	.ah-cat-list {
 		flex: 1;
 		max-height: none;
-		padding-bottom: 24px;
+		padding-bottom: calc(24px + env(safe-area-inset-bottom));
+		overscroll-behavior: contain;
 	}
+
+	// Comfortable rows for fingers
+	.ah-cat-item {
+		min-height: 44px;
+	}
+}
+
+// The handle and title bar drag the sheet down to close it
+.ah-sheet__grab {
+	padding: 10px 0 2px;
+	cursor: grab;
+	touch-action: none;
 }
 
 .ah-sheet__handle {
 	width: 40px;
 	height: 4px;
-	margin: 10px auto 0;
+	margin: 0 auto;
 	border-radius: 4px;
 	background: #d9cfbf;
 }
@@ -688,6 +794,7 @@
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+	touch-action: none;
 }
 
 .ah-icon-btn {
@@ -955,142 +1062,6 @@
 	color: var(--ah-muted);
 }
 
-/* Books listing (one wide card per book) */
-.ah-shelf {
-	display: grid;
-	gap: 28px;
-}
-
-.ah-shelf-item {
-	display: grid;
-	grid-template-columns: 300px minmax(0, 1fr);
-	gap: 48px;
-	align-items: start;
-	padding: 36px;
-	background: #fff;
-	border: 1px solid var(--ah-line);
-	border-radius: 12px;
-
-	h2 {
-		margin-top: 8px;
-		font-size: 32px;
-		line-height: 1.2;
-	}
-
-	h2 a {
-		--ah-hover: var(--ah-crimson);
-	}
-
-	.ah-dl {
-		margin-top: 18px;
-	}
-
-	.ah-actions {
-		margin-top: 24px;
-	}
-}
-
-.ah-shelf-item__cover-wrap {
-	display: flex;
-	justify-content: center;
-	padding: 32px 28px;
-	background: var(--ah-cream);
-	border-radius: 10px;
-}
-
-.ah-shelf-item__cover {
-	position: relative;
-	display: block;
-	width: 100%;
-	max-width: 220px;
-	aspect-ratio: 2 / 3;
-	overflow: hidden;
-	border-radius: 4px;
-	box-shadow: 0 16px 32px rgba(31, 28, 25, 0.22);
-	transition: transform 0.25s ease;
-
-	img {
-		object-fit: cover;
-	}
-}
-
-.ah-shelf-item__cover-wrap:hover .ah-shelf-item__cover {
-	transform: translateY(-3px);
-}
-
-.ah-shelf-item__desc {
-	max-width: 44em;
-	margin-top: 18px;
-	font-size: 16.5px;
-	line-height: 1.75;
-}
-
-.ah-series {
-	display: flex;
-	align-items: center;
-	gap: 14px;
-	max-width: 460px;
-	margin-top: 22px;
-	padding: 14px 16px;
-	background: var(--ah-cream);
-	border: 1px solid var(--ah-line);
-	border-radius: 8px;
-	color: var(--ah-ink);
-	transition: border-color 0.2s ease;
-	--ah-hover: var(--ah-ink);
-
-	&:hover {
-		border-color: var(--ah-crimson);
-	}
-
-	> span:nth-child(2) {
-		flex: 1;
-		min-width: 0;
-	}
-}
-
-.ah-series__icon {
-	display: grid;
-	place-items: center;
-	width: 40px;
-	height: 40px;
-	border-radius: 8px;
-	background: var(--ah-crimson-soft);
-	color: var(--ah-crimson);
-}
-
-.ah-series__label {
-	display: block;
-	font-size: 12.5px;
-	font-weight: 600;
-	letter-spacing: 0.06em;
-	text-transform: uppercase;
-	color: var(--ah-muted);
-}
-
-.ah-series__title {
-	display: block;
-	font-family: var(--ah-serif);
-	font-size: 18px;
-	font-weight: 600;
-	color: var(--ah-ink);
-}
-
-.ah-series__arrow {
-	color: var(--ah-crimson);
-	transition: transform 0.2s ease;
-}
-
-.ah-series:hover .ah-series__arrow {
-	transform: translateX(3px);
-}
-
-.ah-shelf-item__note {
-	margin-top: 10px;
-	font-size: 13px;
-	color: var(--ah-muted);
-}
-
 /* Book detail */
 .ah-book-detail {
 	display: grid;
@@ -1141,6 +1112,11 @@
 	dd {
 		color: var(--ah-ink);
 	}
+
+	dd a {
+		font-weight: 600;
+		color: var(--ah-crimson);
+	}
 }
 
 .ah-actions {
@@ -1168,7 +1144,7 @@
 	align-items: center;
 	gap: 12px;
 	width: 100%;
-	padding: 13px 16px;
+	padding: 10px 16px;
 	background: #fff;
 	border: 1px solid #d9cfbf;
 	border-radius: 8px;
@@ -1178,22 +1154,61 @@
 	color: var(--ah-ink);
 	text-align: left;
 	cursor: pointer;
-
-	span {
-		display: flex;
-		align-items: center;
-		gap: 10px;
-		min-width: 0;
-	}
+	transition: border-color 0.2s ease, box-shadow 0.2s ease;
 
 	svg {
 		flex: none;
 		color: var(--ah-crimson);
 	}
+
+	&:hover,
+	&[aria-expanded="true"] {
+		border-color: var(--ah-crimson);
+	}
+
+	&[aria-expanded="true"] {
+		box-shadow: 0 0 0 3px rgba(142, 28, 43, 0.1);
+	}
 }
 
 .ah .ah-select__btn:focus {
 	background: #fff;
+}
+
+.ah-select__current {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	min-width: 0;
+}
+
+// "Showing" caption over the current choice, so the button reads as a filter
+.ah-select__text {
+	display: grid;
+	min-width: 0;
+	line-height: 1.3;
+
+	small {
+		font-size: 11.5px;
+		font-weight: 600;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: var(--ah-muted);
+	}
+
+	span {
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+}
+
+.ah-select__chevron {
+	transition: transform 0.2s ease;
+
+	[aria-expanded="true"] > & {
+		transform: rotate(180deg);
+	}
 }
 
 .ah-select__menu {
@@ -1223,7 +1238,7 @@
 	}
 
 	.ah-cat-list {
-		max-height: 380px;
+		max-height: min(420px, 60vh);
 		min-height: 0;
 	}
 }
@@ -1430,12 +1445,6 @@
 	.ah-art-grid--3 {
 		grid-template-columns: repeat(2, 1fr);
 	}
-
-	.ah-shelf-item {
-		grid-template-columns: 240px minmax(0, 1fr);
-		gap: 32px;
-		padding: 28px;
-	}
 }
 
 @media (max-width: 1023px) {
@@ -1523,32 +1532,6 @@
 
 	.ah-art-grid--3 {
 		grid-template-columns: 1fr;
-	}
-
-	.ah-shelf {
-		gap: 20px;
-	}
-
-	.ah-shelf-item {
-		grid-template-columns: 1fr;
-		gap: 22px;
-		padding: 18px;
-
-		h2 {
-			font-size: 25px;
-		}
-	}
-
-	.ah-shelf-item__cover-wrap {
-		padding: 24px;
-	}
-
-	.ah-shelf-item__cover {
-		max-width: 180px;
-	}
-
-	.ah-shelf-item__desc {
-		font-size: 15.5px;
 	}
 
 	.ah-toolbar {

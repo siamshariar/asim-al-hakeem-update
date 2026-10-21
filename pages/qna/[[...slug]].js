@@ -5,7 +5,7 @@ import Meta from "../../components/meta";
 import Header2 from "../../components/header1";
 import PageHero from "../../components/page-hero";
 import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
+import BottomSheet from "../../components/bottom-sheet";
 import { ArrowRight, FolderOpen, X, Search, ArrowUp, BookOpen, List } from "lucide-react";
 
 const useIsomorphicLayoutEffect = typeof window !== "undefined" ? useLayoutEffect : useEffect;
@@ -396,28 +396,6 @@ export default function QnaPage({ playlists, headerLectures, qnaCategories, init
       document.documentElement.style.height = 'auto';
     }
   }, []);
-
-  useEffect(() => {
-    if (showCategoryDrawer && categorySearchInputRef.current) {
-      setTimeout(() => {
-        categorySearchInputRef.current?.focus();
-      }, 150);
-    }
-    if (showCategoryDrawer) {
-      document.body.style.overflow = 'hidden';
-      document.body.style.position = 'fixed';
-      document.body.style.width = '100%';
-    } else {
-      document.body.style.overflow = '';
-      document.body.style.position = '';
-      document.body.style.width = '';
-    }
-    return () => {
-      document.body.style.overflow = '';
-      document.body.style.position = '';
-      document.body.style.width = '';
-    };
-  }, [showCategoryDrawer]);
 
   useEffect(() => {
     const cleanupCache = () => {
@@ -898,45 +876,20 @@ export default function QnaPage({ playlists, headerLectures, qnaCategories, init
           </div>
         </div>
 
-        <AnimatePresence>
-          {showCategoryDrawer && (
-            <div className="ah">
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.2 }}
-                onClick={() => setShowCategoryDrawer(false)}
-                className="ah-sheet__backdrop"
-              />
-              <motion.div
-                initial={{ y: "100%" }}
-                animate={{ y: 0 }}
-                exit={{ y: "100%" }}
-                transition={{ type: "spring", damping: 25, stiffness: 300 }}
-                className="ah-sheet"
-                role="dialog"
-                aria-modal="true"
-                aria-label="Categories"
-              >
-                <div className="ah-sheet__handle" aria-hidden="true" />
-                <div className="ah-cat-box__head">
-                  <div className="ah-sheet__title">
-                    <div>
-                      <h2>All Categories</h2>
-                      <p>{visibleQnaCategories.length} categories</p>
-                    </div>
-                    <button type="button" onClick={() => setShowCategoryDrawer(false)} className="ah-icon-btn" aria-label="Close categories">
-                      <X size={18} aria-hidden="true" />
-                    </button>
-                  </div>
-                  {categorySearch(categorySearchInputRef)}
-                </div>
-                {categoryList("sheet")}
-              </motion.div>
-            </div>
-          )}
-        </AnimatePresence>
+        <BottomSheet
+          open={showCategoryDrawer}
+          onClose={() => setShowCategoryDrawer(false)}
+          label="Categories"
+          title="All Categories"
+          subtitle={`${visibleQnaCategories.length} categories`}
+          closeLabel="Close categories"
+          search={categorySearch(categorySearchInputRef)}
+          focusRef={categorySearchInputRef}
+          // Choosing a category scrolls the list back to the top
+          restoreScroll={!isTransitioningCategory}
+        >
+          {categoryList("sheet")}
+        </BottomSheet>
 
         <section className="ah ah-page" ref={containerRef}>
           <div className="ah-wrap ah-layout ah-layout--left">

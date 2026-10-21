@@ -6,7 +6,8 @@ import { Menu, X, ChevronDown, Mail, MapPin } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import SocialLinks from "./social-links";
 
-const LECTURES_HREF = "/lectures/UUWsdcrre0WbCWML_PnuzoAg";
+const ALL_LECTURES_ID = "UUWsdcrre0WbCWML_PnuzoAg";
+const LECTURES_HREF = `/lectures/${ALL_LECTURES_ID}`;
 
 export default function Header2({ playlists, lectures, qna_categories, activePlaylistId }) {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -51,7 +52,8 @@ export default function Header2({ playlists, lectures, qna_categories, activePla
       name: "Lectures",
       href: LECTURES_HREF,
       match: ["/lectures"],
-      dropdownItems: playlists?.slice(0, 6).map((p) => ({ name: p.title, href: `/lectures/${p.id}` })) || [],
+      // Series only: "View all lectures" below the list is the All Lectures page
+      dropdownItems: playlists?.filter((p) => p.id !== ALL_LECTURES_ID).slice(0, 6).map((p) => ({ name: p.title, href: `/lectures/${p.id}` })) || [],
       viewAllText: "View all lectures",
     },
     { name: "Books", href: "/books", match: ["/books", "/book"] },

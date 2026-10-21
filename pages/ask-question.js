@@ -6,20 +6,31 @@ import Header2 from "../components/header1";
 import PageHero from "../components/page-hero";
 import ShareLinks from "../components/share-links";
 import EmailText from "../components/email-text";
-import { Mail, DollarSign, Clock, CheckCircle, Send } from 'lucide-react';
+import { sendSiteMail } from "../lib/send-mail";
+import { Mail, DollarSign, Clock, CheckCircle, AlertCircle, Send } from 'lucide-react';
 import { useState } from 'react';
 
 export default function AskAQuestion({ playlists, headerLectures, qna_categories }) {
   const [formValues, setFormValues] = useState({ name: '', email: '', question: '' });
-  const [submitted, setSubmitted] = useState(false);
+  // idle | sending | sent | failed
+  const [status, setStatus] = useState('idle');
   const handleChange = (e) => setFormValues({ ...formValues, [e.target.name]: e.target.value });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Question submitted:', formValues);
-    setSubmitted(true);
-    setTimeout(() => setSubmitted(false), 5000);
-    setFormValues({ name: '', email: '', question: '' });
+    setStatus('sending');
+    const sent = await sendSiteMail({
+      name: formValues.name,
+      email: formValues.email,
+      subject: `Question from the website: ${formValues.name}`,
+      message: formValues.question,
+    });
+    if (sent) {
+      setStatus('sent');
+      setFormValues({ name: '', email: '', question: '' });
+    } else {
+      setStatus('failed');
+    }
   };
 
   return (
@@ -35,7 +46,7 @@ export default function AskAQuestion({ playlists, headerLectures, qna_categories
       />
 
       <section className="ah ah-page">
-        <div className="ah-wrap ah-layout">
+        <div className="ah-wrap ah-layout ah-layout--match">
           <div className="ah-card">
             <h2>Submit Your Question</h2>
 
@@ -46,10 +57,16 @@ export default function AskAQuestion({ playlists, headerLectures, qna_categories
               </p>
             </div>
 
-            {submitted && (
+            {status === 'sent' && (
               <div className="ah-alert ah-alert--success" role="status" style={{ marginBottom: 18 }}>
                 <CheckCircle size={18} aria-hidden="true" />
                 <span>Your question has been submitted successfully!</span>
+              </div>
+            )}
+            {status === 'failed' && (
+              <div className="ah-alert ah-alert--error" role="alert" style={{ marginBottom: 18 }}>
+                <AlertCircle size={18} aria-hidden="true" />
+                <span>Sorry, your question could not be sent right now. Please try again in a few minutes.</span>
               </div>
             )}
 
@@ -67,16 +84,16 @@ export default function AskAQuestion({ playlists, headerLectures, qna_categories
                 </div>
               </div>
 
-              <div className="ah-field">
+              <div className="ah-field ah-field--grow">
                 <label htmlFor="q-question">Your question <span className="ah-field__req">*</span></label>
                 <textarea id="q-question" name="question" value={formValues.question} onChange={handleChange} rows="7"
                   className="ah-input" placeholder="Write your question clearly, with any details that matter" required />
               </div>
 
               <div>
-                <button type="submit" className="ah-btn ah-btn--primary">
+                <button type="submit" className="ah-btn ah-btn--primary" disabled={status === 'sending'}>
                   <Send size={17} aria-hidden="true" />
-                  Submit Question
+                  {status === 'sending' ? 'Sending...' : 'Submit Question'}
                 </button>
               </div>
             </form>

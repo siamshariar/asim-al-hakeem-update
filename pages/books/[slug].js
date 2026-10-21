@@ -66,6 +66,13 @@ export default function BookDetail({ detail, series, otherBooks = [], playlists,
                   <dd>{detail.translator}</dd>
                 </div>
               )}
+              {/* The companion video series lives in Lectures; the book only links to it */}
+              {series && (
+                <div>
+                  <dt>Lecture series</dt>
+                  <dd><Link href={`/lectures/${series.id}`}>{series.title}</Link></dd>
+                </div>
+              )}
             </dl>
 
             {description && <p className="ah-prose" style={{ marginTop: 22 }}>{description}</p>}

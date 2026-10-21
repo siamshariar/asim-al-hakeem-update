@@ -201,7 +201,7 @@ html body {
 a.ah-topbar__item,
 .ah-contact-list a,
 .ah-footer__contact a,
-.ah-shelf-item h2 a {
+.ah-meta span a {
 	position: relative;
 }
 
@@ -210,7 +210,7 @@ a.ah-topbar__item,
 a.ah-topbar__item::before,
 .ah-contact-list a::before,
 .ah-footer__contact a::before,
-.ah-shelf-item h2 a::before {
+.ah-meta span a::before {
 	content: "";
 	position: absolute;
 	top: 50%;
@@ -837,11 +837,11 @@ a.ah-topbar__item::before,
 }
 
 /* Q&A */
+// Both columns stretch to the taller one, so the cards and the "Ask a Question" box end on one line
 .ah-qa-grid {
 	display: grid;
 	grid-template-columns: minmax(0, 8fr) minmax(0, 4fr);
 	gap: 32px;
-	align-items: start;
 }
 
 .ah-qa-cards {
@@ -901,8 +901,10 @@ a.ah-topbar__item::before,
 	color: var(--ah-crimson);
 }
 
+// Any extra height goes to the "Ask a Question" box (its button sits at the bottom)
 .ah-qa-side {
 	display: grid;
+	grid-template-rows: auto 1fr;
 	gap: 20px;
 }
 
@@ -944,7 +946,11 @@ a.ah-topbar__item::before,
 	border-bottom: 0;
 }
 
+// When this box is stretched to match its neighbour, the heading stays at the top, the button
+// sits at the bottom (level with the neighbour's last link) and the text is centred between them
 .ah-ask {
+	display: flex;
+	flex-direction: column;
 	background: var(--ah-crimson);
 	border-color: var(--ah-crimson);
 	color: #f6e3e6;
@@ -956,6 +962,15 @@ a.ah-topbar__item::before,
 	.ah-btn {
 		width: 100%;
 		margin-top: 20px;
+	}
+
+	.ah-ask__time {
+		margin-top: auto;
+		padding-top: 4px;
+	}
+
+	.ah-ask__note {
+		margin-bottom: auto;
 	}
 }
 
@@ -1390,7 +1405,9 @@ a.ah-topbar__item::before,
 		color: var(--ah-gold);
 	}
 
+	// A flex item never shrinks below its longest word; min-width lets the address wrap after "@"
 	a {
+		min-width: 0;
 		overflow-wrap: break-word;
 	}
 }
@@ -1441,6 +1458,7 @@ a.ah-topbar__item::before,
 
 	.ah-qa-side {
 		grid-template-columns: 1fr 1fr;
+		grid-template-rows: none;
 	}
 
 	.ah-about-grid {

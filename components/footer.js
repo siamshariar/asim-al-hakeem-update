@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Mail, MapPin } from "lucide-react";
 import SocialLinks from "./social-links";
+import EmailText from "./email-text";
 
 const footerLinks = {
     explore: [
@@ -63,7 +64,7 @@ export default function Footer() {
                     <ul>
                         <li>
                             <Mail size={17} aria-hidden="true" />
-                            <a href="mailto:sheikhassim.bookings@gmail.com">sheikhassim.bookings@gmail.com</a>
+                            <a href="mailto:sheikhassim.bookings@gmail.com"><EmailText email="sheikhassim.bookings@gmail.com" /></a>
                         </li>
                         <li>
                             <MapPin size={17} aria-hidden="true" />

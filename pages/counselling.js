@@ -7,7 +7,8 @@ import Header2 from "../components/header1";
 import PageHero from "../components/page-hero";
 import ShareLinks from "../components/share-links";
 import EmailText from "../components/email-text";
-import { Send, Clock, DollarSign, User, Phone, Mail, Heart, CheckCircle } from 'lucide-react';
+import { sendSiteMail } from "../lib/send-mail";
+import { Send, Clock, DollarSign, User, Phone, Mail, Heart, CheckCircle, AlertCircle } from 'lucide-react';
 
 const details = [
   { term: "Duration", value: "30 minutes", Icon: Clock },
@@ -30,7 +31,8 @@ export default function CounsellingSession({ playlists, headerLectures, qna_cate
     message: ''
   });
 
-  const [submissionSuccess, setSubmissionSuccess] = useState(false);
+  // idle | sending | sent | failed
+  const [status, setStatus] = useState('idle');
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
@@ -75,16 +77,28 @@ export default function CounsellingSession({ playlists, headerLectures, qna_cate
     return newErrors;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const newErrors = validateForm();
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
     }
-    console.log('Form submitted:', formValues);
-    setSubmissionSuccess(true);
-    setTimeout(() => setSubmissionSuccess(false), 5000);
+    setStatus('sending');
+    const { fullname, email, phone, date, time, message } = formValues;
+    const sent = await sendSiteMail({
+      name: fullname,
+      email,
+      phone,
+      subject: `Counselling request: ${fullname}`,
+      message: `Preferred date: ${date}\nPreferred time: ${time}\n\n${message || '(no message)'}`,
+    });
+    if (sent) {
+      setStatus('sent');
+      setFormValues({ fullname: '', email: '', phone: '', date: '', time: '', message: '' });
+    } else {
+      setStatus('failed');
+    }
   };
 
   const shareUrl = `${server}/counselling`;
@@ -109,15 +123,21 @@ export default function CounsellingSession({ playlists, headerLectures, qna_cate
       />
 
       <section className="ah ah-page">
-        <div className="ah-wrap ah-layout">
+        <div className="ah-wrap ah-layout ah-layout--match">
           <div className="ah-card">
             <h2>Request a Session</h2>
             <p className="ah-box__text">Share your preferred date and time and a short note about what you would like to discuss.</p>
 
-            {submissionSuccess && (
+            {status === 'sent' && (
               <div className="ah-alert ah-alert--success" role="status" style={{ marginBottom: 18 }}>
                 <CheckCircle size={18} aria-hidden="true" />
                 <span>Your booking request has been submitted! We'll contact you shortly.</span>
+              </div>
+            )}
+            {status === 'failed' && (
+              <div className="ah-alert ah-alert--error" role="alert" style={{ marginBottom: 18 }}>
+                <AlertCircle size={18} aria-hidden="true" />
+                <span>Sorry, your request could not be sent right now. Please try again later, or email sheikhassim.bookings@gmail.com.</span>
               </div>
             )}
 
@@ -160,16 +180,16 @@ export default function CounsellingSession({ playlists, headerLectures, qna_cate
                 </div>
               </div>
 
-              <div className="ah-field">
+              <div className="ah-field ah-field--grow">
                 <label htmlFor="c-message">Message <span className="ah-field__hint">(optional)</span></label>
                 <textarea id="c-message" name="message" value={formValues.message} onChange={handleChange} rows="4"
                   className="ah-input" placeholder="Briefly describe what you would like to discuss" />
               </div>
 
               <div>
-                <button type="submit" className="ah-btn ah-btn--primary">
+                <button type="submit" className="ah-btn ah-btn--primary" disabled={status === 'sending'}>
                   <Send size={17} aria-hidden="true" />
-                  Submit Booking Request
+                  {status === 'sending' ? 'Sending...' : 'Submit Booking Request'}
                 </button>
               </div>
             </form>

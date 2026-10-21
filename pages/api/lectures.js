@@ -28,11 +28,11 @@ export default async function handler(req, res) {
       playlists: [
         {
           id: "UUWsdcrre0WbCWML_PnuzoAg",
-          title: "Video Lectures",
+          title: "All Lectures",
         },
       ],
       playlistsTitle: {
-        UUWsdcrre0WbCWML_PnuzoAg: "Video Lectures",
+        UUWsdcrre0WbCWML_PnuzoAg: "All Lectures",
       },
       headerLectures: null,
       lectures: null,

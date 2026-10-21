@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react';
 import Link from 'next/link';
 import { getAllPlaylists2, getAllQnaCategory, getHeaderLectures } from '../lib/fetch';
+import { sendSiteMail } from '../lib/send-mail';
 import Meta from '../components/meta';
 import Header2 from '../components/header1';
 import PageHero from '../components/page-hero';
@@ -51,29 +52,20 @@ export default function Contact({ playlists, headerLectures, qna_categories }) {
         const newErrors = validateForm();
         if (Object.keys(newErrors).length > 0) { setErrors(newErrors); focusFirstInvalid(newErrors); return; }
         setFormStatus({ submitted: true, success: false, message: 'Sending...' });
-        try {
-            const res = await fetch('/api/sendMail', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    name: formData.firstName,
-                    subject: formData.subject,
-                    email: formData.email,
-                    phone: formData.phone,
-                    message: formData.message
-                })
-            });
+        const sent = await sendSiteMail({
+            name: formData.firstName,
+            subject: formData.subject,
+            email: formData.email,
+            phone: formData.phone,
+            message: formData.message
+        });
 
-            if (res.ok) {
-                setFormStatus({ submitted: true, success: true, message: 'Message sent successfully!' });
-                setFormData({ firstName: '', subject: '', email: '', phone: '', message: '' });
-            } else {
-                let errText = '';
-                try { errText = await res.text(); } catch (e) { errText = res.statusText }
-                setFormStatus({ submitted: true, success: false, message: `Send failed: ${res.status} ${errText}` });
-            }
-        } catch (err) {
-            setFormStatus({ submitted: true, success: false, message: 'Network error. Please try again later.' });
+        if (sent) {
+            setFormStatus({ submitted: true, success: true, message: 'Message sent successfully!' });
+            setFormData({ firstName: '', subject: '', email: '', phone: '', message: '' });
+        } else {
+            // The server's reason is logged for the team; visitors get a way to reach us instead
+            setFormStatus({ submitted: true, success: false, message: 'Sorry, your message could not be sent right now. Please try again later, or email sheikhassim.bookings@gmail.com.' });
         }
     };
 
@@ -92,7 +84,7 @@ export default function Contact({ playlists, headerLectures, qna_categories }) {
             />
 
             <section className="ah ah-page">
-                <div className="ah-wrap ah-layout">
+                <div className="ah-wrap ah-layout ah-layout--match">
                     <div className="ah-card">
                         <h2>Send a Message</h2>
 
@@ -142,7 +134,7 @@ export default function Contact({ playlists, headerLectures, qna_categories }) {
                                 </div>
                             </div>
 
-                            <div className="ah-field">
+                            <div className="ah-field ah-field--grow">
                                 <label htmlFor="contact-message">Message <span className="ah-field__req">*</span></label>
                                 <textarea id="contact-message" ref={messageRef} name="message" rows="6" value={formData.message} onChange={handleChange}
                                     className={fieldClass('message')} placeholder="Write your message"

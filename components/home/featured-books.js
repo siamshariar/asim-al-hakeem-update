@@ -2,7 +2,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 
-function HomeBookCard({ book }) {
+// Also used on the Books page, so both show the same card
+export function BookCard({ book }) {
     const { title, image, slug, excerpt, author, translator } = book;
 
     return (
@@ -55,7 +56,7 @@ export default function FeaturedBooks({ books }) {
 
                 <div className="ah-books">
                     {featuredBooks.map((book) => (
-                        <HomeBookCard key={book.id} book={book} />
+                        <BookCard key={book.id} book={book} />
                     ))}
                 </div>
             </div>

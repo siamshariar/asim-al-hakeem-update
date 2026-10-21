@@ -8,7 +8,7 @@ import { useRouter } from 'next/router';
 const TARGETS = [
     '.ah-sec-head', '.ah-quick__card', '.ah-vcard', '.ah-qa-cards > *', '.ah-qa-side > *',
     '.ah-about__photo', '.ah-about__copy', '.ah-book', '.ah-acard', '.ah-counsel__panel',
-    '.ah-card', '.ah-cat-box', '.ah-qrow', '.ah-shelf-item', '.ah-series', '.ah-book-detail__cover',
+    '.ah-card', '.ah-cat-box', '.ah-qrow', '.ah-book-detail__cover',
     '.ah-timeline__item', '.ah-cta-band', '.ah-section-title', '.ah-quote',
 ].join(', ');
 const SKIP = 'header, footer, [role="dialog"], .ah-sheet';
